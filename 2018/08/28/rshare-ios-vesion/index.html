@@ -145,7 +145,6 @@
 <meta property="og:image" content="https://lh3.googleusercontent.com/-nqS8NqcuAWA/W4YPhs9jfPI/AAAAAAAAASk/L7tpwjijq8Q1KKY_mbgd1HVRYm24BGNXgCHMYCw/I/15355124530548.jpg">
 <meta property="og:image" content="https://lh3.googleusercontent.com/-nMmPYSlGflE/W4YQCh8Ae0I/AAAAAAAAASw/unxfmpNFv-UaHYRwEQew8ov00nyOGmNIACHMYCw/I/15355125823965.jpg">
 <meta property="og:image" content="https://lh3.googleusercontent.com/-KOdrkJJWdhg/W4YQMFwhXgI/AAAAAAAAAS0/PP0Jd2caT6IONmtn2T_ejcUbESMGJw6OgCHMYCw/I/15355126186609.jpg">
-<meta property="og:image" content="https://lh3.googleusercontent.com/-5J-KiQKwMi8/W4YQPZusOdI/AAAAAAAAAS4/pqmWOVQmEcoZayKYCOg-OPSgL48ITziKgCHMYCw/I/15355126361127.jpg">
 <meta property="og:image" content="https://lh3.googleusercontent.com/-rxIzydhFUx8/W4YQj8-tj-I/AAAAAAAAAS8/D0aXCfI4dnEZ5kQhMSuaPgpJN7ZXgZ-JQCHMYCw/I/15355127160288.jpg">
 <meta property="og:image" content="https://lh3.googleusercontent.com/-D28ugrWNaAo/W4YQndOmnhI/AAAAAAAAATI/Ld5F_uF6_Oor4qbfVrlljAuZs3pV8q0EACHMYCw/I/15355127308166.jpg">
 <meta property="og:image" content="https://lh3.googleusercontent.com/-Zl6L5gyovmg/W4YQzHlhROI/AAAAAAAAATM/k-eeicQBCHEeKkR_JqaBey6tYVUe7M5TQCHMYCw/I/15355127771748.jpg">
@@ -155,7 +154,7 @@
 <meta property="og:image" content="https://lh3.googleusercontent.com/-OyXKD3CaCjw/W4YRUpjYnJI/AAAAAAAAATc/bUSIY503n7QLm56sS6eNwboBpPY4NCIEgCHMYCw/I/15355129126452.jpg">
 <meta property="og:image" content="https://lh3.googleusercontent.com/-RBbwgH1Ny_U/W4YTC4ngt3I/AAAAAAAAAUI/TXhK8rrXdOE9_-tlzNqehW91DmqGW7eGwCHMYCw/I/15355133524598.jpg">
 <meta property="og:image" content="https://lh3.googleusercontent.com/-qS7DNoxlpi0/W4YRwCQ7qhI/AAAAAAAAATw/2KMok4xcqTg-qLFtY9V9h9xV8ys8jf9sgCHMYCw/I/iOS%2B">
-<meta property="og:updated_time" content="2018-08-29T06:20:09.180Z">
+<meta property="og:updated_time" content="2018-08-29T06:26:10.409Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="「RSHARE」 一键分享 iOS 版">
 <meta name="twitter:description" content="因为公司的项目里集成了一键分享的这个模块, 而在我设计的时候发现国内的官方文档和提供的 Sample 有混乱和容易混淆的地方, 而且除了普通的网页、图片、文字分享到各大 Social 平台以外, 对于视频、文件和其他内容的分享 Demo 在百度或者 Google 几乎搜不到. 自己也是踩了很多坑才把很多问题解决. 测试设备iPhone 7 Plus, iOS 11.4.1. 1 支持平台RSHAR">
@@ -412,7 +411,7 @@
                 
                   <span class="post-meta-item-text">Edited on</span>
                 
-                <time title="Modified: 2018-08-29 14:20:09" itemprop="dateModified" datetime="2018-08-29T14:20:09+08:00">2018-08-29</time>
+                <time title="Modified: 2018-08-29 14:26:10" itemprop="dateModified" datetime="2018-08-29T14:26:10+08:00">2018-08-29</time>
               
             
           </span>
@@ -850,7 +849,7 @@
 <figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">RFacebookManager</span>.shared.share(webpageURL: webpageURL, quote: quote, hashTag: hashTag, from: context, mode: mode, completion: completion)</span><br></pre></td></tr></table></figure>
 <p>Facebook 的 SDK 在迭代的过程中, 舍弃了很多字段, 分享参数不如新浪那样多样, 但是其分享的表现形式却比国内的要友好很多, 特别是在网页分享这块体现的更加明显, 值得注意的是, <strong>非网页形式的分享回调无效</strong>, 努力地在 <strong>Github</strong>、<strong>Stack Overflow</strong> 和 <strong>Facebook Developer 论坛</strong>找答案但都没有找到解决办法, 根据 <code>postId</code> 的判断分享结果状态的方法早已失效, 无论是 Android 还是 iOS 端, 目前都没办法.</p>
 <blockquote>
-<p>⚠️ <code>hashTag (话题)</code> 的表现形式不同于国内, 新浪的话题格式: <strong>#话题#</strong>, 两个 <strong>#</strong> 之间一切内容都能成为话题, 而 Twitter、Instagram、Facebook 的格式: <strong>#话题</strong>, 话题内容词组之间不能有任何富符号且必须连在一起.</p>
+<p>⚠️ <code>hashTag (话题)</code> 的表现形式不同于国内, 新浪的话题格式: <strong>#话题#</strong>, 两个 <strong>#</strong> 之间一切内容都能成为话题, 而 Twitter、Instagram、Facebook 的格式: <strong>#话题</strong>, 话题内容词组之间不能有任何符号且必须连在一起.</p>
 </blockquote>
 <p>表现:<br>客户端形式的分享(无回调):<br><img src="https://lh3.googleusercontent.com/-9s9itZnYAGU/W4YO10hlHrI/AAAAAAAAASU/4QsiueemIrYkysCjjj2SA-OozJlDHPBFwCHMYCw/I/15355122765780.jpg" alt=""></p>
 <p>由上图可见, 在通过客户端分享的过程中, <code>quote</code> 字段已经丢失, <strong>Android 表现不同, <code>quote</code> 保留, 其次, iOS 是跳转到 Facebook 客户端分享, Android 是在本应用内弹出对话框分享, 且 Android 通过客户端分享需要提前打开 Facebook 客户端, 否则无法弹出分享对话框, 测试过美图秀秀的图片分享, 也是一样, 需要提前打开客户端.</strong>  </p>
@@ -876,7 +875,7 @@
 <figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="keyword">void</span>)imagePickerController:(<span class="built_in">UIImagePickerController</span> *)picker</span><br><span class="line">didFinishPickingMediaWithInfo:(<span class="built_in">NSDictionary</span> *)info</span><br><span class="line">&#123;</span><br><span class="line">  FBSDKShareVideo *video = [[FBSDKShareVideo alloc] init];</span><br><span class="line">  <span class="keyword">if</span> (@available(iOS <span class="number">11</span>, *)) &#123;</span><br><span class="line">    video.videoAsset = [info objectForKey:<span class="built_in">UIImagePickerControllerPHAsset</span>];</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    video.videoURL = [info objectForKey:<span class="built_in">UIImagePickerControllerReferenceURL</span>];</span><br><span class="line">  &#125;</span><br><span class="line">  ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>Swift:</p>
 <figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">imagePickerController</span><span class="params">(<span class="number">_</span> picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any])</span></span> &#123;</span><br><span class="line">    <span class="keyword">let</span> video = <span class="type">FBSDKShareVideo</span>()</span><br><span class="line">    <span class="keyword">if</span> #available(iOS <span class="number">11</span>, *) &#123;</span><br><span class="line">        video.videoAsset = info[<span class="type">UIImagePickerControllerPHAsset</span>]     </span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        video.videoURL = info[<span class="type">UIImagePickerControllerReferenceURL</span>]</span><br><span class="line">    &#125;</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>为了统一使用 URL 分享本地视频, 所以我并没有考虑使用上述的写法.</p>
+<p>为了统一使用 URL 分享本地视频, 所以笔者并没有考虑使用上述的写法.</p>
 <p>表现:<br><img src="https://lh3.googleusercontent.com/-nqS8NqcuAWA/W4YPhs9jfPI/AAAAAAAAASk/L7tpwjijq8Q1KKY_mbgd1HVRYm24BGNXgCHMYCw/I/15355124530548.jpg" alt=""></p>
 <p><strong>C. 返回本应用</strong></p>
 <p>Objective-C：</p>
@@ -974,9 +973,8 @@
 <figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">RInstagramManager</span>.shared.share(localVideoURL: videoFileURL!, description: description)</span><br></pre></td></tr></table></figure>
 <p><code>description</code> 字段在实际传递过程中是失效的.</p>
 <blockquote>
-<p>⚠️  本地视频 URL 为通过 <code>UIImagePickerController</code> 选择的媒体 <strong>info</strong> 的 <code>UIImagePickerControllerReferenceURL</code> 的值, <strong>形如: assets-library://asset/asset.MP4?id=8FF2F03F-DD84-41A5-A20C-B745E793C0DC&amp;ext=MP4</strong></p>
+<p>⚠️ 本地视频 URL 为通过 <code>UIImagePickerController</code> 选择的媒体 <strong>info</strong> 的 <code>UIImagePickerControllerMediaURL</code> 的值,<strong>形如: file:///private/var/mobile/Containers/Data/Application/3B368706-001D-4018-901B-284D64FA50E2/tmp/17BD98B4-A498-46E7-9715-6F39E73DFD75.MOV</strong></p>
 </blockquote>
-<p>表现:<br><img src="https://lh3.googleusercontent.com/-5J-KiQKwMi8/W4YQPZusOdI/AAAAAAAAAS4/pqmWOVQmEcoZayKYCOg-OPSgL48ITziKgCHMYCw/I/15355126361127.jpg" alt=""></p>
 <h4 id="3-7-Tumblr"><a href="#3-7-Tumblr" class="headerlink" title="3.7 Tumblr"></a>3.7 Tumblr</h4><h5 id="3-7-1-准备"><a href="#3-7-1-准备" class="headerlink" title="3.7.1 准备"></a>3.7.1 准备</h5><p>分享需要注册平台, <a href="https://www.tumblr.com/developers" target="_blank" rel="noopener">Tumblr 开发者主页</a>, <a href="https://dev.flurry.com/admin/applications" target="_blank" rel="noopener">注册应用主页</a>, Tumblr SDK <strong>支持 pod 集成</strong>, <a href="https://developer.yahoo.com/flurry/docs/tumblrsharing/iOS/" target="_blank" rel="noopener">分享接口调用说明</a>.</p>
 <h5 id="3-7-2-集成"><a href="#3-7-2-集成" class="headerlink" title="3.7.2 集成"></a>3.7.2 集成</h5><p>a. pod 集成: <code>pod &#39;Flurry-iOS-SDK/TumblrAPI&#39;</code><br>⚠️: 一定是这个, 最新版本的 SDK 我没有找到分享的接口.</p>
 <p>b. Swift 语言集成需要 <strong>Objective-C - Swift 桥接文件</strong>.</p>
