@@ -375,7 +375,7 @@
                 
                   <span class="post-meta-item-text">Edited on</span>
                 
-                <time title="Modified: 2018-08-29 15:26:48" itemprop="dateModified" datetime="2018-08-29T15:26:48+08:00">2018-08-29</time>
+                <time title="Modified: 2018-08-29 16:43:40" itemprop="dateModified" datetime="2018-08-29T16:43:40+08:00">2018-08-29</time>
               
             
           </span>
@@ -877,7 +877,7 @@
 <p><strong>b. 授权 Twitter 客户端</strong><br>与其他平台分享不同的是, Twitter 在进行发推(分享)的时候会先进行检测本地的 <code>SessionStore</code> 的标记判断是否登录(授权)过, 所以在进行发推的时候需要进行这一步的判断, 在未登录的情况下需进行授权, 在此使用 <code>RTwitterAuthHelper</code> 进行处理, 登录(授权回调):</p>
 <p>Objective-C:</p>
 <figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="keyword">void</span> (^auth)(RTWAuthState state, <span class="built_in">NSString</span>* _Nullable errorInfo);</span><br></pre></td></tr></table></figure>
-<p>Swfit:</p>
+<p>Swift:</p>
 <figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typealias</span> <span class="type">RTWAuthCompletion</span> = (<span class="number">_</span> state : <span class="type">RTWAuthState</span>,<span class="number">_</span> errorInfo : <span class="type">String</span>?) -&gt; <span class="type">Void</span></span><br></pre></td></tr></table></figure>
 <p><code>state</code> 包括成功和失败两种结果.</p>
 <p><strong>判断是否登录过:</strong></p>
@@ -902,6 +902,10 @@
 </blockquote>
 <p><strong>c. 分享</strong></p>
 <p>在本人写的 demo 中, <em>分享</em>和<em>登录授权</em>是衔接的, 即: 若未登录过 -&gt; 登录授权 -&gt; 分享.<br>另, Twitter 能分享的内容相对较少, 所以关于<strong>文字、网页、图片</strong>的分享, 统一到一个分享接口里, 三者不能同时为空.</p>
+<p>Objective-C:</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[[RTwitterManager shared]shareWithWebpageURL: webpageURL text: text image: image from: context completion: completion];</span><br></pre></td></tr></table></figure>
+<p>Swift:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">RTwitterManager</span>.shared.share(webpageURL: webpageURL, text: text, image: image, from: context, completion: completion)</span><br></pre></td></tr></table></figure>
 <p>表现:<br><img src="https://lh3.googleusercontent.com/-nMmPYSlGflE/W4YQCh8Ae0I/AAAAAAAAASw/unxfmpNFv-UaHYRwEQew8ov00nyOGmNIACHMYCw/I/15355125823965.jpg" alt=""></p>
 <p>Twitter 分享是在本应用内弹出分享框进行分享.</p>
 <h3 id="Instagram"><a href="#Instagram" class="headerlink" title="Instagram"></a>Instagram</h3><h4 id="准备-5"><a href="#准备-5" class="headerlink" title="准备"></a>准备</h4><p>分享无需注册平台无需 SDK, <a href="https://www.instagram.com/developer/" target="_blank" rel="noopener">Instagram 开发者主页</a>, <a href="https://www.instagram.com/developer/mobile-sharing/iphone-hooks/" target="_blank" rel="noopener">Custom URL Scheme 方式分享</a>.</p>
@@ -1045,7 +1049,7 @@
 <p>内部构建:</p>
 <p>Objective-C:</p>
 <figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">NSURLComponents</span>* urlComponents = [[<span class="built_in">NSURLComponents</span> alloc]</span><br><span class="line">                                      initWithString:<span class="string">@"https://plus.google.com/share"</span>];</span><br><span class="line">urlComponents.queryItems = @[[[<span class="built_in">NSURLQueryItem</span> alloc]</span><br><span class="line">                                  initWithName:<span class="string">@"url"</span></span><br><span class="line">                                  value:[shareURL absoluteString]]];</span><br><span class="line"><span class="built_in">NSURL</span>* url = [urlComponents URL];    </span><br><span class="line"><span class="keyword">if</span> ([SFSafariViewController <span class="keyword">class</span>]) &#123;</span><br><span class="line">    SFSafariViewController* controller = [[SFSafariViewController alloc] initWithURL:url];</span><br><span class="line">    controller.delegate = <span class="keyword">self</span>;</span><br><span class="line">    [from presentViewController:controller animated:<span class="literal">YES</span> completion:<span class="literal">nil</span>];</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    [[<span class="built_in">UIApplication</span> sharedApplication] openURL:url];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>Swfit:</p>
+<p>Swift:</p>
 <figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> components = <span class="type">URLComponents</span>(string: <span class="string">"https://plus.google.com/share"</span>)</span><br><span class="line">components?.queryItems = [<span class="type">URLQueryItem</span>(name: <span class="string">"url"</span>, value: webpageURL.absoluteString)]</span><br><span class="line"><span class="keyword">let</span> url = components?.url</span><br><span class="line"><span class="keyword">if</span> #available(iOS <span class="number">9</span>, *) &#123;</span><br><span class="line">    <span class="keyword">let</span> vc = <span class="type">SFSafariViewController</span>(url: url!)</span><br><span class="line">    vc.delegate = <span class="keyword">self</span></span><br><span class="line">    from.present(vc, animated: <span class="literal">true</span>, completion: <span class="literal">nil</span>)</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="type">UIApplication</span>.shared.openURL(url!)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p><strong>网页分享:</strong><br>Objective-C:</p>
 <figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[[RGooglePlusManager shared]shareURL:[<span class="built_in">NSURL</span> URLWithString: targetURL] from: context];</span><br></pre></td></tr></table></figure>
