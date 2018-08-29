@@ -375,7 +375,7 @@
                 
                   <span class="post-meta-item-text">Edited on</span>
                 
-                <time title="Modified: 2018-08-29 15:25:11" itemprop="dateModified" datetime="2018-08-29T15:25:11+08:00">2018-08-29</time>
+                <time title="Modified: 2018-08-29 15:26:48" itemprop="dateModified" datetime="2018-08-29T15:26:48+08:00">2018-08-29</time>
               
             
           </span>
@@ -939,8 +939,9 @@
 <figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">RInstagramManager</span>.shared.share(localVideoURL: videoFileURL!, description: description)</span><br></pre></td></tr></table></figure>
 <p><code>description</code> 字段在实际传递过程中是失效的.</p>
 <blockquote>
-<p>⚠️ 本地视频 URL 为通过 <code>UIImagePickerController</code> 选择的媒体 <strong>info</strong> 的 <code>UIImagePickerControllerMediaURL</code> 的值,<strong>形如: file:///private/var/mobile/Containers/Data/Application/3B368706-001D-4018-901B-284D64FA50E2/tmp/17BD98B4-A498-46E7-9715-6F39E73DFD75.MOV</strong><br>表现:<br><img src="https://lh3.googleusercontent.com/-adPs5mfSxuU/W4ZKVbqhdWI/AAAAAAAAAUU/7dYZkYK_zJ4wYF4vc1Mnt2bSPiMOmb1CgCHMYCw/I/15355275057159.jpg" alt=""></p>
+<p>⚠️ 本地视频 URL 为通过 <code>UIImagePickerController</code> 选择的媒体 <strong>info</strong> 的 <code>UIImagePickerControllerMediaURL</code> 的值,<strong>形如: file:///private/var/mobile/Containers/Data/Application/3B368706-001D-4018-901B-284D64FA50E2/tmp/17BD98B4-A498-46E7-9715-6F39E73DFD75.MOV</strong></p>
 </blockquote>
+<p>表现:<br><img src="https://lh3.googleusercontent.com/-adPs5mfSxuU/W4ZKVbqhdWI/AAAAAAAAAUU/7dYZkYK_zJ4wYF4vc1Mnt2bSPiMOmb1CgCHMYCw/I/15355275057159.jpg" alt=""></p>
 <h3 id="Tumblr"><a href="#Tumblr" class="headerlink" title="Tumblr"></a>Tumblr</h3><h4 id="准备-6"><a href="#准备-6" class="headerlink" title="准备"></a>准备</h4><p>分享需要注册平台, <a href="https://www.tumblr.com/developers" target="_blank" rel="noopener">Tumblr 开发者主页</a>, <a href="https://dev.flurry.com/admin/applications" target="_blank" rel="noopener">注册应用主页</a>, Tumblr SDK <strong>支持 pod 集成</strong>, <a href="https://developer.yahoo.com/flurry/docs/tumblrsharing/iOS/" target="_blank" rel="noopener">分享接口调用说明</a>.</p>
 <h4 id="集成-5"><a href="#集成-5" class="headerlink" title="集成"></a>集成</h4><p>a. pod 集成: <code>pod &#39;Flurry-iOS-SDK/TumblrAPI&#39;</code><br>⚠️: 一定是这个, 最新版本的 SDK 我没有找到分享的接口.</p>
 <p>b. Swift 语言集成需要 <strong>Objective-C - Swift 桥接文件</strong>.</p>
