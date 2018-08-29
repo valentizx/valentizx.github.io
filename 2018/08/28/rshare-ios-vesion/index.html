@@ -154,7 +154,7 @@
 <meta property="og:image" content="https://lh3.googleusercontent.com/-OyXKD3CaCjw/W4YRUpjYnJI/AAAAAAAAATc/bUSIY503n7QLm56sS6eNwboBpPY4NCIEgCHMYCw/I/15355129126452.jpg">
 <meta property="og:image" content="https://lh3.googleusercontent.com/-RBbwgH1Ny_U/W4YTC4ngt3I/AAAAAAAAAUI/TXhK8rrXdOE9_-tlzNqehW91DmqGW7eGwCHMYCw/I/15355133524598.jpg">
 <meta property="og:image" content="https://lh3.googleusercontent.com/-qS7DNoxlpi0/W4YRwCQ7qhI/AAAAAAAAATw/2KMok4xcqTg-qLFtY9V9h9xV8ys8jf9sgCHMYCw/I/iOS%2B">
-<meta property="og:updated_time" content="2018-08-29T06:26:10.409Z">
+<meta property="og:updated_time" content="2018-08-29T06:27:57.800Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="「RSHARE」 一键分享 iOS 版">
 <meta name="twitter:description" content="因为公司的项目里集成了一键分享的这个模块, 而在我设计的时候发现国内的官方文档和提供的 Sample 有混乱和容易混淆的地方, 而且除了普通的网页、图片、文字分享到各大 Social 平台以外, 对于视频、文件和其他内容的分享 Demo 在百度或者 Google 几乎搜不到. 自己也是踩了很多坑才把很多问题解决. 测试设备iPhone 7 Plus, iOS 11.4.1. 1 支持平台RSHAR">
@@ -411,7 +411,7 @@
                 
                   <span class="post-meta-item-text">Edited on</span>
                 
-                <time title="Modified: 2018-08-29 14:26:10" itemprop="dateModified" datetime="2018-08-29T14:26:10+08:00">2018-08-29</time>
+                <time title="Modified: 2018-08-29 14:27:57" itemprop="dateModified" datetime="2018-08-29T14:27:57+08:00">2018-08-29</time>
               
             
           </span>
@@ -959,7 +959,7 @@
 <figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="keyword">void</span>)video:(<span class="built_in">NSString</span> *)path didFinishSavingWithError:(<span class="built_in">NSError</span> *)error contextInfo:(<span class="keyword">void</span> *)contextInfo &#123;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span> ([[<span class="built_in">UIApplication</span> sharedApplication] canOpenURL:instagramLibraryURL()]) &#123;</span><br><span class="line">        [[<span class="built_in">UIApplication</span> sharedApplication] openURL:instagramLibraryURL()];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>Swift:</p>
 <figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">UISaveVideoAtPathToSavedPhotosAlbum</span>(localVideoURL.path, <span class="keyword">self</span>, #selector(video(path:didFinishSavingWithError:contextInfo:)), <span class="literal">nil</span>)</span><br></pre></td></tr></table></figure>
-<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@objc</span> <span class="keyword">fileprivate</span> <span class="function"><span class="keyword">func</span> <span class="title">video</span><span class="params">(path: String!, didFinishSavingWithError error: NSError!, contextInfo: AnyObject!)</span></span> &#123;</span><br><span class="line">        <span class="keyword">if</span> <span class="type">UIApplication</span>.shared.canOpenURL(instagramURL!) &#123;</span><br><span class="line">            <span class="type">UIApplication</span>.shared.openURL(instagramURL!)</span><br><span class="line">        &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@objc</span> <span class="keyword">fileprivate</span> <span class="function"><span class="keyword">func</span> <span class="title">video</span><span class="params">(path: String!, didFinishSavingWithError error: NSError!, contextInfo: AnyObject!)</span></span> &#123;</span><br><span class="line">    <span class="keyword">if</span> <span class="type">UIApplication</span>.shared.canOpenURL(instagramURL!) &#123;</span><br><span class="line">        <span class="type">UIApplication</span>.shared.openURL(instagramURL!)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p><strong>分享图片:</strong></p>
 <p>Objective-C:</p>
 <figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[[RInstagramManager shared] share: targetImage];</span><br></pre></td></tr></table></figure>
