@@ -155,7 +155,7 @@
 <meta property="og:image" content="https://lh3.googleusercontent.com/-OyXKD3CaCjw/W4YRUpjYnJI/AAAAAAAAATc/bUSIY503n7QLm56sS6eNwboBpPY4NCIEgCHMYCw/I/15355129126452.jpg">
 <meta property="og:image" content="https://lh3.googleusercontent.com/-RBbwgH1Ny_U/W4YTC4ngt3I/AAAAAAAAAUI/TXhK8rrXdOE9_-tlzNqehW91DmqGW7eGwCHMYCw/I/15355133524598.jpg">
 <meta property="og:image" content="https://lh3.googleusercontent.com/-qS7DNoxlpi0/W4YRwCQ7qhI/AAAAAAAAATw/2KMok4xcqTg-qLFtY9V9h9xV8ys8jf9sgCHMYCw/I/iOS%2B">
-<meta property="og:updated_time" content="2018-08-29T08:43:40.025Z">
+<meta property="og:updated_time" content="2018-09-04T07:17:58.984Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="「RSHARE」 一键分享 iOS 版">
 <meta name="twitter:description" content="因为公司的项目里集成了一键分享的这个模块, 而在我设计的时候发现国内的官方文档和提供的 Sample 有混乱和容易混淆的地方, 而且除了普通的网页、图片、文字分享到各大 Social 平台以外, 对于视频、文件和其他内容的分享 Demo 在百度或者 Google 几乎搜不到. 自己也是踩了很多坑才把很多问题解决. 测试设备iPhone 7 Plus, iOS 11.4.1. 支持平台RSHARE">
@@ -357,7 +357,7 @@
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="">
-      <meta itemprop="description" content="曾經滄海難為水 除卻巫山不是雲">
+      <meta itemprop="description" content="115 106 99">
       <meta itemprop="image" content="/images/logo.jpg">
     </span>
 
@@ -412,7 +412,7 @@
                 
                   <span class="post-meta-item-text">Edited on</span>
                 
-                <time title="Modified: 2018-08-29 16:43:40" itemprop="dateModified" datetime="2018-08-29T16:43:40+08:00">2018-08-29</time>
+                <time title="Modified: 2018-09-04 15:17:58" itemprop="dateModified" datetime="2018-09-04T15:17:58+08:00">2018-09-04</time>
               
             
           </span>
@@ -539,14 +539,14 @@
 </tr>
 </tbody>
 </table>
-<p>a. QQ 虽支持网页分享, 但是不允许带着网页的 <code>description</code> 字段, 且分享到 QQ 空间只支持通过文字分享, 这和 Android 表现不同;<br>b. Facebook 的网页分享支持 <strong>hashtag</strong>;<br>c. iOS 端分享文字到 QQ 客户端是可行的, 但是 Android 端不允许, 其实 QQ 的分享目地就是<strong>让用户自行输入有价值、有意义的文字信息</strong>, 这样可以过滤一部分广告, 但是 iOS 和 Android 端的不统一实在是不应该;<br>d. Pinterest 和 Tumblr 虽支持图片分享, 但仅仅支持分享图片的 URL, 它会自行解析并显示;<br>e. QQ 客户端分享分两类: 1 好友、收藏、数据线(我的电脑)分享; 2 QQ 空间分享. 本地视频的分享只支持 QQ 空间分享.</p>
+<p>a. QQ 虽支持网页分享, 但是不允许带着网页的 <code>description</code> 字段, 且分享到 QQ 空间只支持通过文字分享, 这和 Android 表现不同;<br>b. Facebook 的网页分享支持 <strong>hashtag</strong>;<br>c. iOS 端分享文字到 QQ 客户端是可行的, 但是 Android 端不允许, 其实 QQ 的分享目地就是<strong>让用户自行输入有价值、有意义的文字信息</strong>;<br>d. Pinterest 和 Tumblr 虽支持图片分享, 但仅仅支持分享图片的 URL, 它会自行解析并显示;<br>e. QQ 客户端分享分两类: 1 好友、收藏、数据线(我的电脑)分享; 2 QQ 空间分享. 本地视频的分享只支持 QQ 空间分享.</p>
 <blockquote>
 <ol>
 <li>对比列表得知, 国内的平台分享内容是最丰富的, 但是存在一个主要的问题(主要是 QQ), iOS 和 Android 双端的接口以及实现的功能也并不统一(后面的部分会具体说); 微信双端当分享的图片过大的时候的表现也有不统一的时候, 其余都很完善; 新浪的表现是最统一的, 且没有过多限制; 国内的平台分享最让人头疼的就是官方的 Sample 很混乱, 但是在实践代码的时候还是要以官方为主.</li>
-<li>国外的文档和 Sample 很明了且注释详细, 但也存在双端不统一的情况, Twitter 的双端表现就不一样(后面细说), 但是国外的平台分享几乎没有回调, Facebook 的回调只有 Feed 形式的分享才有效, Instagram、Line、Google+这些是没有 SDK 的, 仅仅是通过打开Application URL scheme 来分享.</li>
+<li>国外的文档和 Sample 很明了且注释详细, 但也存在双端不统一的情况, Twitter 的双端表现就不一样(后面细说), 但是国外的平台分享几乎没有回调, Facebook 的回调只有 Feed 形式的分享才有效, Instagram、Line、Google+这些是没有 SDK 的, 仅仅是通过打开 Application URL scheme 来分享.</li>
 </ol>
 </blockquote>
-<h2 id="分享总体设计"><a href="#分享总体设计" class="headerlink" title="分享总体设计"></a>分享总体设计</h2><p>大概的分享逻辑如下:<br><img src="https://lh3.googleusercontent.com/-nkYbZ2cgYmc/W4UX1OlhWtI/AAAAAAAAAOs/1L_K_q1HlqgShbk-crxnCNfHRCEu6lDWwCHMYCw/I/iOS%2B" alt="iOS 分享逻辑"></p>
+<h2 id="分享总体设计"><a href="#分享总体设计" class="headerlink" title="分享总体设计"></a>分享总体设计</h2><p>大概的分享逻辑如下:<br><img src="https://lh3.googleusercontent.com/-nkYbZ2cgYmc/W4UX1OlhWtI/AAAAAAAAAOs/1L_K_q1HlqgShbk-crxnCNfHRCEu6lDWwCHMYCw/I/iOS%2B" alt=" 分享逻辑"></p>
 <p>iOS 的分享是参照各大平台的分享逻辑得到比较统一思路, 即: 先判断是否安装对应应用, 然后初始化 SDK 与官方平台连接, 然后包装分享参数进行分享, 最后处理分享回调.</p>
 <blockquote>
 <ol>
@@ -562,7 +562,7 @@
 <p>在项目级 <code>Framework</code> 目录下右键执行 <code>Add Files to &quot;name&quot;</code>.</p>
 </blockquote>
 <p>子平台分享完毕<strong>返回到本应用</strong>的接口再封装 Objective-C 版本用的是<strong>实例方法</strong>, Swift 版本使用的是<strong>类方法</strong>.</p>
-<h3 id="基类"><a href="#基类" class="headerlink" title="基类"></a>基类</h3><p>基类都是继承自<strong>RShare</strong>, 这个类中定义了分享 <strong>Mode(代码注释中有标明, iOS 中使用范围较小)</strong>、分享结果 <strong>ShareResult</strong> (成功、取消、失败)以及最重要的<strong>回调</strong>.</p>
+<h3 id="基类"><a href="#基类" class="headerlink" title="基类"></a>基类</h3><p>子平台 Manager 都是继承自<strong>RShare</strong>, 这个类中定义了分享 <strong>Mode(代码注释中有标明, iOS 中使用范围较小)</strong>、分享结果 <strong>ShareResult</strong> (成功、取消、失败)以及最重要的<strong>回调</strong>.</p>
 <p><strong>回调:</strong><br>Objective-C:</p>
 <figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="keyword">void</span> (^RShareCompletion)(RShareSDKPlatform platform, ShareResult result, <span class="built_in">NSString</span>* _Nullable errorInfo);</span><br></pre></td></tr></table></figure>
 <p>Swift:</p>
@@ -627,7 +627,7 @@
 <p>⚠️ 1. <code>fileName</code> 字段设置方式是: ‘文件名’+‘.扩展名’, 形如:HelloWorld.doc, 这样 QQ 系统内部能够解析并且可以友好的展示分享内容, 经测试大部分常规的文件都能友好的展示.<br>⚠️ 2. 文件分享<strong>只支持</strong> QQ 客户端数据线(我的电脑)分享, 并且 Android 端无法分享文件, 也或许其实是可以分享文件只不过本人技拙没发现实现方法罢.</p>
 </blockquote>
 <p>表现(以视频为例):<br><img src="https://lh3.googleusercontent.com/-xKnv6_7ebBg/W4UdbhyfQTI/AAAAAAAAAQA/ZZFvVKmYFvICLoQ5BlxSje1YPfZ7AEvrQCHMYCw/I/15354504763841.jpg" alt=""><br><img src="https://lh3.googleusercontent.com/-Pl9WwhypgYo/W4Udejynh2I/AAAAAAAAAQE/vYrYyzjFDHQaFZrB6qcmVF7ia9VoRATIwCHMYCw/I/15354504904821.jpg" alt=""></p>
-<p><strong>文字分享到 QQ 空间:</strong></p>
+<p><strong>分享文字到 QQ 空间:</strong></p>
 <p>Objective-C:</p>
 <figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[[RQqManager shared] shareTextToQZone:description completion: completion];</span><br></pre></td></tr></table></figure>
 <p>Swift:</p>
@@ -705,7 +705,7 @@
 <p>表现(分享到好友):</p>
 <p><img src="https://lh3.googleusercontent.com/-o2fUUxvNwcs/W4YI-snwrLI/AAAAAAAAAQs/mHN1KvfzSCIielykQq5yhdkFQTbMo_H5QCHMYCw/I/15355107755808.jpg" alt=""></p>
 <p><strong>图片分享:</strong></p>
-<p>Objective-C</p>
+<p>Objective-C:</p>
 <figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[[RWechatManager shared] shareImage:targetImage scene: scene completion: completion];</span><br></pre></td></tr></table></figure>
 <p>Swift:</p>
 <figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">RWechatManager</span>.shared.share(image: targetImage, scene: scene, completion: completion)</span><br></pre></td></tr></table></figure>
@@ -1191,6 +1191,22 @@
       
 
       
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/08/29/rshare-android-version/" rel="prev" title="「RSHARE」 一键分享 Android 版">
+                「RSHARE」 一键分享 Android 版 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
 
       
       
@@ -1250,7 +1266,7 @@
                 alt="" />
             
               <p class="site-author-name" itemprop="name"></p>
-              <p class="site-description motion-element" itemprop="description">曾經滄海難為水 除卻巫山不是雲</p>
+              <p class="site-description motion-element" itemprop="description">115 106 99</p>
           </div>
 
           
@@ -1260,7 +1276,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">1</span>
+                    <span class="site-state-item-count">2</span>
                     <span class="site-state-item-name">posts</span>
                   </a>
                 </div>
@@ -1291,9 +1307,7 @@
                     
                       
                     
-                      
-                    
-                    <span class="site-state-item-count">5</span>
+                    <span class="site-state-item-count">8</span>
                     <span class="site-state-item-name">tags</span>
                   
                 </div>

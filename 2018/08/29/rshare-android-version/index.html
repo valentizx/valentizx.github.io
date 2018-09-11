@@ -1,0 +1,1371 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=6.3.0" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.3.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=6.3.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=6.3.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.3.0" color="#222">
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '6.3.0',
+    sidebar: {"position":"right","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="因为公司的项目里集成了一键分享的这个模块, 而在我设计的时候发现国内的官方文档和提供的 Sample 有混乱和容易混淆的地方, 而且除了普通的网页、图片、文字分享到各大 Social 平台以外, 对于视频、文件和其他内容的分享 Demo 在百度或者 Google 几乎搜不到. 自己也是踩了很多坑才把很多问题解决. 测试设备Samsung S9 Plus, Android 8.0.0. 支持平台RS">
+<meta name="keywords" content="share,social,Android,Java,Kotlin">
+<meta property="og:type" content="article">
+<meta property="og:title" content="「RSHARE」 一键分享 Android 版">
+<meta property="og:url" content="http://yoursite.com/2018/08/29/rshare-android-version/index.html">
+<meta property="og:site_name" content="I&#39;M REXZX">
+<meta property="og:description" content="因为公司的项目里集成了一键分享的这个模块, 而在我设计的时候发现国内的官方文档和提供的 Sample 有混乱和容易混淆的地方, 而且除了普通的网页、图片、文字分享到各大 Social 平台以外, 对于视频、文件和其他内容的分享 Demo 在百度或者 Google 几乎搜不到. 自己也是踩了很多坑才把很多问题解决. 测试设备Samsung S9 Plus, Android 8.0.0. 支持平台RS">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="https://lh3.googleusercontent.com/-9k6SFlwycnU/W4dQ67__G3I/AAAAAAAAAUg/Qd5u_D4WwjodH_gUDzD5N1T7KR_fWP7qwCHMYCw/I/Android%2B">
+<meta property="og:image" content="https://lh3.googleusercontent.com/-MXlzlURYzn4/W4yX50h8eXI/AAAAAAAAAU4/6NxMqPrEnvsSscJwcEPxPN4sjYB2Z8XDgCHMYCw/I/15359405805597.jpg">
+<meta property="og:image" content="https://lh3.googleusercontent.com/-7DCJppBupJA/W4eaDI_LncI/AAAAAAAAAUs/hpVlStBvt_celCw2za386XN9rVRPD932ACHMYCw/I/Snip20180830_7.png">
+<meta property="og:image" content="https://lh3.googleusercontent.com/-lQNWh_xUCIM/W43gU-RtgNI/AAAAAAAAAVE/avOZBakVVpgtmw8RW4qf2ZDzmtpkC21PwCHMYCw/I/15360246543930.jpg">
+<meta property="og:image" content="https://lh3.googleusercontent.com/-aherZ9UNyxE/W43jH4GEkBI/AAAAAAAAAVQ/QaPWBeRGtHEW6C-IZ7KbubjKqqRSm3UCgCHMYCw/I/15360253735120.jpg">
+<meta property="og:image" content="https://lh3.googleusercontent.com/-D-jkZ9akfE8/W43mzu-YkvI/AAAAAAAAAVc/9qmI6Sc2HK8Uc2TaIZAvPdyLtF2z-jMuwCHMYCw/I/15360263169688.jpg">
+<meta property="og:image" content="https://lh3.googleusercontent.com/-vOtMU3GUtQs/W43poY1ypPI/AAAAAAAAAVo/HN7T-g7TL8IoRid3cHW9JC-XnmOX3oR6ACHMYCw/I/15360270395528.jpg">
+<meta property="og:image" content="https://lh3.googleusercontent.com/-jewSxMbq3kA/W43ra0e7vTI/AAAAAAAAAV0/WZshp4eAaM4RYNSJz1FtGBsbH-TjYNSmQCHMYCw/I/15360274983078.jpg">
+<meta property="og:image" content="https://lh3.googleusercontent.com/-6j1kjXWbnKo/W43ss4tVYpI/AAAAAAAAAWA/OTdMUq3hRZAK2kBIOT9WdMltMKQ_d_ySwCHMYCw/I/15360278242935.jpg">
+<meta property="og:image" content="https://lh3.googleusercontent.com/-zlfWRC10SJI/W44xTp6FUUI/AAAAAAAAAWM/j3UlQcde5LgRDxALeJUlOJqdBj2wVVyLwCHMYCw/I/15360453876894.jpg">
+<meta property="og:image" content="https://lh3.googleusercontent.com/-BFFGh29k4RY/W44y4BgsUMI/AAAAAAAAAWY/7lFoyibp1WUW-np_HEDCKo_GbH1p6SGjwCHMYCw/I/15360457905870.jpg">
+<meta property="og:image" content="https://lh3.googleusercontent.com/-7oN-sXKGMQ8/W440TO936mI/AAAAAAAAAWk/6vI9YPJVUWMcl9DpFXEW1PjP9VElZIvJgCHMYCw/I/15360461549519.jpg">
+<meta property="og:image" content="https://lh3.googleusercontent.com/-CcKR16KLjD4/W441by2jDAI/AAAAAAAAAWw/DFJRiBzve28k3tf6lwfdr5CshnZWiBejwCHMYCw/I/15360464461727.jpg">
+<meta property="og:image" content="https://lh3.googleusercontent.com/-OrqFKygZa6k/W45JKvdpI-I/AAAAAAAAAW8/d4Y4Z3t2LVMwQDs55fpwoOyUPfq23eouQCHMYCw/I/15360514953939.jpg">
+<meta property="og:image" content="https://lh3.googleusercontent.com/-_d5Fmi8rENk/W45JMexbPEI/AAAAAAAAAXA/NkL3Wlo_45wRAotYADgDMaK3-UplPvn2QCHMYCw/I/15360515040489.jpg">
+<meta property="og:image" content="https://lh3.googleusercontent.com/-GSsYGRe_qeg/W45RXUDPbhI/AAAAAAAAAXQ/Gz9oC33gt4YqU4S5WlFy42gZH8fUfh-zQCHMYCw/I/15360535953706.jpg">
+<meta property="og:image" content="https://lh3.googleusercontent.com/-N5QLcImNntc/W45TR4j7hZI/AAAAAAAAAXo/aKyWZLFkzOYBhhzW2kDgbHgFPJUy5Qz2ACHMYCw/I/15360540872534.jpg">
+<meta property="og:image" content="https://lh3.googleusercontent.com/-4RLl_LN0sac/W45TD5-fRRI/AAAAAAAAAXk/zhXMgiy7LOkW4UlZG2Da699UK2BTq6QTwCHMYCw/I/15360540282306.jpg">
+<meta property="og:image" content="https://lh3.googleusercontent.com/-YVT2ayySR6I/W5chW1iHrMI/AAAAAAAAAX4/GMCxl-itNoEk_jJa89nplur8JFkzvedFgCHMYCw/I/15366311285837.jpg">
+<meta property="og:image" content="https://lh3.googleusercontent.com/-6u1wLkwp9gI/W5chbBWK83I/AAAAAAAAAX8/P95diV00laEFaTIzr1aUk8U99sQ5UTreACHMYCw/I/15366311481945.jpg">
+<meta property="og:image" content="https://lh3.googleusercontent.com/-vbuWfq1M1n8/W5coCWrME6I/AAAAAAAAAYM/MFi4hsw7h-kFGdA3qhpjNn9vGp0NMPFVACHMYCw/I/15366328390733.jpg">
+<meta property="og:image" content="https://lh3.googleusercontent.com/-Xqf4psPm0SM/W5cu2VZiQyI/AAAAAAAAAYY/v3kmkYC1C0QYCm83zH9_CyVwVdtVtdYmwCHMYCw/I/15366345820939.jpg">
+<meta property="og:image" content="https://lh3.googleusercontent.com/-YXURoOGNuJc/W5cxUoJ8M9I/AAAAAAAAAYk/_T40tCXIkz0tlRDreQ-sEYG5xJMpmRZywCHMYCw/I/15366352153227.jpg">
+<meta property="og:image" content="https://lh3.googleusercontent.com/-yFCTb2hHMAU/W5cyjMJqnWI/AAAAAAAAAYw/JxFTudmZYYA2IEDRjo7JUSbPB_xT1vP5wCHMYCw/I/15366355297333.jpg">
+<meta property="og:image" content="https://lh3.googleusercontent.com/-abqHI4K0exU/W5czPT4tQXI/AAAAAAAAAY4/_lWw41A4zig5LnA-ocY1SnT6x21V7ptmgCHMYCw/I/15366357079456.jpg">
+<meta property="og:image" content="https://lh3.googleusercontent.com/-nXN8PeYeBI8/W5druQz7D7I/AAAAAAAAAZg/tqdkoNdlZ_gYq5pb2VTS6qe7nB8go0slwCHMYCw/I/15366501677018.jpg">
+<meta property="og:image" content="https://lh3.googleusercontent.com/-53x4U8Iht94/W5drxU3QLhI/AAAAAAAAAZk/zebiYGtry1McCJ6P35Es-niqeCMyzfh-ACHMYCw/I/15366501815031.jpg">
+<meta property="og:image" content="https://lh3.googleusercontent.com/-cuff8oox2QA/W5dut_wRKII/AAAAAAAAAZ0/b0KlLvRRbicTVejB97QaI5DSn-5yWABXQCHMYCw/I/15366509337750.jpg">
+<meta property="og:image" content="https://lh3.googleusercontent.com/-MOOQGS65kE4/W5dvOW95NhI/AAAAAAAAAZ8/xdpBtn3Lr187Fm6zjHKoCfl-fsj64uDMwCHMYCw/I/15366510641749.jpg">
+<meta property="og:image" content="https://lh3.googleusercontent.com/-IQc0WbK_d2Q/W5dyAGaQ1AI/AAAAAAAAAaI/M1V76h1-NFg-Kh84iCjFOQ50BI9AYCT7QCHMYCw/I/15366517749056.jpg">
+<meta property="og:image" content="https://lh3.googleusercontent.com/-ps4ZtMCw-R0/W5d-SMQEz0I/AAAAAAAAAaY/BgkApt-Nzgo3LBvYIBACO0uYO2EgR-thQCHMYCw/I/15366549202862.jpg">
+<meta property="og:image" content="https://lh3.googleusercontent.com/-WIxiBag-ZsE/W5d-I4YUj9I/AAAAAAAAAaU/-4XSuRZpELsRUzbNFssC7AgHAUkD9hgNgCHMYCw/I/15366548801345.jpg">
+<meta property="og:image" content="https://lh3.googleusercontent.com/-b2WSm80d_Us/W5eC13XcH1I/AAAAAAAAAak/3CsSs5ULiQ8Ng_-6zU3vyVrmCyzbEw2VgCHMYCw/I/15366560853962.jpg">
+<meta property="og:image" content="https://lh3.googleusercontent.com/-1yxGGEo9QuI/W5eHx0NVl3I/AAAAAAAAAaw/og3n-vItwB8ruMgT6rfqD5OA46CS3QjoQCHMYCw/I/15366573475615.jpg">
+<meta property="og:image" content="https://lh3.googleusercontent.com/-O0rTTel0iHc/W5eJdrZJVII/AAAAAAAAAbI/JdickRAMap45EJT6Lrmizg1X6z9mJqtOACHMYCw/I/Android%2B">
+<meta property="og:updated_time" content="2018-09-11T09:39:39.265Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="「RSHARE」 一键分享 Android 版">
+<meta name="twitter:description" content="因为公司的项目里集成了一键分享的这个模块, 而在我设计的时候发现国内的官方文档和提供的 Sample 有混乱和容易混淆的地方, 而且除了普通的网页、图片、文字分享到各大 Social 平台以外, 对于视频、文件和其他内容的分享 Demo 在百度或者 Google 几乎搜不到. 自己也是踩了很多坑才把很多问题解决. 测试设备Samsung S9 Plus, Android 8.0.0. 支持平台RS">
+<meta name="twitter:image" content="https://lh3.googleusercontent.com/-9k6SFlwycnU/W4dQ67__G3I/AAAAAAAAAUg/Qd5u_D4WwjodH_gUDzD5N1T7KR_fWP7qwCHMYCw/I/Android%2B">
+
+
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/08/29/rshare-android-version/"/>
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>「RSHARE」 一键分享 Android 版 | I'M REXZX</title>
+  
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">I'M REXZX</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+    <a href="/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-home"></i> <br />Home</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+    <a href="/about/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-user"></i> <br />About</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+    <a href="/tags/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />Tags</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+    <a href="/categories/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-th"></i> <br />Categories</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />Archives</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-commonweal">
+    <a href="/404/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />Commonweal 404</a>
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/08/29/rshare-android-version/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="115 106 99">
+      <meta itemprop="image" content="/images/logo.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="I'M REXZX">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">「RSHARE」 一键分享 Android 版
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2018-08-29 17:03:59" itemprop="dateCreated datePublished" datetime="2018-08-29T17:03:59+08:00">2018-08-29</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Edited on</span>
+                
+                <time title="Modified: 2018-09-11 17:39:39" itemprop="dateModified" datetime="2018-09-11T17:39:39+08:00">2018-09-11</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>因为公司的项目里集成了一键分享的这个模块, 而在我设计的时候发现国内的官方文档和提供的 Sample 有混乱和容易混淆的地方, 而且除了普通的网页、图片、文字分享到各大 Social 平台以外, 对于视频、文件和其他内容的分享 Demo 在百度或者 Google 几乎搜不到. 自己也是踩了很多坑才把很多问题解决.</p>
+<h2 id="测试设备"><a href="#测试设备" class="headerlink" title="测试设备"></a>测试设备</h2><p>Samsung S9 Plus, Android 8.0.0.</p>
+<h2 id="支持平台"><a href="#支持平台" class="headerlink" title="支持平台"></a>支持平台</h2><p><strong>RSHARE</strong> 这个 Demo 中支持: 微信、QQ、新浪微博、Facebook、GooglePlus(Google +)、Twitter、WhatsApp、Line、Tumblr、Instagram、Pinterest 11 个 Social 平台.</p>
+<h3 id="平台差异"><a href="#平台差异" class="headerlink" title="平台差异"></a>平台差异</h3><p>主要罗列了常用的 5 个分享内容的对比菜单(网页、文字、图片、本地视频、文件).<br><strong>注意菜单内字母以及菜单后面对应字母的注释⚠️</strong></p>
+<table>
+<thead>
+<tr>
+<th>❤️</th>
+<th>QQ</th>
+<th>微信</th>
+<th>微博</th>
+<th>Facebook</th>
+<th>Twitter</th>
+<th>Instagram</th>
+<th>WhatsApp</th>
+<th>Line</th>
+<th>Tumblr</th>
+<th>Pinterest</th>
+<th>Google+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>网页</td>
+<td>✓a</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓b</td>
+<td>✓</td>
+<td>✗</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✗</td>
+<td>✓</td>
+</tr>
+<tr>
+<td>文字</td>
+<td>✗c</td>
+<td>✓</td>
+<td>✓</td>
+<td>✗</td>
+<td>✓</td>
+<td>✗</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✗</td>
+<td>✗</td>
+</tr>
+<tr>
+<td>图片</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓d</td>
+<td>✓d</td>
+<td>✗</td>
+</tr>
+<tr>
+<td>视频</td>
+<td>?e</td>
+<td>✗</td>
+<td>✓</td>
+<td>✓</td>
+<td>✗</td>
+<td>✓</td>
+<td>✗</td>
+<td>✗</td>
+<td>✗</td>
+<td>✗</td>
+<td>✗</td>
+</tr>
+<tr>
+<td>文件</td>
+<td>✗</td>
+<td>✓</td>
+<td>✗</td>
+<td>✗</td>
+<td>✗</td>
+<td>✗</td>
+<td>✗</td>
+<td>✗</td>
+<td>✗</td>
+<td>✗</td>
+<td>✗</td>
+</tr>
+</tbody>
+</table>
+<p>a. QQ 虽支持网页分享, 但是不允许带着网页的 <code>description</code> 字段, 这和 iOS 表现不同;<br>b. Facebook 的网页分享支持 <strong>hashtag</strong>;<br>c. iOS 端分享文字到 QQ 客户端是可行的, 但是 Android 端不允许, 其实 QQ 的分享目地就是<strong>让用户自行输入有价值、有意义的文字信息</strong>;<br>d. Pinterest 和 Tumblr 虽支持图片分享, 但仅仅支持分享图片的 URL, 它会自行解析并显示;<br>e. 只支持分享到 QQ 空间.</p>
+<p>⚠️ 1. 对于 <strong>QQ 分享 Android 端</strong>, <strong>不支持通过 SDK 直接分享到数据线(我的电脑)和我的收藏.</strong><br>⚠️ 2. 对于 <strong>WhatsApp 分享 Android 端</strong>, <strong>支持图文并存.</strong> </p>
+<blockquote>
+<ol>
+<li>对比列表得知, 国内的平台分享内容是最丰富的, 但是存在一个主要的问题(主要是 QQ), iOS 和 Android 双端的接口以及实现的功能也并不统一(后面的部分会具体说); 微信双端当分享的图片过大的时候的表现也有不统一的时候, 其余都很完善; 新浪的表现是最统一的, 且没有过多限制; 国内的平台分享最让人头疼的就是官方的 Sample 很混乱, 但是在实践代码的时候还是要以官方为主.</li>
+<li>国外的文档和 Sample 很明了且注释详细, 但也存在双端不统一的情况, Twitter 的双端表现就不一样(后面细说), 但是国外的平台分享几乎没有回调, Facebook 的回调只有 Feed 形式的分享才有效, Instagram、Line、Google+这些是没有 SDK 的, 仅仅是通过打开 Application URL scheme 来分享.</li>
+</ol>
+</blockquote>
+<h2 id="分享总体设计"><a href="#分享总体设计" class="headerlink" title="分享总体设计"></a>分享总体设计</h2><p>大概的分享逻辑如下:</p>
+<p><img src="https://lh3.googleusercontent.com/-9k6SFlwycnU/W4dQ67__G3I/AAAAAAAAAUg/Qd5u_D4WwjodH_gUDzD5N1T7KR_fWP7qwCHMYCw/I/Android%2B" alt="Android 分享逻辑"></p>
+<p>Android 的分享是参照各大平台的分享逻辑得到比较统一思路, 即: 先判断是否安装对应应用, 然后初始化 SDK 与官方平台连接, 然后包装分享参数进行分享, 最后处理分享回调, 只不过与 iOS 端不同的是, 初始化 SDK 的工作是在分享逻辑内完成的, 并不对外开放(灵感来自 ShareSDK 的 Android 版), <strong><code>AppID</code>、<code>Key</code> 以及 <code>Secret</code> 信息在 <code>RShare.xml</code> 文件中配置.</strong></p>
+<blockquote>
+<ol>
+<li>有些平台不存在 SDK, 所以直接判断是否平台安装然后包装分享参数进行分享;</li>
+<li>Tumblr 比较特殊, 有 SDK 但是不需要判断应用是否安装就可以分享, Twitter 也如此, 具体情况在 Twitter 的部分说明;</li>
+<li>SDK 的初始化, 统一函数名字为 <code>sdkInitialize</code>(<strong>但并未对外开放</strong>), <code>Key</code>、<code>Secret</code> 以及 <code>AppID</code> 等信息在注释中有标明.</li>
+</ol>
+</blockquote>
+<h2 id="详细逻辑"><a href="#详细逻辑" class="headerlink" title="详细逻辑"></a>详细逻辑</h2><p><strong>关于各个平台的开发者主页和文档信息以这里为主, 代码注释的可能不准确.</strong></p>
+<p>平台分享都是通过<strong>单例模式</strong>实现.</p>
+<h3 id="基类"><a href="#基类" class="headerlink" title="基类"></a>基类</h3><p>子平台 Manager 都是继承自 <strong>RShare</strong>, 这个类中定义了分享 <strong>Mode (代码注释中有标明)</strong>、分享内容类型枚举(内部使用) <strong>ShareContentType</strong> 以及<strong>分享回调</strong>.<br>Java 中创建监听器来监听分享结果:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">RShareListener</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title">onComplete</span><span class="params">(RSharePlatform.Platform platform)</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title">onFail</span><span class="params">(RSharePlatform.Platform platform, String errorInfo)</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title">onCancel</span><span class="params">(RSharePlatform.Platform platform)</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Kotlin 中通过 callback 来监听分享结果:</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">typealias RShareCallback = ((platform : RSharePlatform, state : ShareState, errorInfo : String?) -&gt;</span><br><span class="line"><span class="built_in">Unit</span>)</span><br></pre></td></tr></table></figure>
+<p><strong>Mode(仅对 Facebook、Twitter、Instagram 有效, iOS 亦然):</strong></p>
+<p>Java:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">enum</span> Mode &#123;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 默认的分享方式</span></span><br><span class="line"><span class="comment">     * Facebook: 优先客户端分享, 客户端无法分享会转由网页形式分享.</span></span><br><span class="line"><span class="comment">     * Twitter: 优先应用内分享.</span></span><br><span class="line"><span class="comment">     * Instagram: 默认客户端分享.</span></span><br><span class="line"><span class="comment">     * */</span></span><br><span class="line">    Automatic,</span><br><span class="line">     <span class="comment">/**</span></span><br><span class="line"><span class="comment">      * 原生应用分享.</span></span><br><span class="line"><span class="comment">      * Facebook、Twitter: 无回调.</span></span><br><span class="line"><span class="comment">      ** */</span></span><br><span class="line">    Native,</span><br><span class="line">     <span class="comment">/**</span></span><br><span class="line"><span class="comment">      * 网页分享, 有回调, 仅对Facebook生效.</span></span><br><span class="line"><span class="comment">       * */</span></span><br><span class="line">    Web,</span><br><span class="line">     <span class="comment">/**</span></span><br><span class="line"><span class="comment">      * 反馈网页形式分享, 有回调, 仅对Facebook生效.</span></span><br><span class="line"><span class="comment">      * */</span></span><br><span class="line">    Feed,</span><br><span class="line">     <span class="comment">/**</span></span><br><span class="line"><span class="comment">      * 调用 Android 系统分享.</span></span><br><span class="line"><span class="comment">      * */</span></span><br><span class="line">    System,</span><br><span class="line">        </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>ShareContentType:</p>
+<p>Java:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">enum</span> ShareContentType &#123;</span><br><span class="line">    Webpage,</span><br><span class="line">    Photo,</span><br><span class="line">    Video,</span><br><span class="line">    Text,</span><br><span class="line">    Media,</span><br><span class="line">    File,</span><br><span class="line">    Music,</span><br><span class="line">    App</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="配置文件"><a href="#配置文件" class="headerlink" title="配置文件"></a>配置文件</h3><p>在 <code>src/main</code> 目录下新建资源文件夹 <code>assets</code>, 并创建 <strong>RShare.xml</strong> 配置文件, 文件内容如下:</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">Platform</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">Twitter</span></span></span><br><span class="line"><span class="tag">        <span class="attr">ConsumerKey</span>= <span class="string">yourKey</span></span></span><br><span class="line"><span class="tag">        <span class="attr">ConsumerSecret</span>= <span class="string">yourAppSecret</span></span></span><br><span class="line"><span class="tag">    /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">Facebook</span></span></span><br><span class="line"><span class="tag">        <span class="attr">AppID</span>= <span class="string">yourAppID</span></span></span><br><span class="line"><span class="tag">        <span class="attr">AppSecret</span>= <span class="string">yourAppSecret</span></span></span><br><span class="line"><span class="tag">    /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">WeChat</span></span></span><br><span class="line"><span class="tag">        <span class="attr">AppId</span>= <span class="string">yourAppID</span></span></span><br><span class="line"><span class="tag">        <span class="attr">AppSecret</span>= <span class="string">yourAppSecret</span></span></span><br><span class="line"><span class="tag">    /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">Sina</span></span></span><br><span class="line"><span class="tag">        <span class="attr">AppKey</span>= <span class="string">yourAppKey</span></span></span><br><span class="line"><span class="tag">        <span class="attr">AppSecret</span>= <span class="string">yourAppSecret</span></span></span><br><span class="line"><span class="tag">        <span class="attr">RedirectUrl</span>= <span class="string">yourRedirectUrl</span></span></span><br><span class="line"><span class="tag">        <span class="attr">Scope</span>=<span class="string">"all"</span></span></span><br><span class="line"><span class="tag">    /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">QQ</span></span></span><br><span class="line"><span class="tag">        <span class="attr">AppID</span>= <span class="string">yourAppID</span></span></span><br><span class="line"><span class="tag">        <span class="attr">AppSecret</span>= <span class="string">yourAppSecret</span></span></span><br><span class="line"><span class="tag">        /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">Tumblr</span></span></span><br><span class="line"><span class="tag">        <span class="attr">ConsumerKey</span>= <span class="string">yourKey</span></span></span><br><span class="line"><span class="tag">        <span class="attr">ConsumerSecret</span>= <span class="string">yourAppSecret</span>        </span></span><br><span class="line"><span class="tag">        <span class="attr">FlurryKey</span>= <span class="string">yourFlurryKey</span></span></span><br><span class="line"><span class="tag">    /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">Pinterest</span></span></span><br><span class="line"><span class="tag">        <span class="attr">AppId</span>= <span class="string">yourAppID</span></span></span><br><span class="line"><span class="tag">        <span class="attr">AppSecret</span>= <span class="string">yourAppSecret</span></span></span><br><span class="line"><span class="tag">    /&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="name">Platform</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p><strong>关于哪些字段不需要, 在后面会讲明.</strong></p>
+<p>工具类 <code>RPlatformHelper</code> 中封装了解析 <strong>RShare.xml</strong> 并获取各个平台 <code>Id</code>、<code>key</code> 以及 <code>secret</code> 信息的方法.</p>
+<h3 id="图片的处理"><a href="#图片的处理" class="headerlink" title="图片的处理"></a>图片的处理</h3><p>与 iOS 不同的是, Android 端平台分享图片的通过<strong>图片的 Url</strong> 来进行参数的包装到分享. 在此, 我封装的接口传图片参数是以 Bitmap 形式传值的, 然后保存图片数据到一个文件夹, 获取数据的 Url 包装到平台 SDK 或者包装到 Intent 中分享.</p>
+<p><strong>⚠️ 假如这个图片是网络请求下来的, 那么完整的分享步骤就是:</strong><br><img src="https://lh3.googleusercontent.com/-MXlzlURYzn4/W4yX50h8eXI/AAAAAAAAAU4/6NxMqPrEnvsSscJwcEPxPN4sjYB2Z8XDgCHMYCw/I/15359405805597.jpg" alt=""></p>
+<p><strong>多出一步再保存, 造成不必要的开销.</strong></p>
+<p>Java 版本中, 保存图片的接口封装到工具类 <code>RFileHelper</code> 中; Kotlin 版本中, 用<strong>顶层函数</strong>替代了工具类, 整合到了 <code>RFileHelper.kt</code> 文件中:</p>
+<p>保存图片:</p>
+<p>Java:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">RFileHelper.saveBitmapToExternalSharePath(context, targetImage);</span><br></pre></td></tr></table></figure>
+<p>Kotlin:</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">saveBitmapToExternalSharePath(context, targetImage)</span><br></pre></td></tr></table></figure>
+<p>删除图片:</p>
+<p>Java:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">RFileHelper.deleteExternalShareDirectory(context);</span><br></pre></td></tr></table></figure>
+<p>Kotlin:</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">deleteExternalShareDir(context)</span><br></pre></td></tr></table></figure>
+<h4 id="文件共享"><a href="#文件共享" class="headerlink" title="文件共享"></a>文件共享</h4><p>从 Android 7.0 开始, 其他应用使用本应用的某文件 <code>file://</code> 格式的 <strong>URI</strong> 会抛 <strong>FileUriExposedException</strong> 的异常(新浪 SDK 就存在这个问题), 所以在 <code>RFileHelper</code> 中封装好了对应方法:</p>
+<p>Java:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">RFileHelper.detectFileUriExposure();</span><br><span class="line">``` </span><br><span class="line"></span><br><span class="line">Kotlin:</span><br><span class="line"></span><br><span class="line">```kotlin</span><br><span class="line">detectFileUriExposure()</span><br></pre></td></tr></table></figure>
+<h3 id="QQ"><a href="#QQ" class="headerlink" title="QQ"></a>QQ</h3><h4 id="准备"><a href="#准备" class="headerlink" title="准备"></a>准备</h4><p>分享需要注册平台, <a href="http://open.qq.com/" target="_blank" rel="noopener">腾讯开发者主页</a>, <a href="http://wiki.open.qq.com/wiki/mobile/SDK%E4%B8%8B%E8%BD%BD" target="_blank" rel="noopener">SDK 下载</a>, QQ SDK 目前<strong>不支持 compile 集成</strong>, Android API 调用说明<a href="http://wiki.open.qq.com/wiki/mobile/API%E8%B0%83%E7%94%A8%E8%AF%B4%E6%98%8E" target="_blank" rel="noopener">文档</a>.</p>
+<h4 id="集成"><a href="#集成" class="headerlink" title="集成"></a>集成</h4><p>a. 手动添加 SDK 到 <code>libs</code> 文件夹, 并:</p>
+<p><img src="https://lh3.googleusercontent.com/-7DCJppBupJA/W4eaDI_LncI/AAAAAAAAAUs/hpVlStBvt_celCw2za386XN9rVRPD932ACHMYCw/I/Snip20180830_7.png" alt="Snip20180830_7"></p>
+<p>b. 在 <strong>AndroidManifest.xml</strong> 的 <code>&lt;application&gt;</code> 节点下增加:</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">activity</span></span></span><br><span class="line"><span class="tag">       <span class="attr">android:name</span>=<span class="string">"com.tencent.tauth.AuthActivity"</span></span></span><br><span class="line"><span class="tag">       <span class="attr">android:noHistory</span>=<span class="string">"true"</span></span></span><br><span class="line"><span class="tag">       <span class="attr">android:launchMode</span>=<span class="string">"singleTask"</span> &gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">intent-filter</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">action</span> <span class="attr">android:name</span>=<span class="string">"android.intent.action.VIEW"</span> /&gt;</span></span><br><span class="line">       	<span class="tag">&lt;<span class="name">category</span> <span class="attr">android:name</span>=<span class="string">"android.intent.category.DEFAULT"</span> /&gt;</span></span><br><span class="line">       	<span class="tag">&lt;<span class="name">category</span> <span class="attr">android:name</span>=<span class="string">"android.intent.category.BROWSABLE"</span> /&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">data</span> <span class="attr">android:scheme</span>=<span class="string">"tencentYOURAPPID"</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">intent-filter</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">activity</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>c. 添加以下权限:</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">uses-permission</span> <span class="attr">android:name</span>=<span class="string">"android.permission.INTERNET"</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">uses-permission</span> <span class="attr">android:name</span>=<span class="string">"android.permission.WRITE_EXTERNAL_STORAGE"</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">uses-permission</span> <span class="attr">android:name</span>=<span class="string">"android.permission.READ_EXTERNAL_STORAGE"</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">uses-permission</span> <span class="attr">android:name</span>=<span class="string">"android.permission.READ_PHONE_STATE"</span>/&gt;</span></span><br></pre></td></tr></table></figure>
+<h4 id="接口及内部实现"><a href="#接口及内部实现" class="headerlink" title="接口及内部实现"></a>接口及内部实现</h4><p><strong>a. 内部初始化 SDK</strong></p>
+<p>Java:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> Tencent mTencent;</span><br><span class="line">mTencent = Tencent.createInstance(appId, context);</span><br></pre></td></tr></table></figure>
+<p>Kotlin:</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">lateinit</span> <span class="keyword">var</span> mTencent : Tencent</span><br><span class="line">mTencent = Tencent.createInstance(appId, context)</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>仅做<em>分享</em>功能的话, <figure class="highlight plain"><figcaption><span>字段无用.</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">**b. 分享**</span><br><span class="line"></span><br><span class="line">QQ Android SDK 分享是通过 **Bundle** 进行数据包装传输, 在这里分享音乐、网页、应用等等的键值对都封装在 ``QQShare.class`` 中, 很容易混淆和误会, 完善内容分享的时候**一定要参照官方的示例程序!**</span><br><span class="line"></span><br><span class="line">QQ 客户端和 QQ 空间的分享模型都封装在 ``RQqHelper`` 中, 但是分享启动的 Activity 将 QQ 客户端和 QQ 空间的分开, 分别是 ``RQqActivity`` 和 ``RQZoneActivity`` 在分享 Activity 中实现接口 ``IUiListener`` 用来监听分享结果.</span><br><span class="line"></span><br><span class="line">另, Android 端**不支持直接打开‘我的收藏’和‘数据线(我的电脑)’分享**, 需自行选择, 并且**不支持纯文字分享**.</span><br><span class="line"></span><br><span class="line">⚠️最后, **QQ 分享一定要在主线程里完成!!!** 获取 ``mainHandler`` 已封装到了 ``RThreadManager`` 中(写法有误或者写法有不足请严厉指出):</span><br><span class="line"></span><br><span class="line">Java:</span><br><span class="line"></span><br><span class="line">```java</span><br><span class="line">内部:</span><br><span class="line">private static Object mMainHandlerLock = new Object();</span><br><span class="line">public static Handler getMainHandler() &#123;</span><br><span class="line">    if (mManinHandler == null) &#123;</span><br><span class="line">        synchronized (mMainHandlerLock) &#123;</span><br><span class="line">            if (mManinHandler == null) &#123;</span><br><span class="line">                mManinHandler = new Handler(Looper.getMainLooper());</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    return mManinHandler;</span><br><span class="line">&#125;</span><br><span class="line">调用:</span><br><span class="line">RThreadManager.getMainHandler().post(new Runnable() &#123;</span><br><span class="line">    @Override</span><br><span class="line">    public void run() &#123;</span><br><span class="line">        /// ...</span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<p>Kotlin:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">内部:</span><br><span class="line">private var mMainHandlerLock = Any()</span><br><span class="line">internal val mainHandler : Handler = Handler()</span><br><span class="line">    get() &#123;</span><br><span class="line">        if (field == null) &#123;</span><br><span class="line">            synchronized(mMainHandlerLock) &#123;</span><br><span class="line">                if (field == null) &#123;</span><br><span class="line">                    field = Handler(Looper.getMainLooper())</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        return field</span><br><span class="line">    &#125;</span><br><span class="line">调用:</span><br><span class="line">mainHandler.post(</span><br><span class="line">    Runnable &#123;</span><br><span class="line">        kotlin.run &#123;</span><br><span class="line">            /// ...</span><br><span class="line">       &#125;</span><br><span class="line"> )</span><br></pre></td></tr></table></figure>
+<p><strong>网页分享:</strong></p>
+<p>Java:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">RQqManager.getInstance().shareWebpage(context, webapgeUrl, title, description, thumbImage, listener);</span><br></pre></td></tr></table></figure>
+<p>Kotlin:</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">RQqManager.instance.shareWebpage(context, webpageUrl, title, description, thumbImageUrl, callback)</span><br></pre></td></tr></table></figure>
+<p>表现:<br><img src="https://lh3.googleusercontent.com/-lQNWh_xUCIM/W43gU-RtgNI/AAAAAAAAAVE/avOZBakVVpgtmw8RW4qf2ZDzmtpkC21PwCHMYCw/I/15360246543930.jpg" alt=""></p>
+<p><strong>图片分享:</strong></p>
+<p>Java:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">RQqManager.getInstance().shareImage( context, targetImage, listener);</span><br></pre></td></tr></table></figure>
+<p>Kotlin:</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">RQqManager.instance.shareImage(context, targetImage, callback)</span><br></pre></td></tr></table></figure>
+<p>表现:<br><img src="https://lh3.googleusercontent.com/-aherZ9UNyxE/W43jH4GEkBI/AAAAAAAAAVQ/QaPWBeRGtHEW6C-IZ7KbubjKqqRSm3UCgCHMYCw/I/15360253735120.jpg" alt=""></p>
+<p><strong>音频链分享:</strong></p>
+<p>大致和网页的分享相同, 但是多了一个 <code>audioStreamUrl</code> 的字段.</p>
+<p>Java:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">RQqManager.getInstance().shareMusic(context, audioStreamUrl, musicWebapgeUrl, title, description, thumbImage, listener);</span><br></pre></td></tr></table></figure>
+<p>Kotlin:</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">RQqManager.instance.shareMusic(context, audioStreamUrl, musicWebpageUrl, title, description, thumbImageUrl, callback)</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>⚠️ 1. 在自定义 Bundle 包装分享音频参数的时候, <code>QQShare.SHARE_TO_QQ_TARGET_URL</code> 设置音频网页链接, <code>QQShare.SHARE_TO_QQ_AUDIO_URL</code> 设置音频流链.<br>⚠️ 2. <code>audioStreamUrl</code> 请设置音频的音频流链接, 不要把音乐平台分享的音乐网链直接赋值在该字段上, 否则点击播放按钮是无法播放的, 音乐网链是放在 <code>webpageUrl</code> 字段上的.</p>
+</blockquote>
+<p>表现:<br><img src="https://lh3.googleusercontent.com/-D-jkZ9akfE8/W43mzu-YkvI/AAAAAAAAAVc/9qmI6Sc2HK8Uc2TaIZAvPdyLtF2z-jMuwCHMYCw/I/15360263169688.jpg" alt=""></p>
+<p><strong>应用分享:</strong></p>
+<p>Java:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">RQqManager.getInstance().shareApp(context, appUrl, title, description, thumbImage, listener);</span><br></pre></td></tr></table></figure>
+<p>Kotlin:</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">RQqManager.instance.shareApp(context, appUrl, title, description, thumbImageUrl, callback)</span><br></pre></td></tr></table></figure>
+<p>点击消息对话框会自动跳转到「应用宝」对应 App 主页.</p>
+<p><strong>分享网页到空间:</strong></p>
+<p>Java:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">RQqManager.getInstance().shareWebpageToZone(context, webapgeUrl, title, description, imageUrlList, listener);</span><br></pre></td></tr></table></figure>
+<p>Kotlin:</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">RQqManager.instance.shareWebpageToZone(context, webpageUrl, title, description, imageUrlList, callback)</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>⚠️ 1. 这里的缩略图数组里面是<strong>图片的网络链接</strong>.<br>⚠️ 2. 缩略图图片是以数组包装的, 但是仅仅会显示第一张, 也就是说目前的 SDK (3.3.3 版本) 是不具备网络多图分享的, 但腾讯已说明多网络图后面会完善和补全.</p>
+</blockquote>
+<p>表现:</p>
+<p><img src="https://lh3.googleusercontent.com/-vOtMU3GUtQs/W43poY1ypPI/AAAAAAAAAVo/HN7T-g7TL8IoRid3cHW9JC-XnmOX3oR6ACHMYCw/I/15360270395528.jpg" alt=""></p>
+<p><strong>分享图片到空间:</strong></p>
+<p>Java:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">RQqManager.getInstance().publishImagesToZone(context, targetImages, description, listener);</span><br></pre></td></tr></table></figure>
+<p>Kotlin:</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">RQqManager.instance.publishImagesToZone(context, targetImages, description, callback)</span><br></pre></td></tr></table></figure>
+<p><code>description</code> 字段实际是失效的.</p>
+<p>表现:</p>
+<p><img src="https://lh3.googleusercontent.com/-jewSxMbq3kA/W43ra0e7vTI/AAAAAAAAAV0/WZshp4eAaM4RYNSJz1FtGBsbH-TjYNSmQCHMYCw/I/15360274983078.jpg" alt=""></p>
+<p><strong>分享本地视频到空间:</strong></p>
+<p>Java:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">RQqManager.getInstance().publishVideoToZone(context, localVideoUrl, description, listener);</span><br></pre></td></tr></table></figure>
+<p>Kotlin:</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">RQqManager.instance.publishVideoToZone(context, localVideoUrl, description, callback)</span><br></pre></td></tr></table></figure>
+<p>表现:</p>
+<p><img src="https://lh3.googleusercontent.com/-6j1kjXWbnKo/W43ss4tVYpI/AAAAAAAAAWA/OTdMUq3hRZAK2kBIOT9WdMltMKQ_d_ySwCHMYCw/I/15360278242935.jpg" alt=""></p>
+<h3 id="微信"><a href="#微信" class="headerlink" title="微信"></a>微信</h3><h4 id="准备-1"><a href="#准备-1" class="headerlink" title="准备"></a>准备</h4><p>分享需要注册平台, <a href="https://open.weixin.qq.com/" target="_blank" rel="noopener">微信开放平台</a>, <a href="https://open.weixin.qq.com/cgi-bin/showdocument?action=dir_list&amp;t=resource/res_list&amp;verify=1&amp;id=open1419319167&amp;token=&amp;lang=zh_CN" target="_blank" rel="noopener">SDK 下载</a>, 微信 SDK <strong>支持 compile 集成</strong>, <a href="https://open.weixin.qq.com/cgi-bin/showdocument?action=dir_list&amp;t=resource/res_list&amp;verify=1&amp;id=open1419317340&amp;token=&amp;lang=zh_CN" target="_blank" rel="noopener">分享 &amp; 收藏 API 调用说明</a>.</p>
+<h4 id="集成-1"><a href="#集成-1" class="headerlink" title="集成"></a>集成</h4><p>a.<br>在 <strong>Application 级 <code>build.gradle</code> 中配置:</strong></p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">dependencies &#123;</span><br><span class="line">    compile 'com.tencent.mm.opensdk:wechat-sdk-android-with-mta:+'</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>或者</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">dependencies &#123;</span><br><span class="line">    compile 'com.tencent.mm.opensdk:wechat-sdk-android-without-mta:+'</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>前者包括统计功能.</p>
+<p>b. 添加以下权限:</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">uses-permission</span> <span class="attr">android:name</span>=<span class="string">"android.permission.INTERNET"</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">uses-permission</span> <span class="attr">android:name</span>=<span class="string">"android.permission.ACCESS_NETWORK_STATE"</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">uses-permission</span> <span class="attr">android:name</span>=<span class="string">"android.permission.ACCESS_WIFI_STATE"</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">uses-permission</span> <span class="attr">android:name</span>=<span class="string">"android.permission.READ_PHONE_STATE"</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">uses-permission</span> <span class="attr">android:name</span>=<span class="string">"android.permission.WRITE_EXTERNAL_STORAGE"</span>/&gt;</span></span><br></pre></td></tr></table></figure>
+<p>c. 当需要在分享完毕后接受微信的传值需要<strong>在你的包名相应目录下新建一个 wxapi 目录，并在该 wxapi 目录下新增一个 <code>WXEntryActivity</code> 类，该类继承自 <code>Activity</code></strong>, 在 <strong>AndroidManifest.xml</strong> 的 <code>&lt;application&gt;</code> 节点下增加:</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">activity</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:name</span>=<span class="string">".wxapi.WXEntryActivity"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:exported</span>=<span class="string">"true"</span></span></span><br><span class="line"><span class="tag">/&gt;</span></span><br></pre></td></tr></table></figure>
+<h4 id="接口及内部实现-1"><a href="#接口及内部实现-1" class="headerlink" title="接口及内部实现"></a>接口及内部实现</h4><p><strong>a. 内部初始化 SDK</strong></p>
+<p>Java:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">IWXAPI mIwxapi = WXAPIFactory.createWXAPI(context, appId);</span><br><span class="line">mIwxapi.registerApp(appId);</span><br></pre></td></tr></table></figure>
+<p>Kotlin:</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">val</span> mIWXApi = WXAPIFactory.createWXAPI(context, appId)</span><br><span class="line">mIWXApi.registerApp(appId)</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>仅做<em>分享</em>功能的话, <code>secret</code> 字段无用.</p>
+</blockquote>
+<p><strong>b. 分享</strong></p>
+<p>微信分享的内容包装同样通过一个 <code>RWechatHelper</code> 进行单独处理, 对于文字、网页、图片、视频网链、小程序、文件的分享内容处理都很简单, 特别注意的就是对于音乐链的分享, 同 QQ 一样, 需要区别两个参数, 一个是<strong>音频流</strong>链, 一个是<strong>音频网页</strong>, 播放的是音频流, 点击背景进入的是音频网页:</p>
+<p>Java:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">WXMusicObject obj = <span class="keyword">new</span> WXMusicObject();</span><br><span class="line">obj.musicUrl = webpageUrl;</span><br><span class="line">obj.musicDataUrl = streamUrl;</span><br></pre></td></tr></table></figure>
+<p>Kotlin:</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">val</span> obj : WXMusicObject = WXMusicObject()</span><br><span class="line">obj.musicUrl = webpageUrl</span><br><span class="line">obj.musicDataUrl = streamUrl</span><br></pre></td></tr></table></figure>
+<p>在程序需要接受微信发送的请求的时候, 需要在 <code>WXEntryActivity</code> 中实现 <code>IWXAPIEventHandler</code> 接口，微信发送的请求将回调到 <code>onReq</code> 方法，发送到微信请求的响应结果将回调到 <code>onResp</code> 方法, 在 <code>WXEntryActivity</code> 中将接收到的 <code>intent</code> 及实现了 <code>IWXAPIEventHandler</code> 接口的对象传递给 <code>IWXAPI</code> 接口的 <code>handleIntent</code> 方法. 为了让 <code>RWechatManager</code> 处理结果, 在 <code>RWechatManager</code> 中封装了 <code>onResp</code> 方法.</p>
+<p><strong>文字分享:</strong></p>
+<p>Java:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">RWechatManager.getInstance().shareText(context, description, scene, listener);</span><br></pre></td></tr></table></figure>
+<p>Kotlin:</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">RWechatManager.instance.shareText(context, description, scene, callback)</span><br></pre></td></tr></table></figure>
+<p>表现(分享到好友):</p>
+<p><img src="https://lh3.googleusercontent.com/-zlfWRC10SJI/W44xTp6FUUI/AAAAAAAAAWM/j3UlQcde5LgRDxALeJUlOJqdBj2wVVyLwCHMYCw/I/15360453876894.jpg" alt=""></p>
+<p><strong>图片分享:</strong></p>
+<p>Java:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">RWechatManager.getInstance().shareImage(context, targetImage, scene, listener);</span><br></pre></td></tr></table></figure>
+<p>Kotlin:</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">RWechatManager.instance.shareImage(context, targetImage, scene, callback)</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>⚠️ 图片过大无法调起微信客户端分享.</p>
+</blockquote>
+<p>表现(分享到好友):</p>
+<p><img src="https://lh3.googleusercontent.com/-BFFGh29k4RY/W44y4BgsUMI/AAAAAAAAAWY/7lFoyibp1WUW-np_HEDCKo_GbH1p6SGjwCHMYCw/I/15360457905870.jpg" alt=""></p>
+<p><strong>网页分享:</strong></p>
+<p>Java:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">RWechatManager.getInstance().shareWebpage(context, webapgeUrl, title, description, thumbImage, scene, listener);</span><br></pre></td></tr></table></figure>
+<p>Kotlin:</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">RWechatManager.instance.shareWebpage(context, webpageUrl, title, description, thumbImage, scene, callback)</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>⚠️ 1. <code>thumbImage</code> 字段的缩略图大小不能超过 32 Kb, 但实际测试 100 Kb 左右也是完全可行的, 但一定不能过大.<br>⚠️ 2. Android  对于缩略图的处理相对友好很多, 对于 iOS 无法分享的过大的缩略图数据一般情况下 Android 都能成功启动微信客户端并且成功分享(亲测).<br>⚠️ 3. 在缩略图没有符合规范的时候, 即使成功分享在 iOS 端也会出现<strong>缩略图不显示</strong>的情况, Android 几乎都会显示.</p>
+</blockquote>
+<p>表现(分享到好友):<br><img src="https://lh3.googleusercontent.com/-7oN-sXKGMQ8/W440TO936mI/AAAAAAAAAWk/6vI9YPJVUWMcl9DpFXEW1PjP9VElZIvJgCHMYCw/I/15360461549519.jpg" alt=""></p>
+<p><strong>视频链分享:</strong><br>实质就是网页的分享, 在此不作代码示例.</p>
+<p><strong>音频链分享:</strong></p>
+<p>Java:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">RWechatManager.getInstance().shareMusic(context, audioStreamUrl, title, description, thumbImage, musicWebapgeUrl, scene, listener);</span><br></pre></td></tr></table></figure>
+<p>Kotlin:</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">RWechatManager.instance.shareMusic(context, audioStreamUrl, title, description, thumbImage, musicWebapgeUrl, scene, callback)</span><br></pre></td></tr></table></figure>
+<p>表现(分享到好友):</p>
+<p><img src="https://lh3.googleusercontent.com/-CcKR16KLjD4/W441by2jDAI/AAAAAAAAAWw/DFJRiBzve28k3tf6lwfdr5CshnZWiBejwCHMYCw/I/15360464461727.jpg" alt=""></p>
+<p><strong>小程序分享:</strong></p>
+<p>Java:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">RWechatManager.getInstance().shareMiniProgram(context, userName, path, MiniProgramType, webapgeUrl, title, description, thumbImage, scene, listener);</span><br></pre></td></tr></table></figure>
+<p>Kotlin:</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">RWechatManager.instance.shareMiniProgram(context, userName, path, MINIPROGRAM_TYPE, webpageUrl,title, description, thumbImage, scene, callback)</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>⚠️ 1. demo 中笔者并没有编写小程序, 仅仅依照微信的 SDK 进行了参数的设置, 所以无法分享, 但具体的参数设置形式在 demo 中明确标明.<br>⚠️ 2. 小程序分三种类型, <code>type</code> 字段分: <strong>发布</strong>、<strong>预览</strong>以及<strong>体验</strong>三个版本.</p>
+</blockquote>
+<p><strong>文件分享:</strong></p>
+<p>Java:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">RWechatManager.getInstance().shareFile(context, localFileUrl, title, thumbImage, scene, listener);</span><br></pre></td></tr></table></figure>
+<p>Kotlin:</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">RWechatManager.instance.shareFile(context, localFileUrl, title, thumbImage, scene, callback)</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>⚠️ 1. 视频文件无法打开, 需要别的应用支持, 图片和普通文档可以打开.<br>⚠️ 2. 文件分享<strong>不支持分享到朋友圈</strong>.<br>⚠️ 3. 在设置<strong>缩略图</strong>的情况下, iOS 端的对话框是不显示缩略图的, 但是 Android 可以, 但也仅限于发送方能看见.</p>
+</blockquote>
+<p>表现(分享视频到微信好友):<br><img src="https://lh3.googleusercontent.com/-OrqFKygZa6k/W45JKvdpI-I/AAAAAAAAAW8/d4Y4Z3t2LVMwQDs55fpwoOyUPfq23eouQCHMYCw/I/15360514953939.jpg" alt=""><br><img src="https://lh3.googleusercontent.com/-_d5Fmi8rENk/W45JMexbPEI/AAAAAAAAAXA/NkL3Wlo_45wRAotYADgDMaK3-UplPvn2QCHMYCw/I/15360515040489.jpg" alt=""></p>
+<h3 id="新浪"><a href="#新浪" class="headerlink" title="新浪"></a>新浪</h3><h4 id="准备-2"><a href="#准备-2" class="headerlink" title="准备"></a>准备</h4><p>分享需要注册平台, <a href="http://open.weibo.com/" target="_blank" rel="noopener">新浪开放平台</a>, <a href="http://open.weibo.com/wiki/SDK#android_SDK" target="_blank" rel="noopener">SDK 下载</a>, 新浪 SDK <strong>支持 compile 集成</strong>, <a href="https://github.com/sinaweibosdk/weibo_android_sdk" target="_blank" rel="noopener">Android 接口调用文档</a>.</p>
+<h4 id="集成-2"><a href="#集成-2" class="headerlink" title="集成"></a>集成</h4><p>a.<br>在 <strong>Project 级 <code>build.gradle</code> 中配置:</strong></p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">allprojects &#123;</span><br><span class="line">    repositories &#123;</span><br><span class="line">        google()</span><br><span class="line">        jcenter()</span><br><span class="line">        maven &#123; url "https://dl.bintray.com/thelasterstar/maven/" &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在 <strong>Application 级 <code>build.gradle</code> 中配置:</strong></p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">dependencies &#123;</span><br><span class="line">    compile 'com.sina.weibo.sdk:core:4.3.0:openDefaultRelease@aar'</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="接口及内部实现-2"><a href="#接口及内部实现-2" class="headerlink" title="接口及内部实现"></a>接口及内部实现</h4><p><strong>a. 内部初始化 SDK</strong></p>
+<p>Java:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">WbSdk.install(context, <span class="keyword">new</span> AuthInfo(context, key, redirectUrl, scope));</span><br><span class="line">WbShareHandler handler = <span class="keyword">new</span> WbShareHandler((Activity) context);</span><br><span class="line">handler.registerApp();</span><br></pre></td></tr></table></figure>
+<p>Kotlin:</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">WbSdk.install(context, AuthInfo(context, key, redirectUrl, scope))</span><br><span class="line"><span class="keyword">val</span> handler = WbShareHandler(context <span class="keyword">as</span> Activity)</span><br><span class="line">handler.registerApp()</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>仅做<em>分享</em>的话, <code>secret</code> 字段无用.</p>
+</blockquote>
+<p><strong>b. 分享</strong></p>
+<p>在 demo 中, 发布微博和发布照片/视频到「微博故事」笔者拆分到 <code>RSinaWeiboActivity</code> 和<code>RSinaWeiboStoryActivity</code> 中分别处理, 避免稍微麻烦的判断.</p>
+<p>新浪分享内容模型都继承自 <code>BaseMediaObject</code>: <strong>TextObject</strong>、<strong>MultiImageObject</strong>、<strong>WebpageObject</strong>、<strong>VideoSourceObject</strong>、<strong>TextObject</strong> 设置对应属性然后通过 <code>WeiboMultiMessage</code> 发送分享请求消息体, 值得一提的是, 在分享网络链接时候, <strong>赋值到消息体的属性为 <code>mediaObject</code></strong>.</p>
+<p>⚠️ <strong>在进行本地视频分享的时候一定一定要先对消息体进行文字分享模型赋值, 否则无论如何都无法分享.</strong> </p>
+<p>例 (Java):</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">✅</span><br><span class="line">WeiboMultiMessage message = <span class="keyword">new</span> WeiboMultiMessage();</span><br><span class="line">message.textObject = textObj;<span class="comment">// a TextObject instance</span></span><br><span class="line">message.videoSourceObject = localVideoObj;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">❌</span><br><span class="line">WeiboMultiMessage message = <span class="keyword">new</span> WeiboMultiMessage();</span><br><span class="line">message.videoSourceObject = localVideoObj;</span><br></pre></td></tr></table></figure>
+<p><strong>文字分享:</strong></p>
+<p>Java:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">RSinaWeiboManager.getInstance().shareText(context, text, listener);</span><br></pre></td></tr></table></figure>
+<p>Kotlin:</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">RSinaWeiboManager.instance.shareText(context, text, callback)</span><br></pre></td></tr></table></figure>
+<p>表现:<br><img src="https://lh3.googleusercontent.com/-GSsYGRe_qeg/W45RXUDPbhI/AAAAAAAAAXQ/Gz9oC33gt4YqU4S5WlFy42gZH8fUfh-zQCHMYCw/I/15360535953706.jpg" alt=""></p>
+<p><strong>图片分享:</strong></p>
+<p>Java:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">RSinaWeiboManager.getInstance().sharePhoto(context, targetImages, description, isToStory(<span class="keyword">true</span> or <span class="keyword">false</span>), listener);</span><br></pre></td></tr></table></figure>
+<p>Kotlin:</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">RSinaWeiboManager.instance.sharePhoto(context, targetImages, description, isToStory(<span class="literal">true</span> or <span class="literal">false</span>), callback)</span><br></pre></td></tr></table></figure>
+<p>为统一接口, 图片用数组包装; 分享到「微博故事」功能中 <code>descripiton</code> 字段会失效.</p>
+<blockquote>
+<p>⚠️ 1. 开启「分享到微博故事」功能图片只能传一张; 多张图片分享的情况下「分享到微博故事」的功能必须关闭!<br>⚠️ 2. 图片单张不能超过 10 MB, 最多 9 张图片.<br>⚠️ 3. 在分享图片的时候最好提前打开微博客户端, 否则会很慢, 或者压根不调起客户端.</p>
+</blockquote>
+<p>表现:<br>分享到微博:<br><img src="https://lh3.googleusercontent.com/-N5QLcImNntc/W45TR4j7hZI/AAAAAAAAAXo/aKyWZLFkzOYBhhzW2kDgbHgFPJUy5Qz2ACHMYCw/I/15360540872534.jpg" alt=""></p>
+<p>分享到「微博故事」:<br><img src="https://lh3.googleusercontent.com/-4RLl_LN0sac/W45TD5-fRRI/AAAAAAAAAXk/zhXMgiy7LOkW4UlZG2Da699UK2BTq6QTwCHMYCw/I/15360540282306.jpg" alt=""></p>
+<p><strong>本地视频分享:</strong></p>
+<p>Java:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">RSinaWeiboManager.getInstance().shareLocalVideo(context, localVideoUrl, description, isToStory(<span class="keyword">true</span> or <span class="keyword">false</span>), listener);</span><br></pre></td></tr></table></figure>
+<p>Kotlin:</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">RSinaWeiboManager.instance.shareLocalVideo(context, localVideoUrl, description, isToStory(<span class="literal">true</span> or <span class="literal">false</span>), callback)</span><br></pre></td></tr></table></figure>
+<p>表现(分享到微博):</p>
+<p><img src="https://lh3.googleusercontent.com/-YVT2ayySR6I/W5chW1iHrMI/AAAAAAAAAX4/GMCxl-itNoEk_jJa89nplur8JFkzvedFgCHMYCw/I/15366311285837.jpg" alt=""></p>
+<p>表现(分享到「微博故事」):<br><img src="https://lh3.googleusercontent.com/-6u1wLkwp9gI/W5chbBWK83I/AAAAAAAAAX8/P95diV00laEFaTIzr1aUk8U99sQ5UTreACHMYCw/I/15366311481945.jpg" alt=""></p>
+<p><strong>网页分享:</strong></p>
+<p>Java:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">RSinaWeiboManager.getInstance().shareWebpage(context, webapgeUrl, title, description, thumbImage, listener);</span><br></pre></td></tr></table></figure>
+<p>Kotlin:</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">RSinaWeiboManager.instance.shareWebpage(context, webpageUrl, title, description, thumbImage,callback)</span><br></pre></td></tr></table></figure>
+<p>表现:</p>
+<p><img src="https://lh3.googleusercontent.com/-vbuWfq1M1n8/W5coCWrME6I/AAAAAAAAAYM/MFi4hsw7h-kFGdA3qhpjNn9vGp0NMPFVACHMYCw/I/15366328390733.jpg" alt=""></p>
+<blockquote>
+<p>⚠️ 1. 网页 <code>thumbImage</code> 字段的缩略图数据不能大于 550 Kb <strong>(新浪的 SDK 控制的很严格)</strong>.<br>⚠️ 2. 在这里表现和 iOS 略有不同.</p>
+</blockquote>
+<h3 id="Facebook"><a href="#Facebook" class="headerlink" title="Facebook"></a>Facebook</h3><h4 id="准备-3"><a href="#准备-3" class="headerlink" title="准备"></a>准备</h4><p>分享需要注册平台, <a href="https://developers.facebook.com/" target="_blank" rel="noopener">Facebook 开发者主页</a>, Facebook SDK <strong>支持 compile 集成</strong>, <a href="https://developers.facebook.com/docs/sharing/android" target="_blank" rel="noopener">分享接口调用说明</a>.</p>
+<h4 id="集成-3"><a href="#集成-3" class="headerlink" title="集成"></a>集成</h4><p>a.<br>在 <strong>Project 级 <code>build.gradle</code> 中配置:</strong></p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">buildscript &#123;</span><br><span class="line">    repositories &#123;</span><br><span class="line">        google()</span><br><span class="line">        jcenter()</span><br><span class="line">        mavenCentral()</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在 <strong>Application 级 <code>build.gradle</code> 中配置:</strong></p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">dependencies &#123;</span><br><span class="line">    implementation 'com.facebook.android:facebook-share:4.34.0'</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>b. 在 <strong>AndroidManifest.xml</strong> 的 <code>&lt;application&gt;</code> 节点下增加:</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">meta-data</span> <span class="attr">android:name</span>=<span class="string">"com.facebook.sdk.ApplicationId"</span></span></span><br><span class="line"><span class="tag">            <span class="attr">android:value</span>=<span class="string">"@string/facebook_app_id"</span>/&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">provider</span> <span class="attr">android:authorities</span>=<span class="string">"com.facebook.app.FacebookContentProviderYOURAPPID"</span></span></span><br><span class="line"><span class="tag">          <span class="attr">android:name</span>=<span class="string">"com.facebook.FacebookContentProvider"</span></span></span><br><span class="line"><span class="tag">          <span class="attr">android:exported</span>=<span class="string">"true"</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">activity</span> <span class="attr">android:name</span>=<span class="string">"com.facebook.CustomTabActivity"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:exported</span>=<span class="string">"true"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">intent-filter</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">action</span> <span class="attr">android:name</span>=<span class="string">"android.intent.action.VIEW"</span> /&gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="tag">&lt;<span class="name">category</span> <span class="attr">android:name</span>=<span class="string">"android.intent.category.DEFAULT"</span> /&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">category</span> <span class="attr">android:name</span>=<span class="string">"android.intent.category.BROWSABLE"</span> /&gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="tag">&lt;<span class="name">data</span> <span class="attr">android:scheme</span>=<span class="string">"fbYOURAPPID"</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">intent-filter</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">activity</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h4 id="接口调用及内部实现"><a href="#接口调用及内部实现" class="headerlink" title="接口调用及内部实现"></a>接口调用及内部实现</h4><p><strong>a. 内部初始化 SDK</strong></p>
+<p>Facebook 分享在配置 <strong>AndroidManifest.xml</strong> 后无需代码代码初始化.</p>
+<p><strong>b. 分享</strong></p>
+<p>参数的包装, 借助工具类 <code>RFacebookHelper</code> 来处理, Facebook 已经封装好了各个类型的分享内容载体 (SharePhotoContent、ShareVideoContent …), 对应设置属性值就可以; 对于图片的分享, 和新浪的图片分享思路相同, 即: 无论是单张还是多图, 一概通过数组包装传递给 <code>RFacebookHelper</code>, 然后它自行处理.</p>
+<p><strong>网页分享:</strong></p>
+<p>Java:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">RFacebookManager.getInstance().shareWebpage(context, webapgeUrl, description, hashTag, mode , listener);</span><br></pre></td></tr></table></figure>
+<p>Kotlin:</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">RFacebookManager.instance.shareWebpage(context, webpageUrl, description, hashTag, mode, callback)</span><br></pre></td></tr></table></figure>
+<p>Facebook 的 SDK 在迭代的过程中, 舍弃了很多字段, 分享参数不如新浪那样多样, 但是其分享的表现形式却比国内的要友好很多, 特别是在网页分享这块体现的更加明显, 值得注意的是, <strong>非网页形式的分享回调无效</strong>, 努力地在 <strong>Github</strong>、<strong>Stack Overflow</strong> 和 <strong>Facebook Developer 论坛</strong>找答案但都没有找到解决办法, 根据 <code>postId</code> 的判断分享结果状态的方法早已失效, 无论是 Android 还是 iOS 端, 目前都没办法.</p>
+<blockquote>
+<p>⚠️ <code>hashTag (话题)</code> 的表现形式不同于国内, 新浪的话题格式: <strong>#话题#</strong>, 两个 <strong>#</strong> 之间一切内容都能成为话题, 而 Twitter、Instagram、Facebook 的格式: <strong>#话题</strong>, 话题内容词组之间不能有任何符号且必须连在一起.</p>
+</blockquote>
+<p>表现:<br>客户端形式的分享(无回调):<br><img src="https://lh3.googleusercontent.com/-Xqf4psPm0SM/W5cu2VZiQyI/AAAAAAAAAYY/v3kmkYC1C0QYCm83zH9_CyVwVdtVtdYmwCHMYCw/I/15366345820939.jpg" alt=""></p>
+<p><strong>iOS 端是跳转到 Facebook 客户端分享, 且在通过客户端分享的过程中, <code>quote</code> 字段已经丢失; 且 Android 通过客户端分享需要提前打开 Facebook 客户端, 否则无法弹出分享对话框, 测试过美图秀秀的图片分享, 也是一样, 需要提前打开客户端.</strong></p>
+<p>网页形式的分享(有回调):<br><img src="https://lh3.googleusercontent.com/-YXURoOGNuJc/W5cxUoJ8M9I/AAAAAAAAAYk/_T40tCXIkz0tlRDreQ-sEYG5xJMpmRZywCHMYCw/I/15366352153227.jpg" alt=""></p>
+<p><strong>图片分享:</strong></p>
+<p>Java:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">RFacebookManager.getInstance().sharePhoto(context, targetImages);</span><br></pre></td></tr></table></figure>
+<p>Kotlin:</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">RFacebookManager.instance.sharePhoto(context, targetImages)</span><br></pre></td></tr></table></figure>
+<p>表现:</p>
+<p><img src="https://lh3.googleusercontent.com/-yFCTb2hHMAU/W5cyjMJqnWI/AAAAAAAAAYw/JxFTudmZYYA2IEDRjo7JUSbPB_xT1vP5wCHMYCw/I/15366355297333.jpg" alt=""></p>
+<p><strong>本地视频分享:</strong></p>
+<p>Java:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">RFacebookManager.getInstance().shareLocalVideo(context, localVideoUrl);</span><br></pre></td></tr></table></figure>
+<p>Kotlin:</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">RFacebookManager.instance.shareLocalVideo(context, localVideoUrl)</span><br></pre></td></tr></table></figure>
+<p>表现:</p>
+<p><img src="https://lh3.googleusercontent.com/-abqHI4K0exU/W5czPT4tQXI/AAAAAAAAAY4/_lWw41A4zig5LnA-ocY1SnT6x21V7ptmgCHMYCw/I/15366357079456.jpg" alt=""></p>
+<p><strong>c. 获取散列</strong></p>
+<p><code>RFacebookManager</code> 提供了获取散列的方法.</p>
+<h3 id="Twitter"><a href="#Twitter" class="headerlink" title="Twitter"></a>Twitter</h3><h4 id="准备-4"><a href="#准备-4" class="headerlink" title="准备"></a>准备</h4><p>分享需要注册平台, <a href="https://developer.twitter.com/content/developer-twitter/en.html" target="_blank" rel="noopener">Twitter 开发者主页</a>, <a href="https://apps.twitter.com/" target="_blank" rel="noopener">注册应用主页</a>, Twitter SDK <strong>支持 compile 集成</strong>, <a href="https://github.com/twitter/twitter-kit-android/wiki/Compose-Tweets" target="_blank" rel="noopener">分享接口调用说明</a>.</p>
+<p><strong>⚠️: Twitter SDK 将于 2018/10/31 后不再进行维护, 但是不影响后续使用, 需自行维护, <a href="https://blog.twitter.com/developer/en_us/topics/tools/2018/discontinuing-support-for-twitter-kit-sdk.html" target="_blank" rel="noopener">Twitter 产品经理 Neil Shah 对 Twitter SDK 放弃维护迭代的声明博客</a>.</strong></p>
+<h4 id="集成-4"><a href="#集成-4" class="headerlink" title="集成"></a>集成</h4><p>a. 在 <strong>Project 级 <code>build.gradle</code> 中配置:</strong></p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">allprojects &#123;</span><br><span class="line">    repositories &#123;</span><br><span class="line">        google()</span><br><span class="line">        jcenter()</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在 <strong>Application 级 <code>build.gradle</code> 中配置:</strong></p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">dependencies &#123;</span><br><span class="line">    implementation 'com.twitter.sdk.android:tweet-composer:3.1.1'</span><br><span class="line">    implementation 'com.twitter.sdk.android:twitter-core:3.1.1'</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="接口调用及内部实现-1"><a href="#接口调用及内部实现-1" class="headerlink" title="接口调用及内部实现"></a>接口调用及内部实现</h4><p><strong>a. 内部初始化 SDK</strong></p>
+<p>Java:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">TwitterConfig config = <span class="keyword">new</span> TwitterConfig.Builder(context)</span><br><span class="line">                .logger(<span class="keyword">new</span> DefaultLogger(Log.DEBUG))</span><br><span class="line">                .twitterAuthConfig(<span class="keyword">new</span> TwitterAuthConfig(key, secret))</span><br><span class="line">                .debug(<span class="keyword">true</span>)</span><br><span class="line">                .build();</span><br><span class="line">Twitter.initialize(config);</span><br></pre></td></tr></table></figure>
+<p>Kotlin:</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">val</span> config = TwitterConfig.Builder(context)</span><br><span class="line">                .logger(DefaultLogger(Log.DEBUG))</span><br><span class="line">                .twitterAuthConfig(TwitterAuthConfig(key, secret))</span><br><span class="line">                .debug(<span class="literal">true</span>)</span><br><span class="line">                .build()</span><br><span class="line">Twitter.initialize(config)</span><br></pre></td></tr></table></figure>
+<p><strong>b. 授权 Twitter 客户端</strong><br>与其他平台分享不同的是, Twitter 在进行发推(分享)的时候会先进行检测本地的 <code>activeSession</code> 的标记判断是否登录(授权)过, 所以在进行发推的时候需要进行这一步的判断, 在未登录的情况下需进行授权, 在此使用 <code>RTwitterAuthHelper</code> 进行处理, 登录(授权监听接口以及 callback):</p>
+<p>Java:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">RTwitterAuthCallback</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title">onComplete</span><span class="params">()</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title">onFail</span><span class="params">(String errorInfo)</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Kotlin:</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">internal</span> typealias RTwitterAuthCallback = ((state : <span class="built_in">Int</span>) -&gt; <span class="built_in">Unit</span>)</span><br></pre></td></tr></table></figure>
+<p>Kotlin 的 callback <code>state</code> 包括成功失败两种结果.</p>
+<p><strong>判断是否登录过:</strong></p>
+<p>Java:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">RTwitterAuthHelper.getInstance().hasLogged()</span><br></pre></td></tr></table></figure>
+<p>Kotlin:</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">RTwitterAuthHelper.instance.hasLogged</span><br></pre></td></tr></table></figure>
+<p><strong>登录授权:</strong></p>
+<p>Java:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">RTwitterAuthHelper.getInstance().authorizeTwitter(context, <span class="keyword">new</span> RTwitterAuthCallback() &#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onComplete</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="comment">// ...</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onFail</span><span class="params">(String errorInfo)</span> </span>&#123;</span><br><span class="line">       <span class="comment">// ...                    &#125;</span></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>Kotlin:</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">RTwitterAuthHelper.instance.authorizeTwitter(context) &#123; state -&gt;</span><br><span class="line">    <span class="keyword">when</span> (state) &#123;</span><br><span class="line">        <span class="number">1</span> -&gt; &#123;</span><br><span class="line">            <span class="comment">// ...</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="number">0</span> -&gt; &#123;</span><br><span class="line">            <span class="comment">// ...     </span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这一步<strong>目前的情况就是把 Twitter SDK 提供的授权方法重新包装写了遍, 但是考虑到未来可能用到 <code>session</code> 和 <code>token</code> 等信息并处理, 所以单独写了类讲授权和分享隔离.</strong></p>
+<p><strong>c. 分享</strong></p>
+<p>在本人写的 demo 中, <em>分享</em>和<em>登录授权</em>是衔接的, 即: 若未登录过 -&gt; 登录授权 -&gt; 分享.<br>Twitter 能分享的内容相对较少, 所以关于<strong>文字、网页、图片</strong>的分享, 统一到一个分享接口里, 三者不能同时为空.<br>另, Twitter Android 分享包括两种模式: <strong>直接构建 Intent 分享和跳转 Twitter 客户端分享</strong>, 前者有回调(Demo 中注册 <code>RTwitterTweetResultReciver</code> 监听回调), 后者无回调且支持 <code>hashTag</code>.</p>
+<p>Java:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">RTwitterManager.getInstance().share(context, webapgeUrl, description, targetImage, hashTag, mode, listener);</span><br></pre></td></tr></table></figure>
+<p>Kotlin:</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">RTwitterManager.instance.share(context, webpageUrl, description, targetImage, hashTag, mode, callback)</span><br><span class="line">``` </span><br><span class="line"></span><br><span class="line">&gt; ⚠️ 测试多次发推内容不要重复, 否则会分享失败.</span><br><span class="line"></span><br><span class="line">表现:</span><br><span class="line"></span><br><span class="line">应用内分享(有回调):</span><br><span class="line">![](https:<span class="comment">//lh3.googleusercontent.com/-c5I4chuawhk/W5dnV0p1ksI/AAAAAAAAAZE/HBu1kom59Rs_q2B3ZMtQqzqPJBnbJRccACHMYCw/I/15366490447032.jpg)</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">跳转 Twitter 客户端分享(无回调):</span><br><span class="line"></span><br><span class="line">![](https:<span class="comment">//lh3.googleusercontent.com/-oA7HlkrGvx0/W5dnu8fKzKI/AAAAAAAAAZU/g6qT1kewvPk-Yzb1LnlH_kad--REvEQDQCHMYCw/I/15366491440513.jpg)</span></span><br><span class="line"></span><br><span class="line">### Instagram</span><br><span class="line">#### 准备</span><br><span class="line"></span><br><span class="line">分享无需注册平台无需 SDK, [Instagram 开发者主页](https:<span class="comment">//www.instagram.com/developer/), [构建 Intent 方式分享](https://www.instagram.com/developer/mobile-sharing/android-intents/).</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">#### 接口调用及内部实现</span><br><span class="line"></span><br><span class="line">**分享**</span><br><span class="line"></span><br><span class="line">Intent 构建(以 Java 为例):</span><br><span class="line"></span><br><span class="line">图片:</span><br><span class="line"></span><br><span class="line">```java</span><br><span class="line">Intent intent = new Intent(Intent.ACTION_SEND);</span><br><span class="line">intent.setType(<span class="string">"image/*"</span>);</span><br><span class="line">intent.putExtra(Intent.EXTRA_STREAM, targetImageUrl);</span><br><span class="line">intent.setPackage(<span class="string">"com.instagram.android"</span>);</span><br><span class="line">context.startActivity(intent);</span><br></pre></td></tr></table></figure>
+<p><strong>图片分享:</strong></p>
+<p>Java:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">RInstagramManager.getInstance().shareImage(context, targetImage);</span><br></pre></td></tr></table></figure>
+<p>Kotlin:</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">RInstagramManager.instance.shareImage(context, targetImage)</span><br></pre></td></tr></table></figure>
+<p>表现:<br><img src="https://lh3.googleusercontent.com/-nXN8PeYeBI8/W5druQz7D7I/AAAAAAAAAZg/tqdkoNdlZ_gYq5pb2VTS6qe7nB8go0slwCHMYCw/I/15366501677018.jpg" alt=""></p>
+<p>本地视频:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Intent intent = <span class="keyword">new</span> Intent(Intent.ACTION_SEND);</span><br><span class="line">intent.setType(<span class="string">"video/*"</span>);</span><br><span class="line">intent.putExtra(Intent.EXTRA_STREAM, localVideoUrl);</span><br><span class="line">intent.setPackage(<span class="string">"com.instagram.android"</span>);</span><br><span class="line">context.startActivity(intent);</span><br></pre></td></tr></table></figure>
+<p><strong>本地视频分享:</strong></p>
+<p>Java:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">RInstagramManager.getInstance().shareVideo(context, localVideoUrl);</span><br></pre></td></tr></table></figure>
+<p>Kotlin:</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">RInstagramManager.instance.shareVideo(context, localVideoUrl)</span><br></pre></td></tr></table></figure>
+<p>表现:</p>
+<p><img src="https://lh3.googleusercontent.com/-53x4U8Iht94/W5drxU3QLhI/AAAAAAAAAZk/zebiYGtry1McCJ6P35Es-niqeCMyzfh-ACHMYCw/I/15366501815031.jpg" alt=""></p>
+<h3 id="Tumblr"><a href="#Tumblr" class="headerlink" title="Tumblr"></a>Tumblr</h3><h4 id="准备-5"><a href="#准备-5" class="headerlink" title="准备"></a>准备</h4><p>分享需要注册平台, <a href="https://www.tumblr.com/developers" target="_blank" rel="noopener">Tumblr 开发者主页</a>, <a href="https://dev.flurry.com/admin/applications" target="_blank" rel="noopener">注册应用主页</a>, Tumblr SDK <strong>支持 compile 集成</strong>, <a href="https://developer.yahoo.com/flurry/docs/integrateflurry/android/" target="_blank" rel="noopener">分享接口调用说明</a>.</p>
+<h4 id="集成-5"><a href="#集成-5" class="headerlink" title="集成"></a>集成</h4><p>a. 此 Demo 中是手动集成的 6.1.0 版本的 SDK.</p>
+<p>⚠️: 一定是这个版本的, 最新版本的 SDK 我没有找到分享的接口.</p>
+<h4 id="接口调用及内部实现-2"><a href="#接口调用及内部实现-2" class="headerlink" title="接口调用及内部实现"></a>接口调用及内部实现</h4><p><strong>a. 内部初始化 SDK</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">FlurryAgent.setLogEnabled(<span class="keyword">true</span>);</span><br><span class="line">FlurryAgent.init(context, flurryKey);</span><br><span class="line">TumblrShare.setOAuthConfig(key, secret);</span><br></pre></td></tr></table></figure>
+<p>⚠️ 在 iOS 端初始化 SDK 仅需要 <code>key</code> 和 <code>secret</code> 两个参数.</p>
+<p><strong>b. 分享</strong></p>
+<p>Tumblr 分享体只包括<strong>图片</strong>和<strong>文字</strong>两种, 并且图片还是网络图片的链接, 并不能分享本地图片, 所以 Tumblr 的局限性很大, 这两种分享体的模型通过 SDK 中 <code>PhotoPost</code> 和 <code>TextPost</code> 来构建;<br>Tumblr 分享是通过当前界面弹出对话框分享的, 和 Twitter 类似, 所以不需要判断 Tumblr 程序是否安装;<br>Tumblr 的分享流程是: <strong>登录 -&gt; 分享</strong>, 但是登录的逻辑不需要在代码中实现, 他会自动呈现浏览器的登录界面.</p>
+<p><strong>文字分享:</strong></p>
+<p>Java:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">RTumblrManager.getInstance().shareText(context, description, title, webapgeUrl, listener);</span><br></pre></td></tr></table></figure>
+<p>Kotlin:</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">RTumblrManager.instance.shareText(context, description, title, webpageUrl, callback)</span><br></pre></td></tr></table></figure>
+<p>表现:</p>
+<p><img src="https://lh3.googleusercontent.com/-cuff8oox2QA/W5dut_wRKII/AAAAAAAAAZ0/b0KlLvRRbicTVejB97QaI5DSn-5yWABXQCHMYCw/I/15366509337750.jpg" alt=""></p>
+<p><strong>图片链接分享:</strong></p>
+<p>Java:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">RTumblrManager.getInstance().shareImage(context, targetImageUrl, description, webapgeUrl, listener);</span><br></pre></td></tr></table></figure>
+<p>Kotlin:</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">RTumblrManager.instance.shareImage(context, targetImageUrl, description, webpageUrl, callback )</span><br></pre></td></tr></table></figure>
+<p>表现:</p>
+<p><img src="https://lh3.googleusercontent.com/-MOOQGS65kE4/W5dvOW95NhI/AAAAAAAAAZ8/xdpBtn3Lr187Fm6zjHKoCfl-fsj64uDMwCHMYCw/I/15366510641749.jpg" alt=""></p>
+<h3 id="Pinterest"><a href="#Pinterest" class="headerlink" title="Pinterest"></a>Pinterest</h3><h4 id="集成-6"><a href="#集成-6" class="headerlink" title="集成"></a>集成</h4><p>Android 端无需集成 SDK, 仅通过 Intent 方式就可以分享, 但是 iOS 需要.</p>
+<p><strong>b. 分享</strong></p>
+<p><strong>Pinterest 只能分享图片链接.</strong></p>
+<p>Intent 构建(以 Java 为例):</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Intent intent = <span class="keyword">new</span> Intent(Intent.ACTION_SEND);</span><br><span class="line">intent.setPackage(<span class="string">"com.pinterest"</span>);</span><br><span class="line">intent.putExtra(Intent.EXTRA_STREAM, Uri.parse(targetImageUrl));</span><br><span class="line">intent.setType(<span class="string">"*/*"</span>);</span><br><span class="line">context.startActivity(intent);</span><br></pre></td></tr></table></figure>
+<p><strong>图片链接分享:</strong></p>
+<p>Java:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">RPinterestManager.getInstance().shareImage(context, targetImageUrl);</span><br></pre></td></tr></table></figure>
+<p>Kotlin:</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">RPinterestManager.instance.shareImage(context, targetImageUrl)</span><br></pre></td></tr></table></figure>
+<p>表现:<br><img src="https://lh3.googleusercontent.com/-IQc0WbK_d2Q/W5dyAGaQ1AI/AAAAAAAAAaI/M1V76h1-NFg-Kh84iCjFOQ50BI9AYCT7QCHMYCw/I/15366517749056.jpg" alt=""></p>
+<h3 id="Line"><a href="#Line" class="headerlink" title="Line"></a>Line</h3><h4 id="集成-7"><a href="#集成-7" class="headerlink" title="集成"></a>集成</h4><p>无需集成 SDK, 仅通过 Intent 方式就可以分享.</p>
+<p><strong>b. 分享</strong></p>
+<p>Intent 构建(以 Java 为例):</p>
+<p>文字：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Intent intent = <span class="keyword">new</span> Intent();</span><br><span class="line">intent.setAction(Intent.ACTION_SEND);</span><br><span class="line">intent.putExtra(Intent.EXTRA_TEXT, text);</span><br><span class="line">intent.setType(<span class="string">"text/*"</span>);</span><br><span class="line">intent.setPackage(<span class="string">"jp.naver.line.android"</span>);</span><br><span class="line">context.startActivity(intent);</span><br></pre></td></tr></table></figure>
+<p><strong>文字分享:</strong></p>
+<p>Java:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">RLineManager.getInstance().shareText(context, text);</span><br></pre></td></tr></table></figure>
+<p>Kotlin:</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">RLineManager.instance.share(context, text)</span><br></pre></td></tr></table></figure>
+<p>表现:<br><img src="https://lh3.googleusercontent.com/-ps4ZtMCw-R0/W5d-SMQEz0I/AAAAAAAAAaY/BgkApt-Nzgo3LBvYIBACO0uYO2EgR-thQCHMYCw/I/15366549202862.jpg" alt=""></p>
+<p>图片:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Intent intent = <span class="keyword">new</span> Intent(Intent.ACTION_SEND);</span><br><span class="line">intent.setType(<span class="string">"image/*"</span>);        intent.putExtra(Intent.EXTRA_STREAM, targetImageUrl);</span><br><span class="line">intent.setPackage(<span class="string">"jp.naver.line.android"</span>);</span><br><span class="line">context.startActivity(intent);</span><br></pre></td></tr></table></figure>
+<p><strong>图片分享:</strong></p>
+<p>Java:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">RLineManager.getInstance().shareImage(context, targetImage);</span><br></pre></td></tr></table></figure>
+<p>Kotlin:</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">RLineManager.instance.share(context, targetImage)</span><br></pre></td></tr></table></figure>
+<p>表现:</p>
+<p><img src="https://lh3.googleusercontent.com/-WIxiBag-ZsE/W5d-I4YUj9I/AAAAAAAAAaU/-4XSuRZpELsRUzbNFssC7AgHAUkD9hgNgCHMYCw/I/15366548801345.jpg" alt=""></p>
+<h3 id="WhatsApp"><a href="#WhatsApp" class="headerlink" title="WhatsApp"></a>WhatsApp</h3><h4 id="准备-6"><a href="#准备-6" class="headerlink" title="准备"></a>准备</h4><p>分享无需注册平台.</p>
+<p>Android 端无需集成 SDK, 仅通过 Intent 方式就可以分享, 但是 iOS 需要.</p>
+<p><strong>b. 分享</strong></p>
+<p>WhatsApp 支持同时分享文字和图片, iOS 端不可以.</p>
+<p>Intent 构建(以 Java 为例):</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">Intent intent = <span class="keyword">new</span> Intent();</span><br><span class="line">intent.setAction(Intent.ACTION_SEND);</span><br><span class="line">intent.putExtra(Intent.EXTRA_TEXT, description);</span><br><span class="line">intent.setType(<span class="string">"text/plain"</span>);</span><br><span class="line">intent.putExtra(Intent.EXTRA_STREAM, targetImageUrl);</span><br><span class="line">intent.setType(<span class="string">"image/jpeg"</span>);</span><br><span class="line">intent.setPackage(<span class="string">"com.whatsapp"</span>);</span><br><span class="line">context.startActivity(intent);</span><br></pre></td></tr></table></figure>
+<p><strong>图文分享:</strong></p>
+<p>Java:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">RWhatsAppManager.getInstance().share(context, targetImage, description);</span><br></pre></td></tr></table></figure>
+<p>Kotlin:</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">RWhatsAppManager.instance.share(context, targetImage, description)</span><br></pre></td></tr></table></figure>
+<p>表现:</p>
+<p><img src="https://lh3.googleusercontent.com/-b2WSm80d_Us/W5eC13XcH1I/AAAAAAAAAak/3CsSs5ULiQ8Ng_-6zU3vyVrmCyzbEw2VgCHMYCw/I/15366560853962.jpg" alt=""></p>
+<h3 id="GooglePlus"><a href="#GooglePlus" class="headerlink" title="GooglePlus"></a>GooglePlus</h3><h4 id="准备-7"><a href="#准备-7" class="headerlink" title="准备"></a>准备</h4><p>需要注册平台, <a href="https://developers.google.com/+/" target="_blank" rel="noopener">Google Plus 开发者主页</a><br>, <a href="https://developers.google.com/+/mobile/android/getting-started" target="_blank" rel="noopener">创建流程</a>.</p>
+<h4 id="集成-8"><a href="#集成-8" class="headerlink" title="集成"></a>集成</h4><p>需要 <strong>Google Service 的支持</strong>, 在 <strong>Application 级 <code>build.gradle</code> 中配置:</strong></p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">dependencies &#123;</span><br><span class="line">    implementation 'com.google.android.gms:play-services-plus:15.0.1'</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="接口调用及内部实现-3"><a href="#接口调用及内部实现-3" class="headerlink" title="接口调用及内部实现"></a>接口调用及内部实现</h4><p>Google Plus 分享只支持<strong>分享网页</strong>,  通过 <code>PlusShare.Builder</code> 来构建网页分享模型, Java 为例:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Intent shareIntent = <span class="keyword">new</span> PlusShare.Builder(context)</span><br><span class="line">                .setType(<span class="string">"text/plain"</span>)</span><br><span class="line">                .setText(text)</span><br><span class="line">                .setContentUrl(Uri.parse(webpageUrl)</span><br><span class="line">                .getIntent();</span><br></pre></td></tr></table></figure>
+<p><strong>分享网页:</strong></p>
+<p>Java:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">RGooglePlusManager.getInstance().share(context, webapgeUrl, description);</span><br></pre></td></tr></table></figure>
+<p>Kotlin:</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">RGooglePlusManager.instance.share(context, webpageUrl, description)</span><br></pre></td></tr></table></figure>
+<p>表现:</p>
+<p><img src="https://lh3.googleusercontent.com/-1yxGGEo9QuI/W5eHx0NVl3I/AAAAAAAAAaw/og3n-vItwB8ruMgT6rfqD5OA46CS3QjoQCHMYCw/I/15366573475615.jpg" alt=""></p>
+<h2 id="统一分享接口"><a href="#统一分享接口" class="headerlink" title="统一分享接口"></a>统一分享接口</h2><h3 id="缺陷"><a href="#缺陷" class="headerlink" title="缺陷"></a>缺陷</h3><p><strong>缺陷说在前面, 其实本来不打算统一接口的.</strong></p>
+<ul>
+<li>主分享 Manager 和子平台分享 Manager 存在耦和(没有参考 ShareSDK 的 jar 包方式去做);</li>
+<li>分享接口优化受限制, 由于前面的平台分享对比表格可知, 国外的平台分享很多都没有回调, 而国内的平台分享内容又存在多种形式, 无法实现高度统一;</li>
+<li>添加平台没有做<strong>去重处理</strong>, 造成不必要的开销;</li>
+</ul>
+<h3 id="类图"><a href="#类图" class="headerlink" title="类图"></a>类图</h3><p><img src="https://lh3.googleusercontent.com/-O0rTTel0iHc/W5eJdrZJVII/AAAAAAAAAbI/JdickRAMap45EJT6Lrmizg1X6z9mJqtOACHMYCw/I/Android%2B" alt="Android 统一接口类图"></p>
+<ul>
+<li><strong>RShareManger:</strong> 主分享 Manager, 子平台 Manager 的初始化、分享、应用跳转和一些其他操作都在此进行;</li>
+<li><strong>RImageContent、RVideoContent、RTextContent、RWebpageContent</strong> 为四种对应分享内容模型.</li>
+</ul>
+<h3 id="详细设计"><a href="#详细设计" class="headerlink" title="详细设计"></a>详细设计</h3><p><strong>分享频道</strong></p>
+<p>以 Java 为例, 在 <code>RShareManager</code> 种定义了分享通道枚举:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">enum</span> <span class="class"><span class="keyword">class</span> <span class="title">ShareChannel</span> </span>&#123;</span><br><span class="line">    QQSession,</span><br><span class="line">    QQFavorite,</span><br><span class="line">    QQDataLine,</span><br><span class="line">    QZone,</span><br><span class="line">    WechatSession,</span><br><span class="line">    WechatFavorite,</span><br><span class="line">    WechatTimeline,</span><br><span class="line">    FacebookClient,</span><br><span class="line">    FacebookBroswer,</span><br><span class="line">    TwitterInnerApp,</span><br><span class="line">    TwitterClient,</span><br><span class="line">    SinaWeibo,</span><br><span class="line">    SinaWeiboStory,</span><br><span class="line">    Line,</span><br><span class="line">    Instagram,</span><br><span class="line">    Tumblr,</span><br><span class="line">    Pinterest,</span><br><span class="line">    GooglePlus,</span><br><span class="line">    WhatsApp</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="接口"><a href="#接口" class="headerlink" title="接口"></a>接口</h3><p><strong>构建分享模型</strong></p>
+<p>以 <code>RImageContent</code> 为例:</p>
+<p>Java:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">RImageContent content = <span class="keyword">new</span> RImageContent.Builder(targetImage, targetImageUrl)</span><br><span class="line">                 <span class="comment">// ...</span></span><br><span class="line">                .build();</span><br></pre></td></tr></table></figure>
+<p>Kotlin:</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">val</span> content : RImageContent = RImageContent().apply &#123; </span><br><span class="line">            <span class="comment">// ...</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>分享：</strong></p>
+<p>以分享 <code>RImageContent</code> 为例:</p>
+<p>Java:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">RShareManager.getInstance().shareImage(context, content, channel, <span class="keyword">new</span> RShareListener() &#123;</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onComplete</span><span class="params">(RSharePlatform.Platform platform)</span> </span>&#123;</span><br><span class="line">            <span class="comment">// ...  </span></span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onFail</span><span class="params">(RSharePlatform.Platform platform, String errorInfo)</span> </span>&#123;</span><br><span class="line">            <span class="comment">// ...</span></span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onCancel</span><span class="params">(RSharePlatform.Platform platform)</span> </span>&#123;</span><br><span class="line">            <span class="comment">// ...</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br></pre></td></tr></table></figure>
+<p>Kotlin:</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"> RShareManager.instance.shareImage(context, content, channel) &#123; platform, state, errorInfo -&gt;</span><br><span class="line">           <span class="comment">// ...</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="源码"><a href="#源码" class="headerlink" title="源码"></a>源码</h2><p><a href="https://github.com/rexzx/rshare_java" target="_blank" rel="noopener">Java 版本源码</a>、 <a href="https://github.com/rexzx/rshare_kotlin" target="_blank" rel="noopener">Kotlin 版本源码</a>, 还在学习中, 请多指教.</p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/share/" rel="tag"># share</a>
+          
+            <a href="/tags/social/" rel="tag"># social</a>
+          
+            <a href="/tags/Android/" rel="tag"># Android</a>
+          
+            <a href="/tags/Java/" rel="tag"># Java</a>
+          
+            <a href="/tags/Kotlin/" rel="tag"># Kotlin</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/08/28/rshare-ios-vesion/" rel="next" title="「RSHARE」 一键分享 iOS 版">
+                <i class="fa fa-chevron-left"></i> 「RSHARE」 一键分享 iOS 版
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/logo.jpg"
+                alt="" />
+            
+              <p class="site-author-name" itemprop="name"></p>
+              <p class="site-description motion-element" itemprop="description">115 106 99</p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">2</span>
+                    <span class="site-state-item-name">posts</span>
+                  </a>
+                </div>
+              
+
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">8</span>
+                    <span class="site-state-item-name">tags</span>
+                  
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#测试设备"><span class="nav-number">1.</span> <span class="nav-text">测试设备</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#支持平台"><span class="nav-number">2.</span> <span class="nav-text">支持平台</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#平台差异"><span class="nav-number">2.1.</span> <span class="nav-text">平台差异</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#分享总体设计"><span class="nav-number">3.</span> <span class="nav-text">分享总体设计</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#详细逻辑"><span class="nav-number">4.</span> <span class="nav-text">详细逻辑</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#基类"><span class="nav-number">4.1.</span> <span class="nav-text">基类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#配置文件"><span class="nav-number">4.2.</span> <span class="nav-text">配置文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#图片的处理"><span class="nav-number">4.3.</span> <span class="nav-text">图片的处理</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#文件共享"><span class="nav-number">4.3.1.</span> <span class="nav-text">文件共享</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#QQ"><span class="nav-number">4.4.</span> <span class="nav-text">QQ</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#准备"><span class="nav-number">4.4.1.</span> <span class="nav-text">准备</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#集成"><span class="nav-number">4.4.2.</span> <span class="nav-text">集成</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#接口及内部实现"><span class="nav-number">4.4.3.</span> <span class="nav-text">接口及内部实现</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#微信"><span class="nav-number">4.5.</span> <span class="nav-text">微信</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#准备-1"><span class="nav-number">4.5.1.</span> <span class="nav-text">准备</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#集成-1"><span class="nav-number">4.5.2.</span> <span class="nav-text">集成</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#接口及内部实现-1"><span class="nav-number">4.5.3.</span> <span class="nav-text">接口及内部实现</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#新浪"><span class="nav-number">4.6.</span> <span class="nav-text">新浪</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#准备-2"><span class="nav-number">4.6.1.</span> <span class="nav-text">准备</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#集成-2"><span class="nav-number">4.6.2.</span> <span class="nav-text">集成</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#接口及内部实现-2"><span class="nav-number">4.6.3.</span> <span class="nav-text">接口及内部实现</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Facebook"><span class="nav-number">4.7.</span> <span class="nav-text">Facebook</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#准备-3"><span class="nav-number">4.7.1.</span> <span class="nav-text">准备</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#集成-3"><span class="nav-number">4.7.2.</span> <span class="nav-text">集成</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#接口调用及内部实现"><span class="nav-number">4.7.3.</span> <span class="nav-text">接口调用及内部实现</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Twitter"><span class="nav-number">4.8.</span> <span class="nav-text">Twitter</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#准备-4"><span class="nav-number">4.8.1.</span> <span class="nav-text">准备</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#集成-4"><span class="nav-number">4.8.2.</span> <span class="nav-text">集成</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#接口调用及内部实现-1"><span class="nav-number">4.8.3.</span> <span class="nav-text">接口调用及内部实现</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Tumblr"><span class="nav-number">4.9.</span> <span class="nav-text">Tumblr</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#准备-5"><span class="nav-number">4.9.1.</span> <span class="nav-text">准备</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#集成-5"><span class="nav-number">4.9.2.</span> <span class="nav-text">集成</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#接口调用及内部实现-2"><span class="nav-number">4.9.3.</span> <span class="nav-text">接口调用及内部实现</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Pinterest"><span class="nav-number">4.10.</span> <span class="nav-text">Pinterest</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#集成-6"><span class="nav-number">4.10.1.</span> <span class="nav-text">集成</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Line"><span class="nav-number">4.11.</span> <span class="nav-text">Line</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#集成-7"><span class="nav-number">4.11.1.</span> <span class="nav-text">集成</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#WhatsApp"><span class="nav-number">4.12.</span> <span class="nav-text">WhatsApp</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#准备-6"><span class="nav-number">4.12.1.</span> <span class="nav-text">准备</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#GooglePlus"><span class="nav-number">4.13.</span> <span class="nav-text">GooglePlus</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#准备-7"><span class="nav-number">4.13.1.</span> <span class="nav-text">准备</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#集成-8"><span class="nav-number">4.13.2.</span> <span class="nav-text">集成</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#接口调用及内部实现-3"><span class="nav-number">4.13.3.</span> <span class="nav-text">接口调用及内部实现</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#统一分享接口"><span class="nav-number">5.</span> <span class="nav-text">统一分享接口</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#缺陷"><span class="nav-number">5.1.</span> <span class="nav-text">缺陷</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#类图"><span class="nav-number">5.2.</span> <span class="nav-text">类图</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#详细设计"><span class="nav-number">5.3.</span> <span class="nav-text">详细设计</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#接口"><span class="nav-number">5.4.</span> <span class="nav-text">接口</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#源码"><span class="nav-number">6.</span> <span class="nav-text">源码</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder"></span>
+
+  
+
+  
+</div>
+
+
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> v3.7.1</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://theme-next.org">NexT.Pisces</a> v6.3.0</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+	
+    
+
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.3.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.3.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=6.3.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=6.3.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.3.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.3.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.3.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
