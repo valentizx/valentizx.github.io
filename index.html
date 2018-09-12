@@ -375,7 +375,7 @@
                 
                   <span class="post-meta-item-text">Edited on</span>
                 
-                <time title="Modified: 2018-09-12 09:34:32" itemprop="dateModified" datetime="2018-09-12T09:34:32+08:00">2018-09-12</time>
+                <time title="Modified: 2018-09-12 09:41:26" itemprop="dateModified" datetime="2018-09-12T09:41:26+08:00">2018-09-12</time>
               
             
           </span>
@@ -835,7 +835,19 @@
 <p>Java:</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">RTwitterManager.getInstance().share(context, webapgeUrl, description, targetImage, hashTag, mode, listener);</span><br></pre></td></tr></table></figure>
 <p>Kotlin:</p>
-<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">RTwitterManager.instance.share(context, webpageUrl, description, targetImage, hashTag, mode, callback)</span><br><span class="line">``` </span><br><span class="line"></span><br><span class="line">&gt; ⚠️ 测试多次发推内容不要重复, 否则会分享失败.</span><br><span class="line"></span><br><span class="line">表现:</span><br><span class="line"></span><br><span class="line">应用内分享(有回调):</span><br><span class="line">![](https:<span class="comment">//lh3.googleusercontent.com/-c5I4chuawhk/W5dnV0p1ksI/AAAAAAAAAZE/HBu1kom59Rs_q2B3ZMtQqzqPJBnbJRccACHMYCw/I/15366490447032.jpg)</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">跳转 Twitter 客户端分享(无回调):</span><br><span class="line"></span><br><span class="line">![](https:<span class="comment">//lh3.googleusercontent.com/-oA7HlkrGvx0/W5dnu8fKzKI/AAAAAAAAAZU/g6qT1kewvPk-Yzb1LnlH_kad--REvEQDQCHMYCw/I/15366491440513.jpg)</span></span><br><span class="line"></span><br><span class="line">### Instagram</span><br><span class="line">#### 准备</span><br><span class="line"></span><br><span class="line">分享无需注册平台无需 SDK, [Instagram 开发者主页](https:<span class="comment">//www.instagram.com/developer/), [构建 Intent 方式分享](https://www.instagram.com/developer/mobile-sharing/android-intents/).</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">#### 接口调用及内部实现</span><br><span class="line"></span><br><span class="line">**分享**</span><br><span class="line"></span><br><span class="line">Intent 构建(以 Java 为例):</span><br><span class="line"></span><br><span class="line">图片:</span><br><span class="line"></span><br><span class="line">```java</span><br><span class="line">Intent intent = new Intent(Intent.ACTION_SEND);</span><br><span class="line">intent.setType(<span class="string">"image/*"</span>);</span><br><span class="line">intent.putExtra(Intent.EXTRA_STREAM, targetImageUrl);</span><br><span class="line">intent.setPackage(<span class="string">"com.instagram.android"</span>);</span><br><span class="line">context.startActivity(intent);</span><br></pre></td></tr></table></figure>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">RTwitterManager.instance.share(context, webpageUrl, description, targetImage, hashTag, mode, callback)</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>⚠️ 测试多次发推内容不要重复, 否则会分享失败.</p>
+</blockquote>
+<p>表现:</p>
+<p>应用内分享(有回调):<br><img src="https://lh3.googleusercontent.com/-c5I4chuawhk/W5dnV0p1ksI/AAAAAAAAAZE/HBu1kom59Rs_q2B3ZMtQqzqPJBnbJRccACHMYCw/I/15366490447032.jpg" alt=""></p>
+<p>跳转 Twitter 客户端分享(无回调):</p>
+<p><img src="https://lh3.googleusercontent.com/-oA7HlkrGvx0/W5dnu8fKzKI/AAAAAAAAAZU/g6qT1kewvPk-Yzb1LnlH_kad--REvEQDQCHMYCw/I/15366491440513.jpg" alt=""></p>
+<h3 id="Instagram"><a href="#Instagram" class="headerlink" title="Instagram"></a>Instagram</h3><h4 id="准备-5"><a href="#准备-5" class="headerlink" title="准备"></a>准备</h4><p>分享无需注册平台无需 SDK, <a href="https://www.instagram.com/developer/" target="_blank" rel="noopener">Instagram 开发者主页</a>, <a href="https://www.instagram.com/developer/mobile-sharing/android-intents/" target="_blank" rel="noopener">构建 Intent 方式分享</a>.</p>
+<h4 id="接口调用及内部实现-2"><a href="#接口调用及内部实现-2" class="headerlink" title="接口调用及内部实现"></a>接口调用及内部实现</h4><p><strong>分享</strong></p>
+<p>Intent 构建(以 Java 为例):</p>
+<p>图片:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Intent intent = <span class="keyword">new</span> Intent(Intent.ACTION_SEND);</span><br><span class="line">intent.setType(<span class="string">"image/*"</span>);</span><br><span class="line">intent.putExtra(Intent.EXTRA_STREAM, targetImageUrl);</span><br><span class="line">intent.setPackage(<span class="string">"com.instagram.android"</span>);</span><br><span class="line">context.startActivity(intent);</span><br></pre></td></tr></table></figure>
 <p><strong>图片分享:</strong></p>
 <p>Java:</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">RInstagramManager.getInstance().shareImage(context, targetImage);</span><br></pre></td></tr></table></figure>
@@ -851,10 +863,10 @@
 <figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">RInstagramManager.instance.shareVideo(context, localVideoUrl)</span><br></pre></td></tr></table></figure>
 <p>表现:</p>
 <p><img src="https://lh3.googleusercontent.com/-53x4U8Iht94/W5drxU3QLhI/AAAAAAAAAZk/zebiYGtry1McCJ6P35Es-niqeCMyzfh-ACHMYCw/I/15366501815031.jpg" alt=""></p>
-<h3 id="Tumblr"><a href="#Tumblr" class="headerlink" title="Tumblr"></a>Tumblr</h3><h4 id="准备-5"><a href="#准备-5" class="headerlink" title="准备"></a>准备</h4><p>分享需要注册平台, <a href="https://www.tumblr.com/developers" target="_blank" rel="noopener">Tumblr 开发者主页</a>, <a href="https://dev.flurry.com/admin/applications" target="_blank" rel="noopener">注册应用主页</a>, Tumblr SDK <strong>支持 compile 集成</strong>, <a href="https://developer.yahoo.com/flurry/docs/integrateflurry/android/" target="_blank" rel="noopener">分享接口调用说明</a>.</p>
+<h3 id="Tumblr"><a href="#Tumblr" class="headerlink" title="Tumblr"></a>Tumblr</h3><h4 id="准备-6"><a href="#准备-6" class="headerlink" title="准备"></a>准备</h4><p>分享需要注册平台, <a href="https://www.tumblr.com/developers" target="_blank" rel="noopener">Tumblr 开发者主页</a>, <a href="https://dev.flurry.com/admin/applications" target="_blank" rel="noopener">注册应用主页</a>, Tumblr SDK <strong>支持 compile 集成</strong>, <a href="https://developer.yahoo.com/flurry/docs/integrateflurry/android/" target="_blank" rel="noopener">分享接口调用说明</a>.</p>
 <h4 id="集成-5"><a href="#集成-5" class="headerlink" title="集成"></a>集成</h4><p>a. 此 Demo 中是手动集成的 6.1.0 版本的 SDK.</p>
 <p>⚠️: 一定是这个版本的, 最新版本的 SDK 我没有找到分享的接口.</p>
-<h4 id="接口调用及内部实现-2"><a href="#接口调用及内部实现-2" class="headerlink" title="接口调用及内部实现"></a>接口调用及内部实现</h4><p><strong>a. 内部初始化 SDK</strong></p>
+<h4 id="接口调用及内部实现-3"><a href="#接口调用及内部实现-3" class="headerlink" title="接口调用及内部实现"></a>接口调用及内部实现</h4><p><strong>a. 内部初始化 SDK</strong></p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">FlurryAgent.setLogEnabled(<span class="keyword">true</span>);</span><br><span class="line">FlurryAgent.init(context, flurryKey);</span><br><span class="line">TumblrShare.setOAuthConfig(key, secret);</span><br></pre></td></tr></table></figure>
 <p>⚠️ 在 iOS 端初始化 SDK 仅需要 <code>key</code> 和 <code>secret</code> 两个参数.</p>
 <p><strong>b. 分享</strong></p>
@@ -904,7 +916,7 @@
 <figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">RLineManager.instance.share(context, targetImage)</span><br></pre></td></tr></table></figure>
 <p>表现:</p>
 <p><img src="https://lh3.googleusercontent.com/-WIxiBag-ZsE/W5d-I4YUj9I/AAAAAAAAAaU/-4XSuRZpELsRUzbNFssC7AgHAUkD9hgNgCHMYCw/I/15366548801345.jpg" alt=""></p>
-<h3 id="WhatsApp"><a href="#WhatsApp" class="headerlink" title="WhatsApp"></a>WhatsApp</h3><h4 id="准备-6"><a href="#准备-6" class="headerlink" title="准备"></a>准备</h4><p>分享无需注册平台.</p>
+<h3 id="WhatsApp"><a href="#WhatsApp" class="headerlink" title="WhatsApp"></a>WhatsApp</h3><h4 id="准备-7"><a href="#准备-7" class="headerlink" title="准备"></a>准备</h4><p>分享无需注册平台.</p>
 <p>Android 端无需集成 SDK, 仅通过 Intent 方式就可以分享, 但是 iOS 需要.</p>
 <p><strong>b. 分享</strong></p>
 <p>WhatsApp 支持同时分享文字和图片, iOS 端不可以.</p>
@@ -917,10 +929,10 @@
 <figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">RWhatsAppManager.instance.share(context, targetImage, description)</span><br></pre></td></tr></table></figure>
 <p>表现:</p>
 <p><img src="https://lh3.googleusercontent.com/-b2WSm80d_Us/W5eC13XcH1I/AAAAAAAAAak/3CsSs5ULiQ8Ng_-6zU3vyVrmCyzbEw2VgCHMYCw/I/15366560853962.jpg" alt=""></p>
-<h3 id="GooglePlus"><a href="#GooglePlus" class="headerlink" title="GooglePlus"></a>GooglePlus</h3><h4 id="准备-7"><a href="#准备-7" class="headerlink" title="准备"></a>准备</h4><p>需要注册平台, <a href="https://developers.google.com/+/" target="_blank" rel="noopener">Google Plus 开发者主页</a><br>, <a href="https://developers.google.com/+/mobile/android/getting-started" target="_blank" rel="noopener">创建流程</a>.</p>
+<h3 id="GooglePlus"><a href="#GooglePlus" class="headerlink" title="GooglePlus"></a>GooglePlus</h3><h4 id="准备-8"><a href="#准备-8" class="headerlink" title="准备"></a>准备</h4><p>需要注册平台, <a href="https://developers.google.com/+/" target="_blank" rel="noopener">Google Plus 开发者主页</a><br>, <a href="https://developers.google.com/+/mobile/android/getting-started" target="_blank" rel="noopener">创建流程</a>.</p>
 <h4 id="集成-8"><a href="#集成-8" class="headerlink" title="集成"></a>集成</h4><p>需要 <strong>Google Service 的支持</strong>, 在 <strong>Application 级 <code>build.gradle</code> 中配置:</strong></p>
 <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">dependencies &#123;</span><br><span class="line">    implementation 'com.google.android.gms:play-services-plus:15.0.1'</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h4 id="接口调用及内部实现-3"><a href="#接口调用及内部实现-3" class="headerlink" title="接口调用及内部实现"></a>接口调用及内部实现</h4><p>Google Plus 分享只支持<strong>分享网页</strong>,  通过 <code>PlusShare.Builder</code> 来构建网页分享模型, Java 为例:</p>
+<h4 id="接口调用及内部实现-4"><a href="#接口调用及内部实现-4" class="headerlink" title="接口调用及内部实现"></a>接口调用及内部实现</h4><p>Google Plus 分享只支持<strong>分享网页</strong>,  通过 <code>PlusShare.Builder</code> 来构建网页分享模型, Java 为例:</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Intent shareIntent = <span class="keyword">new</span> PlusShare.Builder(context)</span><br><span class="line">                .setType(<span class="string">"text/plain"</span>)</span><br><span class="line">                .setText(text)</span><br><span class="line">                .setContentUrl(Uri.parse(webpageUrl)</span><br><span class="line">                .getIntent();</span><br></pre></td></tr></table></figure>
 <p><strong>分享网页:</strong></p>
 <p>Java:</p>
