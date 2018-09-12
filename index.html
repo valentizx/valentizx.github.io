@@ -375,7 +375,7 @@
                 
                   <span class="post-meta-item-text">Edited on</span>
                 
-                <time title="Modified: 2018-09-12 09:41:26" itemprop="dateModified" datetime="2018-09-12T09:41:26+08:00">2018-09-12</time>
+                <time title="Modified: 2018-09-12 09:43:26" itemprop="dateModified" datetime="2018-09-12T09:43:26+08:00">2018-09-12</time>
               
             
           </span>
@@ -908,7 +908,7 @@
 <figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">RLineManager.instance.share(context, text)</span><br></pre></td></tr></table></figure>
 <p>表现:<br><img src="https://lh3.googleusercontent.com/-ps4ZtMCw-R0/W5d-SMQEz0I/AAAAAAAAAaY/BgkApt-Nzgo3LBvYIBACO0uYO2EgR-thQCHMYCw/I/15366549202862.jpg" alt=""></p>
 <p>图片:</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Intent intent = <span class="keyword">new</span> Intent(Intent.ACTION_SEND);</span><br><span class="line">intent.setType(<span class="string">"image/*"</span>);        intent.putExtra(Intent.EXTRA_STREAM, targetImageUrl);</span><br><span class="line">intent.setPackage(<span class="string">"jp.naver.line.android"</span>);</span><br><span class="line">context.startActivity(intent);</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Intent intent = <span class="keyword">new</span> Intent(Intent.ACTION_SEND);</span><br><span class="line">intent.setType(<span class="string">"image/*"</span>);</span><br><span class="line">intent.putExtra(Intent.EXTRA_STREAM, targetImageUrl);</span><br><span class="line">intent.setPackage(<span class="string">"jp.naver.line.android"</span>);</span><br><span class="line">context.startActivity(intent);</span><br></pre></td></tr></table></figure>
 <p><strong>图片分享:</strong></p>
 <p>Java:</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">RLineManager.getInstance().shareImage(context, targetImage);</span><br></pre></td></tr></table></figure>
