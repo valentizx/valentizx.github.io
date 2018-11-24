@@ -312,6 +312,253 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/11/24/pushstreaming/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="115 106 99">
+      <meta itemprop="image" content="/images/logo.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="I'M REXZX">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/11/24/pushstreaming/" itemprop="url">
+                  macOS 系统 nginx + rtmp 流媒体传输实践
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2018-11-24 13:18:11 / Modified: 18:30:11" itemprop="dateCreated datePublished" datetime="2018-11-24T13:18:11+08:00">2018-11-24</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>流媒体传输是“直播”中至关重要的环节，在网络传输媒体流的时候有着不同的<strong>流媒体传输协议</strong>。</p>
+<p>做了一些小调查，在整个“直播”产品构建的过程中，应用最广的两个流媒体传输协议就是 <strong>RTMP</strong> 和 <strong>HLS</strong> 两个协议，其中 <strong>RTMP</strong> 在国内直播发展的长河中扮演着极其重要的角色，各个平台与 <strong>RTMP</strong> 的“结合”已变得很成熟。</p>
+<h2 id="两种不同的流媒体传输协议"><a href="#两种不同的流媒体传输协议" class="headerlink" title="两种不同的流媒体传输协议"></a>两种不同的流媒体传输协议</h2><h3 id="RTMP"><a href="#RTMP" class="headerlink" title="RTMP"></a>RTMP</h3><p>RTMP (Real Time Messaging Protocol) ：实时消息传输协议，属<strong>应用层协议</strong>，基于传输层 <strong>TCP 协议</strong>长链接来进行传输，有 N 多变种，最早由 Macromedia 公司开发，而后 Macromedia 被 Adobe 公司收购。</p>
+<h4 id="RTMP-的主要特性"><a href="#RTMP-的主要特性" class="headerlink" title="RTMP 的主要特性"></a>RTMP 的主要特性</h4><ul>
+<li>市场广阔，基本所有的编码器都支持 RTMP；</li>
+<li>延迟低，RTMP 的实时性在 1～3 秒左右，即使经过 CDN (Content Delivery Network 内容分发网络)多层分发也能保证实时性在 3 秒左右，此特性已经完全满足现在的直播产业需求；</li>
+<li>稳定性、可靠性高，基于 TCP 保证媒体流在传输的过程中不会丢失，但这也是缺点，在网络状态不好的时候，服务器会等待数据，这个过程会出现延迟，等包接受完整再将完整的包推给 Client 端；</li>
+<li>HTML5 播放需要插件，并且跨平台较差</li>
+</ul>
+<h4 id="RTMP-原理"><a href="#RTMP-原理" class="headerlink" title="RTMP 原理"></a>RTMP 原理</h4><p>RTMP 通过<strong>握手</strong>的方式建立 RTMP Connection，</p>
+<p>若 Client 端要按序发送 C0、C1、C2，Server 端按序发送 S0、S1、S2，大致过程如下图：</p>
+<p><img src="https://lh3.googleusercontent.com/-leVcMoCy_Ho/W_j6QUWNzsI/AAAAAAAAAcU/2YwbK5rIYw4Vr85ERW4PHliSXV_TwjtUgCHMYCw/I/15430436475817.png" alt=""></p>
+<p>为保证数据的有效性，无论是 Client 端还是 Server 端都会等待一次 Chunk 接收完毕再进行下一次通信。</p>
+<ul>
+<li><strong>Chunk</strong> 是 RTMP 在进行数据流传输过程中的最小单位，每个 Chunk 由 Message 拆分，当然也可能每个独立的 Message 作为 Chunk 进行传输；</li>
+<li><strong>Message</strong> 是满足 RTMP 并且经过「格式化」的数据，Message 有着自己的“数据结构”，标识每个 Message 的字段为 <strong>Message ID</strong>，该字段是拆分成 Chunk 和还原 Chunk 的凭借。</li>
+</ul>
+<h3 id="HLS"><a href="#HLS" class="headerlink" title="HLS"></a>HLS</h3><p>HLS (HTTP Live Streaming)：是 Apple 公司基于 <strong>HTTP</strong> 实现的流媒体传输协议。</p>
+<h4 id="HLS-的主要特性"><a href="#HLS-的主要特性" class="headerlink" title="HLS 的主要特性"></a>HLS 的主要特性</h4><ul>
+<li>对于 Apple 自家平台的硬件设备上最大化支持，不用自行开发特有播放器，在 Android 的设备上支持表现略差；</li>
+<li>HLS 会将视频源分成索引文件和视频切片进行传输，所以可以实现<strong>平滑</strong>的切换码率，但这也是 HLS 一个致命的缺点，这种机制会导致 HLS 的实时性很差，延迟可达到数十秒；</li>
+<li>基于 HTTP ，不存在防火墙和代理的问题，但需要和 Server 端不断进行连接通信；</li>
+<li>HTML5 可以直接播放直播链接，不许任何独立的 Application支持。</li>
+</ul>
+<h4 id="HLS-主要原理"><a href="#HLS-主要原理" class="headerlink" title="HLS 主要原理"></a>HLS 主要原理</h4><p>HLS 传输内容包括：<strong>m3u8</strong> 索引文件以及 <strong>ts</strong> 视频切片。</p>
+<p>无论是直播还是点播，HLS 协议都将视频源按策略分割成一个索引文件和若干 ts 视频切片，由索引文件管理视频切片，Server 则不断的将这些最视频切片推给 Client 端，所以对于直播而言，Client 会不断接受从 Server 端推过来的视频切片，以“点播”的方式达到直播的效果，但由于切片的过程会造成<strong>高延迟</strong>，所以在国内的直播产业中并不被看好，即使是将 ts 文件的切片设置最小，表现也仍旧不如 RTMP。</p>
+<h3 id="RTMP-Vs-HLS"><a href="#RTMP-Vs-HLS" class="headerlink" title="RTMP Vs. HLS"></a>RTMP Vs. HLS</h3><p>通过上面的介绍，对于<strong>视频采集 -&gt; 处理/编码 -&gt; 推流分发 -&gt; Client 端播放</strong>整个过程中 RTMP 和 HLS 的工作内容大致如下：</p>
+<p><img src="https://lh3.googleusercontent.com/-5CPZkRTj12U/W_j5yubYj5I/AAAAAAAAAcM/EIp0Fvb_ByAE99WS3ut_pdxeVZrs7MamgCHMYCw/I/15430435174139.jpg" alt="RTMP"></p>
+<p><img src="https://lh3.googleusercontent.com/-lnObWno95vE/W_jp_LdY8yI/AAAAAAAAAcA/1AaNtt-x-twOns5bWJMGhU9uE3NMIqh6QCHMYCw/I/15430394795180.png" alt="HLS"></p>
+<p>与此同时，RTMP 既能<strong>推流</strong>也能<strong>拉流</strong>，而 HLS <strong>只能拉流</strong>。<br>所以根据各自的特点，RTMP 更适用于实时性、互动性较高的直播，HLS 更适合 HTTP 点播。</p>
+<h2 id="本地流媒体传输实践"><a href="#本地流媒体传输实践" class="headerlink" title="本地流媒体传输实践"></a>本地流媒体传输实践</h2><h3 id="准备"><a href="#准备" class="headerlink" title="准备"></a>准备</h3><p>a. 安装 <code>HomeBrew</code>，终端键入：</p>
+<p><code>ruby -e &quot;$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)&quot;</code></p>
+<blockquote>
+<p>升级 <code>Homebrew</code>：<code>brew update</code></p>
+</blockquote>
+<p>b. 推流搭建本地服务器需 <strong>nginx</strong>，终端键入：<code>brew tap denji/nginx</code></p>
+<blockquote>
+<p>使用 <code>brew tap homebrew/nginx</code> 会报 <strong>Error: homebrew/nginx was deprecated. This tap is now empty as all its formulae were migrated.</strong></p>
+</blockquote>
+<p>c. 安装 <strong>rtmp</strong> 模块，终端键入：</p>
+<p><code>brew install nginx-full --with-rtmp-module</code></p>
+<p>d. 此时，<strong>nginx</strong> 和 <strong>rtmp</strong> 模块都已安装完成，终端键入：<code>nginx</code> (权限问题键入 <code>sudo nginx</code>)，启动 nginx 服务，浏览器键入 <code>http://localhost:8080</code> 出现 <strong>Welcome to nginx!</strong> 欢迎语表示安装成功。</p>
+<blockquote>
+<p>重启 nginx 服务命令：<code>nginx -s reload</code><br>停止 nginx 服务命令：<code>nginx -s stop</code><br>有序退出 nginx 服务命令：<code>nginx -s quit</code></p>
+</blockquote>
+<p>e. 配置 <strong>nginx.conf</strong> (HLS + RTMP)</p>
+<blockquote>
+<p>nginx.conf 路径为：<strong>/usr/local/etc/nginx/nginx.conf</strong></p>
+</blockquote>
+<p>文本打开该文件在 <strong>http</strong> 作用域内键入：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">location /hls &#123;</span><br><span class="line">        #Serve HLS config</span><br><span class="line">        types &#123;</span><br><span class="line">            application/vnd.apple.mpegurl    m3u8;</span><br><span class="line">            video/mp2t ts;</span><br><span class="line">        &#125;</span><br><span class="line">        root /usr/local/var/www;</span><br><span class="line">        add_header Cache-Control    no-cache;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>在最后键入：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">rtmp &#123;</span><br><span class="line">	    server &#123;</span><br><span class="line">	        listen 1935;</span><br><span class="line">	        application rtmplive &#123;</span><br><span class="line">	            live on;</span><br><span class="line">	            max_connections 1024;</span><br><span class="line">	        &#125;</span><br><span class="line">	        application hls&#123;</span><br><span class="line">	            live on;</span><br><span class="line">	            hls on;</span><br><span class="line">	            hls_path /usr/local/var/www/hls;</span><br><span class="line">	            hls_fragment 1s;</span><br><span class="line">	        &#125;</span><br><span class="line">	    &#125;</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>RTMP <strong>默认端口 1935</strong>，<strong>rtmp 配置信息不属于任何作用域</strong>，写在任何作用域里都会报错 <strong>nginx: [emerg] “rtmp” directive is not allowed here in /etc/nginx/nginx.conf:起始行数</strong></p>
+</blockquote>
+<p>配置完毕重启 nginx 服务。</p>
+<p>f. 安装 <strong>ffmepg</strong> 工具，终端键入：</p>
+<p><code>brew install ffmpeg</code></p>
+<p>g. 安装支持 HLS 和 RTMP 的播放器，<a href="https://www.videolan.org/vlc/index.html" target="_blank" rel="noopener">VLC</a> 和 <a href="https://mpv.io/" target="_blank" rel="noopener">mpv</a> 都可，在此用的是 mpv。</p>
+<h3 id="实践本地推流至-nginx"><a href="#实践本地推流至-nginx" class="headerlink" title="实践本地推流至 nginx"></a>实践本地推流至 nginx</h3><p>一切都准备就绪后，即可实践推流服务，终端键入：</p>
+<p><code>ffmpeg -re -i 目标视频.mp4 -vcodec libx264 -vprofile baseline -acodec aac -ar 44100 -strict -2 -ac 1 -f flv -s 1280x720 -q 10 rtmp://localhost:1935/xx/xx</code></p>
+<p><strong>推流命令具体参数：</strong><br> 参数|说明|<br>—|—|—<br>-vcodec libx264|视频的编码器为 H.264|<br>vprofile baseline | 设置音视频编码器的类<br>-acodec aac|指定声音的编码器为AAC<br>-ar 44100|音频编解码器的采样率，单位为赫兹<br>-ac 1|设置音频编解码器的声道数目<br>-f flv|强制设定输入和输出文件格式为 flv 格式<br>-s 1280x720 | 分辨率</p>
+<p>推送过程会在终端显示如下：</p>
+<p><img src="https://lh3.googleusercontent.com/-HKeUcGhPnNs/W_kW8_gvwVI/AAAAAAAAAcg/eFET15J0vAEP2dkpmjf1qRdjXIXutejGACHMYCw/I/Jietu20181124-171400%25402x.jpg" alt=""></p>
+<p>推送完毕如下：<br><img src="https://lh3.googleusercontent.com/-D_bXkjNRNiU/W_kY6_wOgUI/AAAAAAAAAc0/_EQY1y-aObsRDWFMKSgtGSXxsX9-UMKDgCHMYCw/I/15430514948876.jpg" alt=""></p>
+<h4 id="RTMP-拉流"><a href="#RTMP-拉流" class="headerlink" title="RTMP 拉流"></a>RTMP 拉流</h4><p>推流至 RTMP 服务器生成地址： <strong>rtmp://localhost:1935/xx/xx</strong></p>
+<p>此时在 mpv 工具栏 <strong>File - Open URL - 键入 rtmp://localhost:1935/rtmplive/xx</strong></p>
+<p>播放即可播放：</p>
+<p><img src="https://lh3.googleusercontent.com/-TIlna7CEZ3A/W_kXeDvoNyI/AAAAAAAAAco/EiYxJONT10Y3YX5x6FoEhG3ULbJ9-8DHwCHMYCw/I/Jietu20181124-171439%25402x.jpg" alt="Jietu20181124-171439@2x"></p>
+<h4 id="HLS-拉流"><a href="#HLS-拉流" class="headerlink" title="HLS 拉流"></a>HLS 拉流</h4><p>推流至 HLS 服务器生成地址：<br><strong><a href="http://localhost:8080/hls/xx.m3u8" target="_blank" rel="noopener">http://localhost:8080/hls/xx.m3u8</a></strong></p>
+<p>在浏览器或者 mpv 中播放表现如下：</p>
+<p><img src="https://lh3.googleusercontent.com/-Ukd-6VJKbhY/W_kbakzT1JI/AAAAAAAAAdA/oMsdcComgYkNhJWp0Ws1BOE2y3232bWYACHMYCw/I/Jietu20181124-173220%25402x.jpg" alt="Safari 播放"></p>
+<p><img src="https://lh3.googleusercontent.com/-ZdhM-lWEE7E/W_kbfIy0ztI/AAAAAAAAAdE/SHPCm-EqqHQJqOZGT0gJVg_AKDTjXMslQCHMYCw/I/Jietu20181124-173249%25402x.jpg" alt="mpv 播放器播放"></p>
+<h3 id="实践远程推流至-nginx"><a href="#实践远程推流至-nginx" class="headerlink" title="实践远程推流至 nginx"></a>实践远程推流至 nginx</h3><p>手头刚好有个科学上网买的 VPS 正好可以当作远程服务器使用，新加坡节点，但应该也是绕到美国的线路，所以可想而知，播放过程异常的艰辛，十几秒播放一帧已经算是给面子了，但好在已经有成果。</p>
+<p>我的服务器是 CentOS 系统，可能安装模块的命令和 Ubuntu 系统有细小的差别。</p>
+<p>在此连接 VPS 的工具选择的是 <strong>ShellCraft</strong>，macOS 自带的终端工具也可以连接，可视化 CentOS 服务器的客户端为 <a href="https://filezilla-project.org/" target="_blank" rel="noopener">FileZilla</a>，添加 VPS 站点步骤在本文最后。</p>
+<h4 id="准备-1"><a href="#准备-1" class="headerlink" title="准备"></a>准备</h4><p>a. 安装 git，CentOS 系统下安装 Git 的命令为：</p>
+<p><code>yum install git</code></p>
+<p>b. clone <strong>srs</strong>，键入：<br><code>git clone srs</code></p>
+<blockquote>
+<p>srs 的作者将它定义为直播服务器集群，更多的信息，请点 <a href="https://github.com/ossrs/srs" target="_blank" rel="noopener">srs Github 主页</a>。</p>
+</blockquote>
+<p>若 clone 过程中出现 <strong>Please make sure you have the correct access rights and the repository exists.</strong> 说明，SSH Key 出现了问题导致无法正常 git 操作，解决如下依次键入：</p>
+<ul>
+<li><code>git config --global user.name &quot;yourname&quot;</code></li>
+<li><code>git config --global user.email &quot;your@email.com&quot;</code></li>
+<li><code>ssh-keygen -t rsa -C &quot;your@email.com&quot;</code></li>
+<li><code>vi /root/.ssh/id_rsa.pub</code></li>
+<li>将该文件的一大串信息复制并添加到 Github 个人设置里新建的 SSH Key 中。</li>
+</ul>
+<p>c. cd 到 srs 目录，依次键入：</p>
+<p><code>git checkout 2.0release</code><br><code>git pull</code><br><code>cd trunk</code></p>
+<p>d. 配置远程服务器，该过程极其漫长，键入：<br><code>./configure --disable-all --with-ssl --with-nginx --with-hls --with-http-callback --with-http-server --with-http-api --with-ffmpeg --with-transcode --with-librtmp --with-dvr &amp;&amp; make</code></p>
+<p>出现下图所示表示配置环境完成：<br><img src="https://lh3.googleusercontent.com/-m1LDECnVXs4/W_kiMVpYXTI/AAAAAAAAAdQ/idOv_6owTtMJCLNWDD0DCpIOMzGi-i7CgCHMYCw/I/15430538665743.jpg" alt=""></p>
+<p>e. 执行配置，键入<br><code>./objs/srs -c conf/srs.conf</code></p>
+<p><img src="https://lh3.googleusercontent.com/-NEcCv6KArWI/W_kivew2BWI/AAAAAAAAAdY/GpneQQ2q1CsYCIwJDBUWgQO14fpn82sxwCHMYCw/I/Jietu20181124-180634%25402x.jpg" alt=""></p>
+<h3 id="实践远程推流与拉流"><a href="#实践远程推流与拉流" class="headerlink" title="实践远程推流与拉流"></a>实践远程推流与拉流</h3><p>推流拉流过程和本地推流命令一样，只不过服务器地址的 <strong>localhost:接口</strong> 要换成<strong>服务器地址</strong>，倘若出现如下错误信息则说明需要关闭 CentOS 的防火墙：</p>
+<p><img src="https://lh3.googleusercontent.com/-K7Ti2qPpqY0/W_kkSGtvRCI/AAAAAAAAAdk/5VT_n3m1Jho-ENKPWdO4PGZeTNXZ7KDXQCHMYCw/I/Jietu20181124-181217%25402x.jpg" alt=""></p>
+<blockquote>
+<p>错误信息：<br>[tcp @ 0x7fd255c02b80] Connection to tcp://207.148.66.232:1935 failed: Connection refused<br>[rtmp @ 0x7fd255d0b100] Cannot open connection tcp://207.148.66.232:1935<br>rtmp://207.148.66.232/live/demo: Connection refused</p>
+</blockquote>
+<p><strong>关闭防火墙的命令为：<code>systemctl stop firewalld.service</code></strong>。</p>
+<h2 id="FileZilla-添加站点"><a href="#FileZilla-添加站点" class="headerlink" title="FileZilla 添加站点"></a>FileZilla 添加站点</h2><p>File -&gt; Site Manager 弹出如下界面：</p>
+<p><img src="https://lh3.googleusercontent.com/-lQGsi8EPCEQ/W_kl5cSJDKI/AAAAAAAAAd8/1MU3SqJulLcDWLH8QDKkEUbJRE3Sk_jjwCHMYCw/I/15430548184358.jpg" alt=""></p>
+<p>New Site -&gt; General -&gt; Protocol 选择如图所示的 <strong>SFTP</strong>，Logon Type 为 <strong>Normal</strong>，Host、User 以及 Password 自行填写，Connect。</p>
+<p>界面如下：<br><img src="https://lh3.googleusercontent.com/-a346KYF4T-Q/W_kmflf2FRI/AAAAAAAAAeI/aCD8fe4AoqQGrv9V2o8XBjB0PYN-b12oQCHMYCw/I/15430549672565.jpg" alt=""></p>
+<p>👏done!🎉</p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/08/29/rshare-android-version/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1912,7 +2159,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">2</span>
+                    <span class="site-state-item-count">3</span>
                     <span class="site-state-item-name">posts</span>
                   </a>
                 </div>
@@ -1943,7 +2190,15 @@
                     
                       
                     
-                    <span class="site-state-item-count">8</span>
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">12</span>
                     <span class="site-state-item-name">tags</span>
                   
                 </div>
