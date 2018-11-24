@@ -129,7 +129,7 @@
 <meta property="og:image" content="https://lh3.googleusercontent.com/-K7Ti2qPpqY0/W_kkSGtvRCI/AAAAAAAAAdk/5VT_n3m1Jho-ENKPWdO4PGZeTNXZ7KDXQCHMYCw/I/Jietu20181124-181217%25402x.jpg">
 <meta property="og:image" content="https://lh3.googleusercontent.com/-lQGsi8EPCEQ/W_kl5cSJDKI/AAAAAAAAAd8/1MU3SqJulLcDWLH8QDKkEUbJRE3Sk_jjwCHMYCw/I/15430548184358.jpg">
 <meta property="og:image" content="https://lh3.googleusercontent.com/-a346KYF4T-Q/W_kmflf2FRI/AAAAAAAAAeI/aCD8fe4AoqQGrv9V2o8XBjB0PYN-b12oQCHMYCw/I/15430549672565.jpg">
-<meta property="og:updated_time" content="2018-11-24T10:41:46.357Z">
+<meta property="og:updated_time" content="2018-11-24T10:46:35.516Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="macOS 系统 nginx + rtmp 流媒体传输实践">
 <meta name="twitter:description" content="流媒体传输是“直播”中至关重要的环节，在网络传输媒体流的时候有着不同的流媒体传输协议。 做了一些小调查，在整个“直播”产品构建的过程中，应用最广的两个流媒体传输协议就是 RTMP 和 HLS 两个协议，其中 RTMP 在国内直播发展的长河中扮演着极其重要的角色，各个平台与 RTMP 的“结合”已变得很成熟。 两种不同的流媒体传输协议RTMPRTMP (Real Time Messaging Pro">
@@ -369,7 +369,7 @@
                 
               
 
-              <time title="Created: 2018-11-24 13:18:11 / Modified: 18:41:46" itemprop="dateCreated datePublished" datetime="2018-11-24T13:18:11+08:00">2018-11-24</time>
+              <time title="Created: 2018-11-24 13:18:11 / Modified: 18:46:35" itemprop="dateCreated datePublished" datetime="2018-11-24T13:18:11+08:00">2018-11-24</time>
             
 
             
@@ -469,7 +469,46 @@
 <p>g. 安装支持 HLS 和 RTMP 的播放器，<a href="https://www.videolan.org/vlc/index.html" target="_blank" rel="noopener">VLC</a> 和 <a href="https://mpv.io/" target="_blank" rel="noopener">mpv</a> 都可，在此用的是 mpv。</p>
 <h3 id="实践本地推流至-nginx"><a href="#实践本地推流至-nginx" class="headerlink" title="实践本地推流至 nginx"></a>实践本地推流至 nginx</h3><p>一切都准备就绪后，即可实践推流服务，终端键入：</p>
 <p><code>ffmpeg -re -i 目标视频.mp4 -vcodec libx264 -vprofile baseline -acodec aac -ar 44100 -strict -2 -ac 1 -f flv -s 1280x720 -q 10 rtmp://localhost:1935/xx/xx</code></p>
-<p><strong>推流命令具体参数：</strong><br> 参数|说明|<br>—|—|—<br>-vcodec libx264|视频的编码器为 H.264|<br>vprofile baseline | 设置音视频编码器的类<br>-acodec aac|指定声音的编码器为AAC<br>-ar 44100|音频编解码器的采样率，单位为赫兹<br>-ac 1|设置音频编解码器的声道数目<br>-f flv|强制设定输入和输出文件格式为 flv 格式<br>-s 1280x720 | 分辨率</p>
+<p><strong>推流命令具体参数：</strong></p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>-vcodec libx264</td>
+<td>视频的编码器为 H.264</td>
+<td></td>
+</tr>
+<tr>
+<td>vprofile baseline</td>
+<td>设置音视频编码器的类</td>
+</tr>
+<tr>
+<td>-acodec aac</td>
+<td>指定声音的编码器为AAC</td>
+</tr>
+<tr>
+<td>-ar 44100</td>
+<td>音频编解码器的采样率，单位为赫兹</td>
+</tr>
+<tr>
+<td>-ac 1</td>
+<td>设置音频编解码器的声道数目</td>
+</tr>
+<tr>
+<td>-f flv</td>
+<td>强制设定输入和输出文件格式为 flv 格式</td>
+</tr>
+<tr>
+<td>-s 1280x720</td>
+<td>分辨率</td>
+</tr>
+</tbody>
+</table>
 <p>推送过程会在终端显示如下：</p>
 <p><img src="https://lh3.googleusercontent.com/-HKeUcGhPnNs/W_kW8_gvwVI/AAAAAAAAAcg/eFET15J0vAEP2dkpmjf1qRdjXIXutejGACHMYCw/I/Jietu20181124-171400%25402x.jpg" alt=""></p>
 <p>推送完毕如下：<br><img src="https://lh3.googleusercontent.com/-D_bXkjNRNiU/W_kY6_wOgUI/AAAAAAAAAc0/_EQY1y-aObsRDWFMKSgtGSXxsX9-UMKDgCHMYCw/I/15430514948876.jpg" alt=""></p>
