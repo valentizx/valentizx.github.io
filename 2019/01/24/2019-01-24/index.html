@@ -1,0 +1,1086 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=6.3.0" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.3.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=6.3.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=6.3.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.3.0" color="#222">
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '6.3.0',
+    sidebar: {"position":"right","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="加密与解密 Encryption &amp;amp; Decryption古典密码学起源：古代战争 - 古典密码学，为防止「信使」被敌方掳获获得我方情报，诞生了最初代的古典密码学，其代表加密工具就为 - 密码棒，如下图： 密码棒的规格是严格定制的，发情报的一方和收情报的一方是一一对应的，如上图中每一面都是对应的加密信息。 加密的意义不在于信息不被侵犯，而在于被侵犯获取后不被破解。 其实，密码棒中就已经包含">
+<meta name="keywords" content="HTTP">
+<meta property="og:type" content="article">
+<meta property="og:title" content="HTTP 原理和工作机制（二）">
+<meta property="og:url" content="http://yoursite.com/2019/01/24/2019-01-24/index.html">
+<meta property="og:site_name" content="I&#39;M REXZX">
+<meta property="og:description" content="加密与解密 Encryption &amp;amp; Decryption古典密码学起源：古代战争 - 古典密码学，为防止「信使」被敌方掳获获得我方情报，诞生了最初代的古典密码学，其代表加密工具就为 - 密码棒，如下图： 密码棒的规格是严格定制的，发情报的一方和收情报的一方是一一对应的，如上图中每一面都是对应的加密信息。 加密的意义不在于信息不被侵犯，而在于被侵犯获取后不被破解。 其实，密码棒中就已经包含">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/453168-efb45ab1f54a5b21.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/453168-04e7aafc06077b26.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/453168-9870ed460e7066c9.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/453168-b4b55b6408c1060d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/453168-29fcf3419da38e8b.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/453168-0404f762e7f1ca28.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:updated_time" content="2019-01-24T07:04:37.324Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="HTTP 原理和工作机制（二）">
+<meta name="twitter:description" content="加密与解密 Encryption &amp;amp; Decryption古典密码学起源：古代战争 - 古典密码学，为防止「信使」被敌方掳获获得我方情报，诞生了最初代的古典密码学，其代表加密工具就为 - 密码棒，如下图： 密码棒的规格是严格定制的，发情报的一方和收情报的一方是一一对应的，如上图中每一面都是对应的加密信息。 加密的意义不在于信息不被侵犯，而在于被侵犯获取后不被破解。 其实，密码棒中就已经包含">
+<meta name="twitter:image" content="https://upload-images.jianshu.io/upload_images/453168-efb45ab1f54a5b21.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+
+
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/01/24/2019-01-24/"/>
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>HTTP 原理和工作机制（二） | I'M REXZX</title>
+  
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">I'M REXZX</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+    <a href="/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-home"></i> <br />Home</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+    <a href="/about/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-user"></i> <br />About</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+    <a href="/tags/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />Tags</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+    <a href="/categories/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-th"></i> <br />Categories</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />Archives</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-commonweal">
+    <a href="/404/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />Commonweal 404</a>
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/01/24/2019-01-24/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="115 106 99">
+      <meta itemprop="image" content="/images/logo.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="I'M REXZX">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">HTTP 原理和工作机制（二）
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2019-01-24 15:03:43 / Modified: 15:04:37" itemprop="dateCreated datePublished" datetime="2019-01-24T15:03:43+08:00">2019-01-24</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="加密与解密-Encryption-amp-Decryption"><a href="#加密与解密-Encryption-amp-Decryption" class="headerlink" title="加密与解密 Encryption &amp; Decryption"></a>加密与解密 Encryption &amp; Decryption</h2><h3 id="古典密码学"><a href="#古典密码学" class="headerlink" title="古典密码学"></a>古典密码学</h3><p>起源：古代战争 - 古典密码学，为防止「信使」被敌方掳获获得我方情报，诞生了最初代的古典密码学，其代表加密工具就为 - <strong>密码棒</strong>，如下图：<br><img src="https://upload-images.jianshu.io/upload_images/453168-efb45ab1f54a5b21.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<p>密码棒的规格是严格定制的，发情报的一方和收情报的一方是一一对应的，如上图中每一面都是对应的加密信息。</p>
+<p><strong>加密的意义不在于信息不被侵犯，而在于被侵犯获取后不被破解。</strong></p>
+<p>其实，密码棒中就已经包含了密码学最重要的两个因素：<strong>加密算法</strong>和<strong>密钥</strong>，在密码棒中，加密算法即为缠绕方式，密钥则是木棒的规格。</p>
+<p>古典密码学加密方式分为：<strong>移位式加密</strong>和<strong>替换式加密</strong>，密码棒就属于典型的移位式加密，而替换式加密的代表就是替换文字加密，如：<br>发送方需要发送的是 Christina Aguilera，加密规则为：<strong>每个字符都替换成它的下一位</strong>，于是密文就变成了：<br>Disjtujob Bhvjmfsb<br>在此过程，加密算法则为：替换文字，密钥为：码表（表示信息和加密后的密文一一对应的映射关系）。当双方都拿着一样的码表便可以进行通信了。</p>
+<h3 id="现代密码学"><a href="#现代密码学" class="headerlink" title="现代密码学"></a>现代密码学</h3><p>当计算机发展高速的时候，这些加密的思想便应用到计算机领域当中，一些高深复杂的数学知识可以完美的应用到加密算法中，这样得到的密文很难破解。于是，诞生了<strong>现代密码学</strong>，现代密码学不止用于文字，还可以用于二进制数据。</p>
+<p>现代密码学的加密方式同样分为两种：<strong>对称加密</strong>和<strong>非对称加密</strong>，对称加密和移位式加密很像，但是要复杂得多。</p>
+<h4 id="对称加密"><a href="#对称加密" class="headerlink" title="对称加密"></a>对称加密</h4><p><strong>对称加密的原理：使用密钥和加密算法对数据进行转换，得到的无意义数据即为密文；使用解密算法和密钥进行逆向转换，得到原数据。</strong></p>
+<p><strong>经典算法：DES（密钥太短容易被破解被弃用）、AES。</strong></p>
+<blockquote>
+<p>一个优秀的加密算法是让破解方使用<strong>穷举法（在此通俗理解就是破解方把可能性范围内所有的密钥去破解的这种暴力破解方法）</strong>才能破解的算法，也就是指花费破解方时间成本最高、精力成本最高的算法。当破解时间达到一个很大的值如 1000 年、10000 年则可认为该密文不能破解，在计算机发展的今天 AES 可以满足对称加密需求，在未来的一段时间内，硬件的不断更新迭代，计算的速度越来越大，AES 的密钥必定不能满足对称加密需求。</p>
+</blockquote>
+<h4 id="非对称加密"><a href="#非对称加密" class="headerlink" title="非对称加密"></a>非对称加密</h4><p><strong>非对称加密原理：使用公钥对数据进行加密得到密文；使用私钥数据即行解密得到原数据</strong></p>
+<p>非对称加密相对对称加密的优点是：密钥可以放心的在网络之间传输。对称加密的传输过程中，一旦密钥被截取，那么本次传输也就不再安全。</p>
+<p>非对称加密的通信过程如下图：<br><img src="https://upload-images.jianshu.io/upload_images/453168-04e7aafc06077b26.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<p>在传输前 A、B 双方会得到对方的公钥，当 A 给 B 发信息的时候，会先用 B 的公钥进行加密，B 收到 A 的密文拿着自己的私钥解密得到原始数据，B 给 A 发信息同样如此，加入通信过程中 C 截获了消息，并且截获了公钥 A 和公钥 B，他是没有办法破解原始数据的，因为解密的关键私钥 A 和私钥 B 在 A、B 双方安全的保存。</p>
+<blockquote>
+<p>私钥能解公钥，公钥亦能解私钥，但是公钥和私钥不能置换使用，因为很多时候公钥是根据私钥计算出来的，如应用在比特币身上的加密算法-椭圆曲线算法中公钥就是根据私钥计算的，假设公私钥置换使用，破解方截获了私钥，也就意味着破解方同时拥有了公钥和私钥。</p>
+</blockquote>
+<p>–<br><strong> ⚠️上述过程中，同样有潜在的不安全问题在，当 C 截获了公钥 A 和公钥 B 的时候，C 是可以伪造 A 的身份（因为他有公钥 B）与 B 进行通信，那么这个问题该如何解决？签名就发挥作用了。</strong></p>
+<h5 id="签名与验证"><a href="#签名与验证" class="headerlink" title="签名与验证"></a>签名与验证</h5><p><strong>非对称加密一个很重要的延伸用途：数字签名。</strong></p>
+<h6 id="签名与验证的过程"><a href="#签名与验证的过程" class="headerlink" title="签名与验证的过程"></a>签名与验证的过程</h6><p>签名和验证的意义就在于：<br>要让别人知道，这则消息是「我」本人发出的。也就是说「我」用「我」的私钥加密了信息，别人拿着「我」的公钥能还原信息并能确认是「我」本人的信息。就好比一张欠条，别人一看就能知道，是我本人亲自签署的。这时候，「签署」和「签名」有着相同的意味。加密和验证的过程如下图：<br><img src="https://upload-images.jianshu.io/upload_images/453168-9870ed460e7066c9.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<blockquote>
+<p>与加密相反的是，<strong>签名是用私钥签名，然后对方通过公钥验证，而加密则是原数据通过对方公钥加密，对方通过手中的私钥解密得到原数据。</strong></p>
+</blockquote>
+<p>签名过程通常会携带原数据，方便验证方通过公钥得到的原数据和携带的原数据进行对比从而得到验证结果。</p>
+<h6 id="签名-加密"><a href="#签名-加密" class="headerlink" title="签名 + 加密"></a>签名 + 加密</h6><p>过程如下图：</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/453168-b4b55b6408c1060d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<p>原数据会使用对方公钥进行加密得到密文，同时需要身份验证，所以要使用私钥加密得到签名数据，最终得到<strong>密文+签名数据</strong>就是签了名的加密数据。</p>
+<p>上一节 ⚠️ 部分中一个安全隐患，就可以通过加密+签名的机制来解决，当 B 拿到数据后通过解密和验证后可得知该消息是否真的来自 A。</p>
+<p><strong>非对称加密的经典算法：RSA 和 DSA，DSA 专门用来签名，而 RSA 签名加密解密都可以。</strong></p>
+<blockquote>
+<p>DSA 设计方式特殊，它的签名和验证过程非常之快，所以只用来签名。椭圆曲线算法就属于 DSA。</p>
+</blockquote>
+<p>–</p>
+<blockquote>
+<p>同样的，一个优秀的非对称加密算法同样是破解方只能通过「穷举法」去破解。</p>
+</blockquote>
+<h6 id="密码学密钥和登录密码"><a href="#密码学密钥和登录密码" class="headerlink" title="密码学密钥和登录密码"></a>密码学密钥和登录密码</h6><p>二者除了有个“密”字没有任何关系。</p>
+<ul>
+<li>密钥（Key）：用于加密和解密，属于数学的领域，目的是保证数据被盗时不被人看懂；</li>
+<li>登录密码（Password）：用于用户的身份验证，不需要任何数学方面的计算和证明，目的是为了给服务方提供「你是你」的证明。</li>
+</ul>
+<h2 id="编码与解码-Encoding-amp-Decoding"><a href="#编码与解码-Encoding-amp-Decoding" class="headerlink" title="编码与解码 Encoding &amp; Decoding"></a>编码与解码 Encoding &amp; Decoding</h2><h3 id="Base64"><a href="#Base64" class="headerlink" title="Base64"></a>Base64</h3><h4 id="Base64-是什么？"><a href="#Base64-是什么？" class="headerlink" title="Base64 是什么？"></a>Base64 是什么？</h4><p>它是将二进制数据转换成 64 个字符组成的字符串的编码算法。</p>
+<h4 id="什么是二进制数据？"><a href="#什么是二进制数据？" class="headerlink" title="什么是二进制数据？"></a>什么是二进制数据？</h4><p><strong>非文本数据就是二进制数据，广义的计算机数据都是二进制数据。</strong></p>
+<h4 id="Base64-转换"><a href="#Base64-转换" class="headerlink" title="Base64 转换"></a>Base64 转换</h4><p>Base64 的码表：</p>
+<table>
+<thead>
+<tr>
+<th>Index</th>
+<th>Char</th>
+<th>Index</th>
+<th>Char</th>
+<th>Index</th>
+<th>Char</th>
+<th>Index</th>
+<th>Char</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>A</td>
+<td>16</td>
+<td>Q</td>
+<td>32</td>
+<td>g</td>
+<td>48</td>
+<td>w</td>
+<td></td>
+</tr>
+<tr>
+<td>1</td>
+<td>B</td>
+<td>17</td>
+<td>R</td>
+<td>33</td>
+<td>h</td>
+<td>49</td>
+<td>x</td>
+<td></td>
+</tr>
+<tr>
+<td>2</td>
+<td>C</td>
+<td>18</td>
+<td>S</td>
+<td>34</td>
+<td>i</td>
+<td>50</td>
+<td>y</td>
+</tr>
+<tr>
+<td>3</td>
+<td>D</td>
+<td>19</td>
+<td>T</td>
+<td>35</td>
+<td>j</td>
+<td>51</td>
+<td>z</td>
+</tr>
+<tr>
+<td>4</td>
+<td>E</td>
+<td>20</td>
+<td>U</td>
+<td>36</td>
+<td>k</td>
+<td>52</td>
+<td>0</td>
+</tr>
+<tr>
+<td>5</td>
+<td>F</td>
+<td>21</td>
+<td>V</td>
+<td>37</td>
+<td>l</td>
+<td>53</td>
+<td>1</td>
+</tr>
+<tr>
+<td>6</td>
+<td>G</td>
+<td>22</td>
+<td>W</td>
+<td>38</td>
+<td>m</td>
+<td>54</td>
+<td>2</td>
+</tr>
+<tr>
+<td>7</td>
+<td>H</td>
+<td>23</td>
+<td>X</td>
+<td>39</td>
+<td>n</td>
+<td>55</td>
+<td>3</td>
+</tr>
+<tr>
+<td>8</td>
+<td>I</td>
+<td>24</td>
+<td>Y</td>
+<td>40</td>
+<td>o</td>
+<td>56</td>
+<td>4</td>
+</tr>
+<tr>
+<td>9</td>
+<td>J</td>
+<td>25</td>
+<td>Z</td>
+<td>41</td>
+<td>p</td>
+<td>57</td>
+<td>5</td>
+</tr>
+<tr>
+<td>10</td>
+<td>K</td>
+<td>26</td>
+<td>a</td>
+<td>42</td>
+<td>q</td>
+<td>58</td>
+<td>6</td>
+</tr>
+<tr>
+<td>11</td>
+<td>L</td>
+<td>27</td>
+<td>b</td>
+<td>43</td>
+<td>r</td>
+<td>59</td>
+<td>7</td>
+</tr>
+<tr>
+<td>12</td>
+<td>M</td>
+<td>28</td>
+<td>c</td>
+<td>44</td>
+<td>s</td>
+<td>60</td>
+<td>8</td>
+</tr>
+<tr>
+<td>13</td>
+<td>N</td>
+<td>29</td>
+<td>d</td>
+<td>45</td>
+<td>t</td>
+<td>61</td>
+<td>9</td>
+</tr>
+<tr>
+<td>14</td>
+<td>O</td>
+<td>30</td>
+<td>e</td>
+<td>46</td>
+<td>u</td>
+<td>62</td>
+<td>+</td>
+</tr>
+<tr>
+<td>15</td>
+<td>P</td>
+<td>31</td>
+<td>f</td>
+<td>47</td>
+<td>v</td>
+<td>63</td>
+<td>/</td>
+</tr>
+</tbody>
+</table>
+<p>Base64 有 64 个字符可表示内容，其中每一个字符都要对应上述码表中的一个数，2 的 6 次方是 64，如超出 6 位，该码表就无法表达内容，故划分 6 个 Bits 为一个单元。</p>
+<p>下面的例子，「Man(ASCII 编码)」：</p>
+<p>M 的二进制数据为：<strong>010011</strong>01；<br>a 的二进制数据为：<strong>011000</strong>01；<br>n 的二进制数据为：<strong>011011</strong>10。</p>
+<p>每个字母的二进制数据 <strong>6 个为一组</strong>，得到<br>M：010011 + 01；<br>a：011000 + 01；<br>n：011011 + 10。</p>
+<p>M 的前六位的十进制为 19，19 对应上述码表 T，剩下两位和 a 的前四位组合转化成十进制为得到 22 对应 W，a 的后四位和 n 的前两位组合转换十进制为 5 对应 F，n  的后六位对应 u。</p>
+<p>所以对「Man」进行 Base64 转码得到 TWFu，由此可见 Base64 转化后的数据明显「增大了」，由 3 个变成了 4 个，那么为什么不选用 Base256 也就是 2 的 8 次方表示呢？因为常见的字符合集不够 256 个，无法满足需求。</p>
+<p>**Base64 的用途：</p>
+<ol>
+<li>让原数据具有字符串所具有的特性，如可以放在 URL 中传输、可以保存文本文件等；</li>
+<li>人眼无法识别，降低头盔风险。**</li>
+</ol>
+<p><strong>Base64 加密传输图片，可以更高效更安全？</strong><br>安全只能靠加密保证，Base64 不具备加密效果，没有任何安全性可言；高效也是错的，通过 Base64 编过的数据已经变大了很多，延长了传输时间，反而降低了效率。</p>
+<h5 id="Base58"><a href="#Base58" class="headerlink" title="Base58"></a>Base58</h5><p>Base64 的变种，去掉了 Base64 种 0 和大写 O，小写 l 和小写 I 以及 + 和 /，Base58 主要用在比特币（或其他币）领域的地址上，该地址可能被<strong>手抄</strong>，那么 0 和 O以及 l 和 I 会造成混淆，至于去掉 + 和 / 是为了方便双击复制。</p>
+<h4 id="Base64-的重要应用"><a href="#Base64-的重要应用" class="headerlink" title="Base64 的重要应用"></a>Base64 的重要应用</h4><p>URL encoding：将 URL 中的保留字符使用 % 进行编码。</p>
+<p><strong>为什么使用 % 的特定编码方式？原因在下。</strong></p>
+<p>示例：当在地址栏中输入 <a href="https://facebook.com/张雷克斯" target="_blank" rel="noopener">https://facebook.com/张雷克斯</a> (这是一个不存在的网页)，浏览器会显示：<br><img src="https://upload-images.jianshu.io/upload_images/453168-29fcf3419da38e8b.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<p>当把地址栏的地址拷贝到一个文本编辑器中的时候会变成：<a href="https://www.facebook.com/%E5%BC%A0%E9%9B%B7%E5%85%8B%E6%96%AF" target="_blank" rel="noopener">https://www.facebook.com/%E5%BC%A0%E9%9B%B7%E5%85%8B%E6%96%AF</a> 这样的结果。<br>中文的部分变成了看不懂的字符，那是应为浏览器不支持显示中文，转换成其他字符，另，「/」和「+」在 URL 中有特定的含义，为了消除歧义选择了 % 编码，能避免分析错误。</p>
+<h2 id="压缩与解压缩-Compression-amp-Decompression"><a href="#压缩与解压缩-Compression-amp-Decompression" class="headerlink" title="压缩与解压缩 Compression &amp; Decompression"></a>压缩与解压缩 Compression &amp; Decompression</h2><p><strong>压缩：把数据换一种方式来存储，以减小存储空间。</strong><br><strong>解压缩：将压缩后的数据还原。</strong></p>
+<p><strong>常见的压缩算法：DEFLATE、JPEG、MP3</strong></p>
+<blockquote>
+<p>zip 的归档方式使用的压缩算法就是 DEFLATE，JPEG 就是对图片处理的压缩算法，MP3 则为对音频处理的压缩算法。</p>
+</blockquote>
+<p>压缩属于编码吗？</p>
+<p>要弄清楚这个问题首先要明白编码到底是什么？<strong>其实，编码没有实际的定义，但通俗来理解，就是从一个格式转换成另一个格式并且可以转回来，在转换的过程中不丢失信息不增加信息，这个过程叫编码</strong>，所以压缩是完全属于编码。</p>
+<h3 id="媒体数据的编码"><a href="#媒体数据的编码" class="headerlink" title="媒体数据的编码"></a>媒体数据的编码</h3><p><strong>图片的编码：把图像数据写成 JPG、PNG 等文件的编码格式。</strong><br><strong>图片的解码：把 JPG、PNG 等文件中的数据解析成标准的图像数据。</strong></p>
+<p>音视频的编解码同理。</p>
+<blockquote>
+<p>媒体文件中还存在<strong>有损压缩</strong>，但不妨碍对媒体数据的解读。</p>
+</blockquote>
+<h2 id="序列化-Serialization"><a href="#序列化-Serialization" class="headerlink" title="序列化 Serialization"></a>序列化 Serialization</h2><p><strong>序列化：把数据对象（一般是内存中的，如 JVM 中的对象）转换成字节序列的过程。</strong></p>
+<p><strong>反序列化：把字节序列重新转换成内存中的对象。</strong></p>
+<blockquote>
+<p>通俗点说，序列化的过程就是将内存中的数据转换成可以存储的线性的格式，如 JSON 格式、xml 格式。目的是让内存中的对象可以与外界通信（存储、传输）。</p>
+</blockquote>
+<p><strong>序列化属于编码吗？</strong></p>
+<p>严格来说，编码是两个不同的格式互相转换，而序列化是内存中的数据转换成可通信的格式。但广义上来说也属于编码。</p>
+<h2 id="哈希-Hash"><a href="#哈希-Hash" class="headerlink" title="哈希 Hash"></a>哈希 Hash</h2><p><strong>定义：把任意数据转换成制定大小范围（通常很小）的数据。</strong></p>
+<p><strong>作用：摘要、数字指纹。</strong></p>
+<p>计算机领域当中的某个数据可能非常大，我们在描述它的时候不希望将整个的数据进行描述，而是通过一个指代它的很小的字节就可以描述。这就是 hash 值的作用。</p>
+<p>经典算法：<strong>MD5</strong>、<strong>SHA1</strong>、<strong>SHA256</strong>等。</p>
+<blockquote>
+<p>优秀的 Hash 算法是计算出的结果之间不会碰撞，即碰撞率极低。</p>
+</blockquote>
+<p><strong>实际用途：</strong></p>
+<ul>
+<li>数据完整性验证；如下载某个开源包或者某个安装包时，发布方都会提供一个或多个 hash 值，下载后对下载文件计算 hash 值，如果和发布方的相同则表示是完整的。</li>
+<li>快速查找：hashCode() 和 HashMap；</li>
+<li>隐私保护。</li>
+</ul>
+<p><strong>Java 开发中通常在重写 equals() 方法的同时要重写 hashCode()，为什么？</strong></p>
+<p>假如有 Singer 类：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">class Singer&#123;</span><br><span class="line">    int age;</span><br><span class="line">    String name;</span><br><span class="line">    public boolean equals(Object obj) &#123;</span><br><span class="line">         return age == obj.age &amp;&amp; name.equals(obj.name);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">    </span><br><span class="line">public long hashCode() &#123;</span><br><span class="line">    return age + name.length()  // 简单的 hash code     </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>hashCode 是用来做身份验证和识别的，在 hashCode() 中有 N 多的方法可以提高该对象 hash 值的唯一性。hashCode 直接影响 HashMap、HashSet 等的内存地址定位。<br>HashMap 的对象是根据 Key 的 hash code 来获取对应 Value。当 Singer 类的 hashCode() 方法重写的不严谨时，算出的 hash code 是一个非常简单的值会导致两对象的 Key 指向同一个 Value，修改 A 后再修改会 B 会把 A 的 Value 替换掉。</p>
+<p>所以重写 hashCode() 后与 HashMap 等相关的操作才能<strong>正常使用</strong>，使用 hashCode() 性能会比较好。</p>
+<p>为什么需要同时写呢？因为 hash code 只是简单的对对象进行比对，并不会比对两个对象属性的具体信息。假如没重写 hashCode() 方法，会调用其父类默认的 hashCode() 方法，这会导致调用 equals() 方法比对两对象不相等但比对 hashCode() 方法的结果的时候相等。</p>
+<p>重写并严谨的重写两个方法可以大大提升开发效率。</p>
+<blockquote>
+<p>⚠️ Hash 不是编码，是单向的，不能够还原。<br>⚠️ Hash 不是加密，MD5 亦不是加密。</p>
+</blockquote>
+<h3 id="Hash-和非对称加密"><a href="#Hash-和非对称加密" class="headerlink" title="Hash 和非对称加密"></a>Hash 和非对称加密</h3><p>在非对称加密传输过程中，一个文件的大小约在 10G 左右，那么通过加密算法签名后的签名数据也为 10G 左右，再加上需要验证的原数据则一共为 20G，数据太过臃肿，在实际生活中，签名的过程为：先对原数据进行哈希，再对哈希值签名。完整的过程为：</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/453168-0404f762e7f1ca28.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<h2 id="字符集-Charset"><a href="#字符集-Charset" class="headerlink" title="字符集 Charset"></a>字符集 Charset</h2><p><strong>含义：一个由整数向现实世界中符号的 Map。</strong></p>
+<p><strong>分支：</strong></p>
+<ul>
+<li>ASCII: 128 个字符，1 字节；</li>
+<li>ISO-9885-1: 对 ASCII 的扩充，1 字节；</li>
+<li>Unicode: 13 万个字符，多字节，UTF-8/UTF-16 是他的编码分支；</li>
+<li>GB 系列: 中国自研标准，多字节。</li>
+</ul>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/HTTP/" rel="tag"># HTTP</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/01/20/2019-01-20/" rel="next" title="HTTP 的原理和工作机制">
+                <i class="fa fa-chevron-left"></i> HTTP 的原理和工作机制
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/logo.jpg"
+                alt="" />
+            
+              <p class="site-author-name" itemprop="name"></p>
+              <p class="site-description motion-element" itemprop="description">115 106 99</p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">5</span>
+                    <span class="site-state-item-name">posts</span>
+                  </a>
+                </div>
+              
+
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">13</span>
+                    <span class="site-state-item-name">tags</span>
+                  
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#加密与解密-Encryption-amp-Decryption"><span class="nav-number">1.</span> <span class="nav-text">加密与解密 Encryption &amp; Decryption</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#古典密码学"><span class="nav-number">1.1.</span> <span class="nav-text">古典密码学</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#现代密码学"><span class="nav-number">1.2.</span> <span class="nav-text">现代密码学</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#对称加密"><span class="nav-number">1.2.1.</span> <span class="nav-text">对称加密</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#非对称加密"><span class="nav-number">1.2.2.</span> <span class="nav-text">非对称加密</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#签名与验证"><span class="nav-number">1.2.2.1.</span> <span class="nav-text">签名与验证</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#签名与验证的过程"><span class="nav-number">1.2.2.1.1.</span> <span class="nav-text">签名与验证的过程</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#签名-加密"><span class="nav-number">1.2.2.1.2.</span> <span class="nav-text">签名 + 加密</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#密码学密钥和登录密码"><span class="nav-number">1.2.2.1.3.</span> <span class="nav-text">密码学密钥和登录密码</span></a></li></ol></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#编码与解码-Encoding-amp-Decoding"><span class="nav-number">2.</span> <span class="nav-text">编码与解码 Encoding &amp; Decoding</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Base64"><span class="nav-number">2.1.</span> <span class="nav-text">Base64</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Base64-是什么？"><span class="nav-number">2.1.1.</span> <span class="nav-text">Base64 是什么？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#什么是二进制数据？"><span class="nav-number">2.1.2.</span> <span class="nav-text">什么是二进制数据？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Base64-转换"><span class="nav-number">2.1.3.</span> <span class="nav-text">Base64 转换</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Base58"><span class="nav-number">2.1.3.1.</span> <span class="nav-text">Base58</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Base64-的重要应用"><span class="nav-number">2.1.4.</span> <span class="nav-text">Base64 的重要应用</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#压缩与解压缩-Compression-amp-Decompression"><span class="nav-number">3.</span> <span class="nav-text">压缩与解压缩 Compression &amp; Decompression</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#媒体数据的编码"><span class="nav-number">3.1.</span> <span class="nav-text">媒体数据的编码</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#序列化-Serialization"><span class="nav-number">4.</span> <span class="nav-text">序列化 Serialization</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#哈希-Hash"><span class="nav-number">5.</span> <span class="nav-text">哈希 Hash</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Hash-和非对称加密"><span class="nav-number">5.1.</span> <span class="nav-text">Hash 和非对称加密</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#字符集-Charset"><span class="nav-number">6.</span> <span class="nav-text">字符集 Charset</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder"></span>
+
+  
+
+  
+</div>
+
+
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> v3.7.1</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://theme-next.org">NexT.Pisces</a> v6.3.0</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+	
+    
+
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.3.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.3.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=6.3.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=6.3.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.3.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.3.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.3.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
