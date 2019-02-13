@@ -1,332 +1,406 @@
 <!DOCTYPE html>
-<html lang="en">
 
 
 
 
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="">
 <head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2"/>
+<meta name="theme-color" content="#222">
 
-  <!-- Basic Page Needs
-  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-  <meta charset="utf-8">
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=6.3.0" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.3.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=6.3.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=6.3.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.3.0" color="#222">
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '6.3.0',
+    sidebar: {"position":"right","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
   
-      <title>HTTP 原理和工作机制（二） - I'M VALENTI</title>
+
+
+
+
+  <meta name="description" content="加密与解密 Encryption &amp;amp; Decryption 古典密码学 起源：古代战争 - 古典密码学，为防止「信使」被敌方掳获获得我方情报，诞生了最初代的古典密码学，其代表加密工具就为 - 密码棒，如下图：  密码棒的规格是严格定制的，发情报的一方和收情报的一方是一一对应的，如上图中每一面都是对应的加密信息。 加密的意义不在于信息不被侵犯，而在于被侵犯获取后不被破解。 其实，密码棒中就已">
+<meta name="keywords" content="HTTP">
+<meta property="og:type" content="article">
+<meta property="og:title" content="HTTP 原理和工作机制（二）">
+<meta property="og:url" content="http://yoursite.com/2019/01/24/2019-01-24/index.html">
+<meta property="og:site_name" content="I&#39;M VALENTI">
+<meta property="og:description" content="加密与解密 Encryption &amp;amp; Decryption 古典密码学 起源：古代战争 - 古典密码学，为防止「信使」被敌方掳获获得我方情报，诞生了最初代的古典密码学，其代表加密工具就为 - 密码棒，如下图：  密码棒的规格是严格定制的，发情报的一方和收情报的一方是一一对应的，如上图中每一面都是对应的加密信息。 加密的意义不在于信息不被侵犯，而在于被侵犯获取后不被破解。 其实，密码棒中就已">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/453168-efb45ab1f54a5b21.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/453168-04e7aafc06077b26.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/453168-9870ed460e7066c9.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/453168-b4b55b6408c1060d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/453168-29fcf3419da38e8b.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/453168-0404f762e7f1ca28.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:updated_time" content="2019-01-24T07:04:37.324Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="HTTP 原理和工作机制（二）">
+<meta name="twitter:description" content="加密与解密 Encryption &amp;amp; Decryption 古典密码学 起源：古代战争 - 古典密码学，为防止「信使」被敌方掳获获得我方情报，诞生了最初代的古典密码学，其代表加密工具就为 - 密码棒，如下图：  密码棒的规格是严格定制的，发情报的一方和收情报的一方是一一对应的，如上图中每一面都是对应的加密信息。 加密的意义不在于信息不被侵犯，而在于被侵犯获取后不被破解。 其实，密码棒中就已">
+<meta name="twitter:image" content="https://upload-images.jianshu.io/upload_images/453168-efb45ab1f54a5b21.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+
+
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/01/24/2019-01-24/"/>
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>HTTP 原理和工作机制（二） | I'M VALENTI</title>
   
 
-  
-  
-  <meta name="description" content="">
-  <meta name="author" content="">
-
-  <!-- Mobile Specific Metas
-  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-
-  <!-- load loadjs.js -->
-  <script src="/libs/loadjs/dist/loadjs.min.js"></script>
-
-<link rel="stylesheet" href="/libs/animate.css/animate.min.css">
-  <!-- load lightgallery -->
-<link rel="stylesheet" href="/css/lightgallery.css">
-<link rel="stylesheet" href="/libs/noty/lib/noty.css">
-<script
-src="https://code.jquery.com/jquery-3.3.1.min.js"
-integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
-crossorigin="anonymous"></script>
-  
 
 
 
 
 
 
-    <link rel="stylesheet" href="/css/taurus.css">
-    
-        <link rel="stylesheet" href="/css/scheme-taurus/animations.css">
-    
 
 
-<link rel="stylesheet" href="/.css">
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
 
-  <!-- load font awesome 5 -->
-  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
 
-  <script type="text/x-mathjax-config">
-  MathJax.Hub.Config({
-  tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
-  });
-  </script>
-  <!-- load mathjax -->
-  <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax//libs/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
 
-  <!-- load js-cookie -->
-  <script src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
-    <script src="/js/social-share.min.js"></script>
-    <script src="/js/theme.js"></script>
-
-  <!-- include cookie.js -->
-  
-  
-
-  <!-- include comment system code -->
-  
-    <script src="//cdn1.lncld.net/static/js/3.6.4/av-min.js"></script>
-<script src='//unpkg.com/valine/dist/Valine.min.js'></script>
-  
-  <!-- Favicon
-  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-  <link rel="icon" type="image/png" href="/images/favicon.png">
 </head>
-<body style="display: flex; flex-direction: column; min-height: 100vh;">
 
- 
+<body itemscope itemtype="http://schema.org/WebPage" lang="default">
 
-<header id="header" class='header'>
-	<div class="header-title">
-		
-		<div class='header-logo'>
-			<a href='/'>
-				<img src='/images/theme-icon.svg' />
-			</a>
-		</div>
-		<div class='header-text'>
-			<h1>
-				<a href="/">I'M VALENTI</a>
-			</h1>
-			<subtitle>
-				
-			</subtitle>
-		</div>
-		
-	</div>
-	<div id='header-nav'>
-		
+  
+  
+    
+  
 
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
 
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
 
-<nav id="nav">
-	
-	
-	
-	<div class='nav-item' id='nav-item-toc'>
-		
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">I'M VALENTI</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+  </div>
 
-
-<div class='toc-container'>
-<i class="far fa-times-circle" id='toc-close' onclick='closeTOC(event);' ontouchstart='closeTOC(event);'></i>
-<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">加密与解密 Encryption &amp; Decryption</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">2.</span> <span class="toc-text">编码与解码 Encoding &amp; Decoding</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">3.</span> <span class="toc-text">压缩与解压缩 Compression &amp; Decompression</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">4.</span> <span class="toc-text">序列化 Serialization</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">5.</span> <span class="toc-text">哈希 Hash</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">6.</span> <span class="toc-text">字符集 Charset</span></a></li></ol>
-</div>
-<div class="toc-button" onclick='toggleTOC(event);' ontouchstart='toggleTOC(event);'>
-    <img src="/images/icons/blue-shadow/toc.svg" alt="">
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
 </div>
 
-	</div>
-	
-	<div class='nav-item' id='nav-item-archive'>
-		
-				<div class='nav-icon'>
-				
-			<a href="/archives/" title='Archives'>
-			<img src="/images/icons/blue-shadow/archive.svg" alt="">
-			</a>
-		</div>
-	</div>
-	<div class='nav-item' id='nav-item-search'>
-		
-		<div class='nav-icon'>
-		
-			<a href="/search/" title='Search'>
-			<img src="/images/icons/blue-shadow/search.svg" alt="">
-			</a>
-		</div>
-	</div>
-	<div class="nav-item" id='nav-item-more'>
-		<div class="nav-icon">
-				<a href='#' onclick='onClickMenuIcon(event);' ontouchstart='onClickMenuIcon(event);'>
-				<img src="/images/icons/blue-shadow/menu.svg" alt="">
-				</a>
-		</div>
-		<div class="nav-more-menu">
-				<i class="far fa-times-circle" id='nav-more-menu-close' onclick='onClickNavMenuClose(event);' ontouchstart='onClickNavMenuClose(event);'></i>
-		
-		
-	</div>
-	</div>
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+    <a href="/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-home"></i> <br />Home</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+    <a href="/about/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-user"></i> <br />About</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+    <a href="/tags/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />Tags</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+    <a href="/categories/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-th"></i> <br />Categories</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />Archives</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-commonweal">
+    <a href="/404/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />Commonweal 404</a>
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+
+  
 </nav>
 
-	</div>
-</header>
 
- 
 
   
 
 
 
-
-  <!-- Primary Page Layout
-  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-  <div style="flex: 1;">
-      <style>
-    body {
-        background-color: white;
-    }
-</style>
-
-
-
-
-
-
-
+</div>
+    </header>
 
     
-    
 
 
-
-
-
-
-    
-    
-        
-    
-
-    
-        
-    
-
-
-
-
-
-
-
-
-
-<article class="article" id="/2019/01/24/2019-01-24/" data-name='HTTP 原理和工作机制（二）' data-version="">
-
-    <!-- Title -->
-    <div class='article-header'>
-         
-         <h1 class='article-title'>
-            <a href="/2019/01/24/2019-01-24/">
-                HTTP 原理和工作机制（二）
-            </a>
-        </h1>
-        <!-- TODO: support nested categories,display them nicely -->
-        
-    </div>
-    
-    <!-- Date and Author -->
-    <div class='article-meta'>
-    <ul>
-            <li><i class='fa fa-calendar'></i> 2019-01-24</li>
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
             
-            <li><i class="fa fa-user"></i> </li>
-            <li><i class="fas fa-copyright"></i>
+
+          
+          <div id="content" class="content">
             
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/01/24/2019-01-24/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/logo.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="I'M VALENTI">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">HTTP 原理和工作机制（二）
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
                 
-                
-            
-            
-                <a href=https://creativecommons.org/licenses/by-nc-nd/4.0/>CC BY-NC-ND 4.0</a>
-            
-            </li>
-    </ul>
-    
-<div class="tags">
-	
-		
-			<label class='tag-1'><a href="/tags/HTTP/">Http</a></label>
-		
-	
-	</div>
+              
 
-    </div>
-    <div class='article-cards'>
-        <!-- Author Card -->
-        <!---
-        <div class='Card-article Card-author'>
-            <div class='card-title'>
-                <h3></h3>
-            </div>
-            <div class='card-content'>
-                    <div class="author-meta">
-                            <div class='author-figure'>
-                                <img src="" alt="">
-                            </div>
-                            <div class='author-name'>
-                                
-                            </div>
-                        </div>
-                        <div class="author-ai">
-                            <div class='author-intro'>
-                                <!-- TODO: auto generating author description -->
-                                <!-- 
-                            </div>
-                            <div class="author-articles">
-                                <!-- TODO: auto generating author articles -->
-                                <!-- <ul>
-                                    <li>Article 1</li>
-                                    <li>Article 2</li>
-                                    <li>Article 3</li>
-                                    <li>Article 4</li>
-                                    <li>Article 5</li>
-                                    <li>Article 6</li>
-                                </ul>
-                            </div>
-                        </div>
-            </div>
+              <time title="Created: 2019-01-24 15:03:43 / Modified: 15:04:37" itemprop="dateCreated datePublished" datetime="2019-01-24T15:03:43+08:00">2019-01-24</time>
             
-        </div> -->
 
-        <!-- Visit Card -->
-        <!-- <div class="Card-article Card-visit"> -->
-            <!-- <div class="card-title">
-  <h3>Post Visit</h3>
-</div>
-<div class="card-chart">
-  <div id='chart-post-visit'></div>
-</div> -->
-        <!-- </div> -->
-        
-        <!-- Auto Excerpt Card -->
-        <!-- <div class="Card-article Card-excerpt">
-            <div class="card-title">
-  <h3>Quick Read</h3>
-</div>
-<div class="card-text">
-  <p id='text-post-summary'>加密与解密 Encryption &amp; Decryption
-古典密码学
-起源：古代战争 - 古典密码学，为防止「信使」被敌方掳获获得我方情报，诞生了最初代的古典密码学，其代表加密工具就为 -...</p>
-</div>
-        </div> -->
-    </div>
-    
-    <!-- Gallery -->
-    <!-- TODO: add a slider to gallery -->
+            
+              
+
+              
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
     
 
-    <!-- Content -->
-    <!-- TODO: support table of content -->
-    <div class="article-toc" id='article-toc'>
     
-        
+    
+    
+    <div class="post-body" itemprop="articleBody">
 
+      
+      
 
-<div class='toc-container'>
-<i class="far fa-times-circle" id='toc-close' onclick='closeTOC(event);' ontouchstart='closeTOC(event);'></i>
-<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">加密与解密 Encryption &amp; Decryption</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">2.</span> <span class="toc-text">编码与解码 Encoding &amp; Decoding</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">3.</span> <span class="toc-text">压缩与解压缩 Compression &amp; Decompression</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">4.</span> <span class="toc-text">序列化 Serialization</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">5.</span> <span class="toc-text">哈希 Hash</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">6.</span> <span class="toc-text">字符集 Charset</span></a></li></ol>
-</div>
-<div class="toc-button" onclick='toggleTOC(event);' ontouchstart='toggleTOC(event);'>
-    <img src="/images/icons/blue-shadow/toc.svg" alt="">
-</div>
-
-    </div>
-    <div class='article-content'>
-    <h2>加密与解密 Encryption &amp; Decryption</h2>
+      
+        <h2>加密与解密 Encryption &amp; Decryption</h2>
 <h3>古典密码学</h3>
 <p>起源：古代战争 - 古典密码学，为防止「信使」被敌方掳获获得我方情报，诞生了最初代的古典密码学，其代表加密工具就为 - <strong>密码棒</strong>，如下图：
 <img src="https://upload-images.jianshu.io/upload_images/453168-efb45ab1f54a5b21.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
@@ -660,126 +734,283 @@ HashMap 的对象是根据 Key 的 hash code 来获取对应 Value。当 Singer 
 <li>GB 系列: 中国自研标准，多字节。</li>
 </ul>
 
-    
+      
     </div>
+
+    
+
     
     
-        <div class="article-comment" id='article-comment'>
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/HTTP/" rel="tag"># HTTP</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
             
+              <a href="/2019/01/20/2019-01-20/" rel="next" title="HTTP 的原理和工作机制">
+                <i class="fa fa-chevron-left"></i> HTTP 的原理和工作机制
+              </a>
+            
+          </div>
 
-<h1>Comment</h1>
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/02/13/2019-02-06/" rel="prev" title="HTTP 原理和工作机制（三）">
+                HTTP 原理和工作机制（三） <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
 
   
-    <div id="comment-not-available">
-      Not available
-      <p><strong>For site maintainer: Please provide <code>appId</code> and <code>appKey</code> in your <code>_data/cutie.yml</code> file for <code>valine</code> comment system.</strong></p>
-    </div>
-  
+
 
 
         </div>
         
-</article>
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/logo.jpg"
+                alt="" />
+            
+              <p class="site-author-name" itemprop="name"></p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">6</span>
+                    <span class="site-state-item-name">posts</span>
+                  </a>
+                </div>
+              
+
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">14</span>
+                    <span class="site-state-item-name">tags</span>
+                  
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#undefined"><span class="nav-number">1.</span> <span class="nav-text">加密与解密 Encryption &amp; Decryption</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-number">1.1.</span> <span class="nav-text">古典密码学</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-number">1.2.</span> <span class="nav-text">现代密码学</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">1.2.1.</span> <span class="nav-text">对称加密</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">1.2.2.</span> <span class="nav-text">非对称加密</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#undefined"><span class="nav-number">1.2.2.1.</span> <span class="nav-text">签名与验证</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#undefined"><span class="nav-number">1.2.2.1.1.</span> <span class="nav-text">签名与验证的过程</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#undefined"><span class="nav-number">1.2.2.1.2.</span> <span class="nav-text">签名 + 加密</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#undefined"><span class="nav-number">1.2.2.1.3.</span> <span class="nav-text">密码学密钥和登录密码</span></a></li></ol></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#undefined"><span class="nav-number">2.</span> <span class="nav-text">编码与解码 Encoding &amp; Decoding</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-number">2.1.</span> <span class="nav-text">Base64</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">2.1.1.</span> <span class="nav-text">Base64 是什么？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">2.1.2.</span> <span class="nav-text">什么是二进制数据？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">2.1.3.</span> <span class="nav-text">Base64 转换</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#undefined"><span class="nav-number">2.1.3.1.</span> <span class="nav-text">Base58</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">2.1.4.</span> <span class="nav-text">Base64 的重要应用</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#undefined"><span class="nav-number">3.</span> <span class="nav-text">压缩与解压缩 Compression &amp; Decompression</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-number">3.1.</span> <span class="nav-text">媒体数据的编码</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#undefined"><span class="nav-number">4.</span> <span class="nav-text">序列化 Serialization</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#undefined"><span class="nav-number">5.</span> <span class="nav-text">哈希 Hash</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-number">5.1.</span> <span class="nav-text">Hash 和非对称加密</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#undefined"><span class="nav-number">6.</span> <span class="nav-text">字符集 Charset</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder"></span>
+
+  
+
+  
+</div>
+
+
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> v3.7.1</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://theme-next.org">NexT.Pisces</a> v6.3.0</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+	
+    
+
+    
   </div>
 
   
 
-<footer id='footer'>
-    <div class='footer-copyright'>
-        <div>
-            <p> Copyright by <a href=""> </a> @ 2019</p>
-            <p>Designed by: <i class="fas fa-paint-brush"></i> <a href="https://moober.cn">Moober</a> and <i class="fas fa-graduation-cap"></i> <a href="https://qutang.github.io">Qu Tang</a> &bull; Theme: <a href="https://qutang.github.io/cutie/">Cutie 2.1.3-Taurus</a> &bull; Powered by <a href="http://hexo.io">Hexo.</a></p>
-        </div>
-    </div>
-    
-    <div class='footer-social'>
-        
-    </div>
-</footer>
-
-  <br>
-
-  <div id="footer-nav" class='footer-nav'>
-		
-
-
-
-<nav id="nav">
-	
-	
-	
-	<div class='nav-item' id='nav-item-toc'>
-		
-
-
-<div class='toc-container'>
-<i class="far fa-times-circle" id='toc-close' onclick='closeTOC(event);' ontouchstart='closeTOC(event);'></i>
-<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">加密与解密 Encryption &amp; Decryption</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">2.</span> <span class="toc-text">编码与解码 Encoding &amp; Decoding</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">3.</span> <span class="toc-text">压缩与解压缩 Compression &amp; Decompression</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">4.</span> <span class="toc-text">序列化 Serialization</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">5.</span> <span class="toc-text">哈希 Hash</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">6.</span> <span class="toc-text">字符集 Charset</span></a></li></ol>
-</div>
-<div class="toc-button" onclick='toggleTOC(event);' ontouchstart='toggleTOC(event);'>
-    <img src="/images/icons/blue-shadow/toc.svg" alt="">
-</div>
-
-	</div>
-	
-	<div class='nav-item' id='nav-item-archive'>
-		
-				<div class='nav-icon'>
-				
-			<a href="/archives/" title='Archives'>
-			<img src="/images/icons/blue-shadow/archive.svg" alt="">
-			</a>
-		</div>
-	</div>
-	<div class='nav-item' id='nav-item-search'>
-		
-		<div class='nav-icon'>
-		
-			<a href="/search/" title='Search'>
-			<img src="/images/icons/blue-shadow/search.svg" alt="">
-			</a>
-		</div>
-	</div>
-	<div class="nav-item" id='nav-item-more'>
-		<div class="nav-icon">
-				<a href='#' onclick='onClickMenuIcon(event);' ontouchstart='onClickMenuIcon(event);'>
-				<img src="/images/icons/blue-shadow/menu.svg" alt="">
-				</a>
-		</div>
-		<div class="nav-more-menu">
-				<i class="far fa-times-circle" id='nav-more-menu-close' onclick='onClickNavMenuClose(event);' ontouchstart='onClickNavMenuClose(event);'></i>
-		
-		
-	</div>
-	</div>
-</nav>
-
-	</div>
-
-  
-
-
-
-    
-
-
-
-
-
-
-
-    <script src="/js/lightgallery.min.js"></script>
-<script src="/js/lg-zoom.min.js"></script>
-<script type='text/javascript'>
-    $(document).ready(function() {
-        $("#lightgallery").lightGallery(); 
-        $(".article-content img").each(function(){
-            console.log($(this).attr('src'))
-            $(this).attr('data-src', $(this).attr('src')).lightGallery({
-                selector: 'this'
-            })
-        });
-    });
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
 </script>
 
 
@@ -787,45 +1018,115 @@ HashMap 的对象是根据 Key 的 hash code 来获取对应 Value。当 Singer 
 
 
 
-<script type='text/javascript'>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   
-  // update cookie if this page is opened (directly)
-  loadjs(['/libs/jshashes/hashes.min.js', '/libs/js-cookie/src/js.cookie.js', '/js/post.v2.js'], 'post-version');
-  loadjs.ready('post-version', function(){
-    
-    new Postv2('hashit_1fd1203153f69a2751294739e47dac5086cef182b7a2c1f6032d7b793376aa5a').update('hashit_243c66bb007982388efc1fe1e6b82d48b364b4a1cffc2caf3e29eb7cbfd6b1a6', function(){});
-  });
   
-</script>
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.3.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.3.0"></script>
 
 
 
-<!-- <script src="/js/post.js"></script> -->
-
-<script src="/js/headroom.min.js"></script>
-
-<script data-no-instant type='text/javascript'>
-
-initHeadroom();
-
-changeLayoutOnTouchScreen();
-
-// 
-// var post = new Post('', '');
-// post.getCommentCount(window.location.pathname, function(count){
-//     $('#article-comment-count').text(count);
-// });
-// post.addVisitRecord(window.location.pathname, userip);
-// post.getVisitCount(window.location.pathname, function(count){
-//     $('#article-visit-count').text(count);
-// });
-
-// 
-</script>
+  
+  
 
 
-<!-- End Document
-  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <script type="text/javascript" src="/js/src/affix.js?v=6.3.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=6.3.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.3.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.3.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.3.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
 </body>
 </html>

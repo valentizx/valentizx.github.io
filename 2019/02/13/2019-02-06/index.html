@@ -1,339 +1,409 @@
 <!DOCTYPE html>
-<html lang="en">
 
 
 
 
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="">
 <head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2"/>
+<meta name="theme-color" content="#222">
 
-  <!-- Basic Page Needs
-  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-  <meta charset="utf-8">
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=6.3.0" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.3.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=6.3.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=6.3.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.3.0" color="#222">
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '6.3.0',
+    sidebar: {"position":"right","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
   
-      <title>HTTP 原理和工作机制（三） - I'M VALENTI</title>
+
+
+
+
+  <meta name="description" content="登录和授权 登录 身份认证的过程，在输入账号和密码以及点击登录按钮这一操作流程，就是将「你本人」和所输入的「账号」建立联系的过程。 Cookie 起源：购物车，当时的「购物车」不存在服务器，电商网站的开发商觉得用户在没有真正决定购买的情况下不需要将购物车的信息放进服务器里，只存在本地就好，于是电商网站开发商决定做一个浏览器来实现这一功能，也就是说，电商网站——浏览器是一体的，并实现了 Cookie">
+<meta name="keywords" content="HTTP,TCP">
+<meta property="og:type" content="article">
+<meta property="og:title" content="HTTP 原理和工作机制（三）">
+<meta property="og:url" content="http://yoursite.com/2019/02/13/2019-02-06/index.html">
+<meta property="og:site_name" content="I&#39;M VALENTI">
+<meta property="og:description" content="登录和授权 登录 身份认证的过程，在输入账号和密码以及点击登录按钮这一操作流程，就是将「你本人」和所输入的「账号」建立联系的过程。 Cookie 起源：购物车，当时的「购物车」不存在服务器，电商网站的开发商觉得用户在没有真正决定购买的情况下不需要将购物车的信息放进服务器里，只存在本地就好，于是电商网站开发商决定做一个浏览器来实现这一功能，也就是说，电商网站——浏览器是一体的，并实现了 Cookie">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="http://pmud0ogk6.bkt.clouddn.com/15496865022950.jpg">
+<meta property="og:image" content="http://pmud0ogk6.bkt.clouddn.com/15496869070604.jpg">
+<meta property="og:image" content="http://pmud0ogk6.bkt.clouddn.com/15496880132476.jpg">
+<meta property="og:image" content="http://pmud0ogk6.bkt.clouddn.com/15496882798085.jpg">
+<meta property="og:image" content="http://pmud0ogk6.bkt.clouddn.com/15495362819577.jpg">
+<meta property="og:image" content="http://pmud0ogk6.bkt.clouddn.com/15495378750304.jpg">
+<meta property="og:image" content="http://pmud0ogk6.bkt.clouddn.com/15495385406485.jpg">
+<meta property="og:image" content="http://pmud0ogk6.bkt.clouddn.com/15495399940073.jpg">
+<meta property="og:image" content="http://pmud0ogk6.bkt.clouddn.com/15495513143219.jpg">
+<meta property="og:updated_time" content="2019-02-13T02:53:13.842Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="HTTP 原理和工作机制（三）">
+<meta name="twitter:description" content="登录和授权 登录 身份认证的过程，在输入账号和密码以及点击登录按钮这一操作流程，就是将「你本人」和所输入的「账号」建立联系的过程。 Cookie 起源：购物车，当时的「购物车」不存在服务器，电商网站的开发商觉得用户在没有真正决定购买的情况下不需要将购物车的信息放进服务器里，只存在本地就好，于是电商网站开发商决定做一个浏览器来实现这一功能，也就是说，电商网站——浏览器是一体的，并实现了 Cookie">
+<meta name="twitter:image" content="http://pmud0ogk6.bkt.clouddn.com/15496865022950.jpg">
+
+
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/02/13/2019-02-06/"/>
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>HTTP 原理和工作机制（三） | I'M VALENTI</title>
   
 
-  
-  
-  <meta name="description" content="">
-  <meta name="author" content="">
-
-  <!-- Mobile Specific Metas
-  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-
-  <!-- load loadjs.js -->
-  <script src="/libs/loadjs/dist/loadjs.min.js"></script>
-
-<link rel="stylesheet" href="/libs/animate.css/animate.min.css">
-  <!-- load lightgallery -->
-<link rel="stylesheet" href="/css/lightgallery.css">
-<link rel="stylesheet" href="/libs/noty/lib/noty.css">
-<script
-src="https://code.jquery.com/jquery-3.3.1.min.js"
-integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
-crossorigin="anonymous"></script>
-  
 
 
 
 
 
 
-    <link rel="stylesheet" href="/css/taurus.css">
-    
-        <link rel="stylesheet" href="/css/scheme-taurus/animations.css">
-    
 
 
-<link rel="stylesheet" href="/.css">
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
 
-  <!-- load font awesome 5 -->
-  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
 
-  <script type="text/x-mathjax-config">
-  MathJax.Hub.Config({
-  tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
-  });
-  </script>
-  <!-- load mathjax -->
-  <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax//libs/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
 
-  <!-- load js-cookie -->
-  <script src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
-    <script src="/js/social-share.min.js"></script>
-    <script src="/js/theme.js"></script>
-
-  <!-- include cookie.js -->
-  
-  
-
-  <!-- include comment system code -->
-  
-    <script src="//cdn1.lncld.net/static/js/3.6.4/av-min.js"></script>
-<script src='//unpkg.com/valine/dist/Valine.min.js'></script>
-  
-  <!-- Favicon
-  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-  <link rel="icon" type="image/png" href="/images/favicon.png">
 </head>
-<body style="display: flex; flex-direction: column; min-height: 100vh;">
 
- 
+<body itemscope itemtype="http://schema.org/WebPage" lang="default">
 
-<header id="header" class='header'>
-	<div class="header-title">
-		
-		<div class='header-logo'>
-			<a href='/'>
-				<img src='/images/theme-icon.svg' />
-			</a>
-		</div>
-		<div class='header-text'>
-			<h1>
-				<a href="/">I'M VALENTI</a>
-			</h1>
-			<subtitle>
-				
-			</subtitle>
-		</div>
-		
-	</div>
-	<div id='header-nav'>
-		
+  
+  
+    
+  
 
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
 
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
 
-<nav id="nav">
-	
-	
-	
-	<div class='nav-item' id='nav-item-toc'>
-		
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">I'M VALENTI</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+  </div>
 
-
-<div class='toc-container'>
-<i class="far fa-times-circle" id='toc-close' onclick='closeTOC(event);' ontouchstart='closeTOC(event);'></i>
-<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">登录和授权</span></a></li></ol>
-</div>
-<div class="toc-button" onclick='toggleTOC(event);' ontouchstart='toggleTOC(event);'>
-    <img src="/images/icons/blue-shadow/toc.svg" alt="">
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
 </div>
 
-	</div>
-	
-	<div class='nav-item' id='nav-item-archive'>
-		
-				<div class='nav-icon'>
-				
-			<a href="/archives/" title='Archives'>
-			<img src="/images/icons/blue-shadow/archive.svg" alt="">
-			</a>
-		</div>
-	</div>
-	<div class='nav-item' id='nav-item-search'>
-		
-		<div class='nav-icon'>
-		
-			<a href="/search/" title='Search'>
-			<img src="/images/icons/blue-shadow/search.svg" alt="">
-			</a>
-		</div>
-	</div>
-	<div class="nav-item" id='nav-item-more'>
-		<div class="nav-icon">
-				<a href='#' onclick='onClickMenuIcon(event);' ontouchstart='onClickMenuIcon(event);'>
-				<img src="/images/icons/blue-shadow/menu.svg" alt="">
-				</a>
-		</div>
-		<div class="nav-more-menu">
-				<i class="far fa-times-circle" id='nav-more-menu-close' onclick='onClickNavMenuClose(event);' ontouchstart='onClickNavMenuClose(event);'></i>
-		
-		
-	</div>
-	</div>
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+    <a href="/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-home"></i> <br />Home</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+    <a href="/about/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-user"></i> <br />About</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+    <a href="/tags/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />Tags</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+    <a href="/categories/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-th"></i> <br />Categories</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />Archives</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-commonweal">
+    <a href="/404/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />Commonweal 404</a>
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+
+  
 </nav>
 
-	</div>
-</header>
 
- 
 
   
 
 
 
-
-  <!-- Primary Page Layout
-  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-  <div style="flex: 1;">
-      <style>
-    body {
-        background-color: white;
-    }
-</style>
-
-
-
-
-
-
-
+</div>
+    </header>
 
     
-    
 
 
-
-
-
-
-    
-    
-        
-    
-
-    
-        
-    
-
-
-
-
-
-
-
-
-
-<article class="article" id="/2019/02/13/2019-02-06/" data-name='HTTP 原理和工作机制（三）' data-version="">
-
-    <!-- Title -->
-    <div class='article-header'>
-         
-         <h1 class='article-title'>
-            <a href="/2019/02/13/2019-02-06/">
-                HTTP 原理和工作机制（三）
-            </a>
-        </h1>
-        <!-- TODO: support nested categories,display them nicely -->
-        
-    </div>
-    
-    <!-- Date and Author -->
-    <div class='article-meta'>
-    <ul>
-            <li><i class='fa fa-calendar'></i> 2019-02-13</li>
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
             
-            <li><i class="fa fa-user"></i> </li>
-            <li><i class="fas fa-copyright"></i>
+
+          
+          <div id="content" class="content">
             
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/13/2019-02-06/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/logo.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="I'M VALENTI">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">HTTP 原理和工作机制（三）
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
                 
-                
-            
-            
-                <a href=https://creativecommons.org/licenses/by-nc-nd/4.0/>CC BY-NC-ND 4.0</a>
-            
-            </li>
-    </ul>
-    
-<div class="tags">
-	
-		
-			<label class='tag-1'><a href="/tags/HTTP/">Http</a></label>
-		
-	
-		
-			<label class='tag-2'><a href="/tags/TCP/">Tcp</a></label>
-		
-	
-	</div>
+              
 
-    </div>
-    <div class='article-cards'>
-        <!-- Author Card -->
-        <!---
-        <div class='Card-article Card-author'>
-            <div class='card-title'>
-                <h3></h3>
-            </div>
-            <div class='card-content'>
-                    <div class="author-meta">
-                            <div class='author-figure'>
-                                <img src="" alt="">
-                            </div>
-                            <div class='author-name'>
-                                
-                            </div>
-                        </div>
-                        <div class="author-ai">
-                            <div class='author-intro'>
-                                <!-- TODO: auto generating author description -->
-                                <!-- 
-                            </div>
-                            <div class="author-articles">
-                                <!-- TODO: auto generating author articles -->
-                                <!-- <ul>
-                                    <li>Article 1</li>
-                                    <li>Article 2</li>
-                                    <li>Article 3</li>
-                                    <li>Article 4</li>
-                                    <li>Article 5</li>
-                                    <li>Article 6</li>
-                                </ul>
-                            </div>
-                        </div>
-            </div>
+              <time title="Created: 2019-02-13 10:52:11 / Modified: 10:53:13" itemprop="dateCreated datePublished" datetime="2019-02-13T10:52:11+08:00">2019-02-13</time>
             
-        </div> -->
 
-        <!-- Visit Card -->
-        <!-- <div class="Card-article Card-visit"> -->
-            <!-- <div class="card-title">
-  <h3>Post Visit</h3>
-</div>
-<div class="card-chart">
-  <div id='chart-post-visit'></div>
-</div> -->
-        <!-- </div> -->
-        
-        <!-- Auto Excerpt Card -->
-        <!-- <div class="Card-article Card-excerpt">
-            <div class="card-title">
-  <h3>Quick Read</h3>
-</div>
-<div class="card-text">
-  <p id='text-post-summary'>登录和授权
-登录
-身份认证的过程，在输入账号和密码以及点击登录按钮这一操作流程，就是将「你本人」和所输入的「账号」建立联系的过程。
-Cookie
-起源：购物车，当时的「购物车」不存在服务器，电商网站的开发商觉得用户在没有真正决定购买的情况下不需要将购物车的信息放进服务器里，只存在本地就好，于是电商网站开发商决定做一个浏览器来实现这一功能，也就是说，电商网站——浏览器是一体的，并实现了 Cookie 的功能满足购物车的需求，这就是最早的 Cookie。
-Cookie...</p>
-</div>
-        </div> -->
-    </div>
-    
-    <!-- Gallery -->
-    <!-- TODO: add a slider to gallery -->
+            
+              
+
+              
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
     
 
-    <!-- Content -->
-    <!-- TODO: support table of content -->
-    <div class="article-toc" id='article-toc'>
     
-        
+    
+    
+    <div class="post-body" itemprop="articleBody">
 
+      
+      
 
-<div class='toc-container'>
-<i class="far fa-times-circle" id='toc-close' onclick='closeTOC(event);' ontouchstart='closeTOC(event);'></i>
-<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">登录和授权</span></a></li></ol>
-</div>
-<div class="toc-button" onclick='toggleTOC(event);' ontouchstart='toggleTOC(event);'>
-    <img src="/images/icons/blue-shadow/toc.svg" alt="">
-</div>
-
-    </div>
-    <div class='article-content'>
-    <h2>登录和授权</h2>
+      
+        <h2>登录和授权</h2>
 <h3>登录</h3>
 <p>身份认证的过程，在输入<strong>账号</strong>和<strong>密码</strong>以及点击登录按钮这一操作流程，就是将「你本人」和所输入的「账号」建立联系的过程。</p>
 <h4>Cookie</h4>
@@ -531,126 +601,281 @@ Q: 在 5 中为什么生产两个加密密钥？
 A: 出于安全考虑，客户端发消息用客户端加密密钥、服务端发消息用服务端加密密钥能勾搭到相对安全的效果。
 </code></pre>
 
-    
+      
     </div>
+
+    
+
     
     
-        <div class="article-comment" id='article-comment'>
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/HTTP/" rel="tag"># HTTP</a>
+          
+            <a href="/tags/TCP/" rel="tag"># TCP</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
             
+              <a href="/2019/01/24/2019-01-24/" rel="next" title="HTTP 原理和工作机制（二）">
+                <i class="fa fa-chevron-left"></i> HTTP 原理和工作机制（二）
+              </a>
+            
+          </div>
 
-<h1>Comment</h1>
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
 
   
-    <div id="comment-not-available">
-      Not available
-      <p><strong>For site maintainer: Please provide <code>appId</code> and <code>appKey</code> in your <code>_data/cutie.yml</code> file for <code>valine</code> comment system.</strong></p>
-    </div>
-  
+
 
 
         </div>
         
-</article>
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/logo.jpg"
+                alt="" />
+            
+              <p class="site-author-name" itemprop="name"></p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">6</span>
+                    <span class="site-state-item-name">posts</span>
+                  </a>
+                </div>
+              
+
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">14</span>
+                    <span class="site-state-item-name">tags</span>
+                  
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#undefined"><span class="nav-number">1.</span> <span class="nav-text">登录和授权</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-number">1.1.</span> <span class="nav-text">登录</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">1.1.1.</span> <span class="nav-text">Cookie</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#undefined"><span class="nav-number">1.1.1.1.</span> <span class="nav-text">Cookie 的工作机制</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#undefined"><span class="nav-number">1.1.1.1.1.</span> <span class="nav-text">使用 Cookie 管理登录状态</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#undefined"><span class="nav-number">1.1.1.2.</span> <span class="nav-text">Cookie 的作用</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#undefined"><span class="nav-number">1.1.1.3.</span> <span class="nav-text">XSS（Cross-site scripting）</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#undefined"><span class="nav-number">1.1.1.4.</span> <span class="nav-text">XSRF（Cross-site request forgery）</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-number">1.2.</span> <span class="nav-text">授权</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">1.2.1.</span> <span class="nav-text">Basic</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">1.2.2.</span> <span class="nav-text">Bearer</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#undefined"><span class="nav-number">1.2.2.1.</span> <span class="nav-text">OAuth2</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#undefined"><span class="nav-number">1.2.2.1.1.</span> <span class="nav-text">OAuth2 认证流程</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#undefined"><span class="nav-number">1.2.2.1.2.</span> <span class="nav-text">微信登录</span></a></li></ol></li></ol></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder"></span>
+
+  
+
+  
+</div>
+
+
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> v3.7.1</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://theme-next.org">NexT.Pisces</a> v6.3.0</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+	
+    
+
+    
   </div>
 
   
 
-<footer id='footer'>
-    <div class='footer-copyright'>
-        <div>
-            <p> Copyright by <a href=""> </a> @ 2019</p>
-            <p>Designed by: <i class="fas fa-paint-brush"></i> <a href="https://moober.cn">Moober</a> and <i class="fas fa-graduation-cap"></i> <a href="https://qutang.github.io">Qu Tang</a> &bull; Theme: <a href="https://qutang.github.io/cutie/">Cutie 2.1.3-Taurus</a> &bull; Powered by <a href="http://hexo.io">Hexo.</a></p>
-        </div>
-    </div>
-    
-    <div class='footer-social'>
-        
-    </div>
-</footer>
-
-  <br>
-
-  <div id="footer-nav" class='footer-nav'>
-		
-
-
-
-<nav id="nav">
-	
-	
-	
-	<div class='nav-item' id='nav-item-toc'>
-		
-
-
-<div class='toc-container'>
-<i class="far fa-times-circle" id='toc-close' onclick='closeTOC(event);' ontouchstart='closeTOC(event);'></i>
-<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">登录和授权</span></a></li></ol>
-</div>
-<div class="toc-button" onclick='toggleTOC(event);' ontouchstart='toggleTOC(event);'>
-    <img src="/images/icons/blue-shadow/toc.svg" alt="">
-</div>
-
-	</div>
-	
-	<div class='nav-item' id='nav-item-archive'>
-		
-				<div class='nav-icon'>
-				
-			<a href="/archives/" title='Archives'>
-			<img src="/images/icons/blue-shadow/archive.svg" alt="">
-			</a>
-		</div>
-	</div>
-	<div class='nav-item' id='nav-item-search'>
-		
-		<div class='nav-icon'>
-		
-			<a href="/search/" title='Search'>
-			<img src="/images/icons/blue-shadow/search.svg" alt="">
-			</a>
-		</div>
-	</div>
-	<div class="nav-item" id='nav-item-more'>
-		<div class="nav-icon">
-				<a href='#' onclick='onClickMenuIcon(event);' ontouchstart='onClickMenuIcon(event);'>
-				<img src="/images/icons/blue-shadow/menu.svg" alt="">
-				</a>
-		</div>
-		<div class="nav-more-menu">
-				<i class="far fa-times-circle" id='nav-more-menu-close' onclick='onClickNavMenuClose(event);' ontouchstart='onClickNavMenuClose(event);'></i>
-		
-		
-	</div>
-	</div>
-</nav>
-
-	</div>
-
-  
-
-
-
-    
-
-
-
-
-
-
-
-    <script src="/js/lightgallery.min.js"></script>
-<script src="/js/lg-zoom.min.js"></script>
-<script type='text/javascript'>
-    $(document).ready(function() {
-        $("#lightgallery").lightGallery(); 
-        $(".article-content img").each(function(){
-            console.log($(this).attr('src'))
-            $(this).attr('data-src', $(this).attr('src')).lightGallery({
-                selector: 'this'
-            })
-        });
-    });
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
 </script>
 
 
@@ -658,45 +883,115 @@ A: 出于安全考虑，客户端发消息用客户端加密密钥、服务端�
 
 
 
-<script type='text/javascript'>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   
-  // update cookie if this page is opened (directly)
-  loadjs(['/libs/jshashes/hashes.min.js', '/libs/js-cookie/src/js.cookie.js', '/js/post.v2.js'], 'post-version');
-  loadjs.ready('post-version', function(){
-    
-    new Postv2('hashit_5d661adf128196fd72b0174dd1459c34026fce19801a7c8b4a3053674288134b').update('hashit_92dff99fb9186bd40dc1bccdcfe3fe62452bf193f4f1111e13f572e884a23984', function(){});
-  });
   
-</script>
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.3.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.3.0"></script>
 
 
 
-<!-- <script src="/js/post.js"></script> -->
-
-<script src="/js/headroom.min.js"></script>
-
-<script data-no-instant type='text/javascript'>
-
-initHeadroom();
-
-changeLayoutOnTouchScreen();
-
-// 
-// var post = new Post('', '');
-// post.getCommentCount(window.location.pathname, function(count){
-//     $('#article-comment-count').text(count);
-// });
-// post.addVisitRecord(window.location.pathname, userip);
-// post.getVisitCount(window.location.pathname, function(count){
-//     $('#article-visit-count').text(count);
-// });
-
-// 
-</script>
+  
+  
 
 
-<!-- End Document
-  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <script type="text/javascript" src="/js/src/affix.js?v=6.3.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=6.3.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.3.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.3.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.3.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
 </body>
 </html>

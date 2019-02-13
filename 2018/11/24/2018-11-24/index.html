@@ -1,346 +1,413 @@
 <!DOCTYPE html>
-<html lang="en">
 
 
 
 
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="">
 <head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2"/>
+<meta name="theme-color" content="#222">
 
-  <!-- Basic Page Needs
-  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-  <meta charset="utf-8">
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=6.3.0" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.3.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=6.3.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=6.3.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.3.0" color="#222">
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '6.3.0',
+    sidebar: {"position":"right","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
   
-      <title>macOS 系统 nginx + rtmp 流媒体传输实践 - I'M VALENTI</title>
+
+
+
+
+  <meta name="description" content="流媒体传输是“直播”中至关重要的环节，在网络传输媒体流的时候有着不同的流媒体传输协议。 做了一些小调查，在整个“直播”产品构建的过程中，应用最广的两个流媒体传输协议就是 RTMP 和 HLS 两个协议，其中 RTMP 在国内直播发展的长河中扮演着极其重要的角色，各个平台与 RTMP 的“结合”已变得很成熟。 两种不同的流媒体传输协议 RTMP RTMP (Real Time Messaging P">
+<meta name="keywords" content="rtmp,hls,推流,拉流">
+<meta property="og:type" content="article">
+<meta property="og:title" content="macOS 系统 nginx + rtmp 流媒体传输实践">
+<meta property="og:url" content="http://yoursite.com/2018/11/24/2018-11-24/index.html">
+<meta property="og:site_name" content="I&#39;M VALENTI">
+<meta property="og:description" content="流媒体传输是“直播”中至关重要的环节，在网络传输媒体流的时候有着不同的流媒体传输协议。 做了一些小调查，在整个“直播”产品构建的过程中，应用最广的两个流媒体传输协议就是 RTMP 和 HLS 两个协议，其中 RTMP 在国内直播发展的长河中扮演着极其重要的角色，各个平台与 RTMP 的“结合”已变得很成熟。 两种不同的流媒体传输协议 RTMP RTMP (Real Time Messaging P">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="https://lh3.googleusercontent.com/-leVcMoCy_Ho/W_j6QUWNzsI/AAAAAAAAAcU/2YwbK5rIYw4Vr85ERW4PHliSXV_TwjtUgCHMYCw/I/15430436475817.png">
+<meta property="og:image" content="https://lh3.googleusercontent.com/-5CPZkRTj12U/W_j5yubYj5I/AAAAAAAAAcM/EIp0Fvb_ByAE99WS3ut_pdxeVZrs7MamgCHMYCw/I/15430435174139.jpg">
+<meta property="og:image" content="https://lh3.googleusercontent.com/-lnObWno95vE/W_jp_LdY8yI/AAAAAAAAAcA/1AaNtt-x-twOns5bWJMGhU9uE3NMIqh6QCHMYCw/I/15430394795180.png">
+<meta property="og:image" content="https://lh3.googleusercontent.com/-HKeUcGhPnNs/W_kW8_gvwVI/AAAAAAAAAcg/eFET15J0vAEP2dkpmjf1qRdjXIXutejGACHMYCw/I/Jietu20181124-171400%25402x.jpg">
+<meta property="og:image" content="https://lh3.googleusercontent.com/-D_bXkjNRNiU/W_kY6_wOgUI/AAAAAAAAAc0/_EQY1y-aObsRDWFMKSgtGSXxsX9-UMKDgCHMYCw/I/15430514948876.jpg">
+<meta property="og:image" content="https://lh3.googleusercontent.com/-TIlna7CEZ3A/W_kXeDvoNyI/AAAAAAAAAco/EiYxJONT10Y3YX5x6FoEhG3ULbJ9-8DHwCHMYCw/I/Jietu20181124-171439%25402x.jpg">
+<meta property="og:image" content="https://lh3.googleusercontent.com/-Ukd-6VJKbhY/W_kbakzT1JI/AAAAAAAAAdA/oMsdcComgYkNhJWp0Ws1BOE2y3232bWYACHMYCw/I/Jietu20181124-173220%25402x.jpg">
+<meta property="og:image" content="https://lh3.googleusercontent.com/-ZdhM-lWEE7E/W_kbfIy0ztI/AAAAAAAAAdE/SHPCm-EqqHQJqOZGT0gJVg_AKDTjXMslQCHMYCw/I/Jietu20181124-173249%25402x.jpg">
+<meta property="og:image" content="https://lh3.googleusercontent.com/-m1LDECnVXs4/W_kiMVpYXTI/AAAAAAAAAdQ/idOv_6owTtMJCLNWDD0DCpIOMzGi-i7CgCHMYCw/I/15430538665743.jpg">
+<meta property="og:image" content="https://lh3.googleusercontent.com/-GOodNe5Tl_A/W_ks6meGDpI/AAAAAAAAAeU/vzscHp8O4qMRRyWY9TKKfGxZriU3T64LQCHMYCw/I/15430566121492.jpg">
+<meta property="og:image" content="https://lh3.googleusercontent.com/-K7Ti2qPpqY0/W_kkSGtvRCI/AAAAAAAAAdk/5VT_n3m1Jho-ENKPWdO4PGZeTNXZ7KDXQCHMYCw/I/Jietu20181124-181217%25402x.jpg">
+<meta property="og:image" content="https://lh3.googleusercontent.com/-lQGsi8EPCEQ/W_kl5cSJDKI/AAAAAAAAAd8/1MU3SqJulLcDWLH8QDKkEUbJRE3Sk_jjwCHMYCw/I/15430548184358.jpg">
+<meta property="og:image" content="https://lh3.googleusercontent.com/-a346KYF4T-Q/W_kmflf2FRI/AAAAAAAAAeI/aCD8fe4AoqQGrv9V2o8XBjB0PYN-b12oQCHMYCw/I/15430549672565.jpg">
+<meta property="og:updated_time" content="2018-11-24T10:50:29.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="macOS 系统 nginx + rtmp 流媒体传输实践">
+<meta name="twitter:description" content="流媒体传输是“直播”中至关重要的环节，在网络传输媒体流的时候有着不同的流媒体传输协议。 做了一些小调查，在整个“直播”产品构建的过程中，应用最广的两个流媒体传输协议就是 RTMP 和 HLS 两个协议，其中 RTMP 在国内直播发展的长河中扮演着极其重要的角色，各个平台与 RTMP 的“结合”已变得很成熟。 两种不同的流媒体传输协议 RTMP RTMP (Real Time Messaging P">
+<meta name="twitter:image" content="https://lh3.googleusercontent.com/-leVcMoCy_Ho/W_j6QUWNzsI/AAAAAAAAAcU/2YwbK5rIYw4Vr85ERW4PHliSXV_TwjtUgCHMYCw/I/15430436475817.png">
+
+
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/11/24/2018-11-24/"/>
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>macOS 系统 nginx + rtmp 流媒体传输实践 | I'M VALENTI</title>
   
 
-  
-  
-  <meta name="description" content="">
-  <meta name="author" content="">
-
-  <!-- Mobile Specific Metas
-  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-
-  <!-- load loadjs.js -->
-  <script src="/libs/loadjs/dist/loadjs.min.js"></script>
-
-<link rel="stylesheet" href="/libs/animate.css/animate.min.css">
-  <!-- load lightgallery -->
-<link rel="stylesheet" href="/css/lightgallery.css">
-<link rel="stylesheet" href="/libs/noty/lib/noty.css">
-<script
-src="https://code.jquery.com/jquery-3.3.1.min.js"
-integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
-crossorigin="anonymous"></script>
-  
 
 
 
 
 
 
-    <link rel="stylesheet" href="/css/taurus.css">
-    
-        <link rel="stylesheet" href="/css/scheme-taurus/animations.css">
-    
 
 
-<link rel="stylesheet" href="/.css">
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
 
-  <!-- load font awesome 5 -->
-  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
 
-  <script type="text/x-mathjax-config">
-  MathJax.Hub.Config({
-  tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
-  });
-  </script>
-  <!-- load mathjax -->
-  <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax//libs/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
 
-  <!-- load js-cookie -->
-  <script src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
-    <script src="/js/social-share.min.js"></script>
-    <script src="/js/theme.js"></script>
-
-  <!-- include cookie.js -->
-  
-  
-
-  <!-- include comment system code -->
-  
-    <script src="//cdn1.lncld.net/static/js/3.6.4/av-min.js"></script>
-<script src='//unpkg.com/valine/dist/Valine.min.js'></script>
-  
-  <!-- Favicon
-  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-  <link rel="icon" type="image/png" href="/images/favicon.png">
 </head>
-<body style="display: flex; flex-direction: column; min-height: 100vh;">
 
- 
+<body itemscope itemtype="http://schema.org/WebPage" lang="default">
 
-<header id="header" class='header'>
-	<div class="header-title">
-		
-		<div class='header-logo'>
-			<a href='/'>
-				<img src='/images/theme-icon.svg' />
-			</a>
-		</div>
-		<div class='header-text'>
-			<h1>
-				<a href="/">I'M VALENTI</a>
-			</h1>
-			<subtitle>
-				
-			</subtitle>
-		</div>
-		
-	</div>
-	<div id='header-nav'>
-		
+  
+  
+    
+  
 
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
 
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
 
-<nav id="nav">
-	
-	
-	
-	<div class='nav-item' id='nav-item-toc'>
-		
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">I'M VALENTI</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+  </div>
 
-
-<div class='toc-container'>
-<i class="far fa-times-circle" id='toc-close' onclick='closeTOC(event);' ontouchstart='closeTOC(event);'></i>
-<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">两种不同的流媒体传输协议</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">2.</span> <span class="toc-text">本地流媒体传输实践</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">3.</span> <span class="toc-text">实践远程推流</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">4.</span> <span class="toc-text">FileZilla 添加站点</span></a></li></ol>
-</div>
-<div class="toc-button" onclick='toggleTOC(event);' ontouchstart='toggleTOC(event);'>
-    <img src="/images/icons/blue-shadow/toc.svg" alt="">
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
 </div>
 
-	</div>
-	
-	<div class='nav-item' id='nav-item-archive'>
-		
-				<div class='nav-icon'>
-				
-			<a href="/archives/" title='Archives'>
-			<img src="/images/icons/blue-shadow/archive.svg" alt="">
-			</a>
-		</div>
-	</div>
-	<div class='nav-item' id='nav-item-search'>
-		
-		<div class='nav-icon'>
-		
-			<a href="/search/" title='Search'>
-			<img src="/images/icons/blue-shadow/search.svg" alt="">
-			</a>
-		</div>
-	</div>
-	<div class="nav-item" id='nav-item-more'>
-		<div class="nav-icon">
-				<a href='#' onclick='onClickMenuIcon(event);' ontouchstart='onClickMenuIcon(event);'>
-				<img src="/images/icons/blue-shadow/menu.svg" alt="">
-				</a>
-		</div>
-		<div class="nav-more-menu">
-				<i class="far fa-times-circle" id='nav-more-menu-close' onclick='onClickNavMenuClose(event);' ontouchstart='onClickNavMenuClose(event);'></i>
-		
-		
-	</div>
-	</div>
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+    <a href="/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-home"></i> <br />Home</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+    <a href="/about/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-user"></i> <br />About</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+    <a href="/tags/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />Tags</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+    <a href="/categories/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-th"></i> <br />Categories</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />Archives</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-commonweal">
+    <a href="/404/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />Commonweal 404</a>
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+
+  
 </nav>
 
-	</div>
-</header>
 
- 
 
   
 
 
 
-
-  <!-- Primary Page Layout
-  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-  <div style="flex: 1;">
-      <style>
-    body {
-        background-color: white;
-    }
-</style>
-
-
-
-
-
-
-
+</div>
+    </header>
 
     
-    
 
 
-
-
-
-
-    
-    
-        
-    
-
-    
-        
-    
-
-
-
-
-
-
-
-
-
-<article class="article" id="/2018/11/24/2018-11-24/" data-name='macOS 系统 nginx + rtmp 流媒体传输实践' data-version="">
-
-    <!-- Title -->
-    <div class='article-header'>
-         
-         <h1 class='article-title'>
-            <a href="/2018/11/24/2018-11-24/">
-                macOS 系统 Nginx + Rtmp 流媒体传输实践
-            </a>
-        </h1>
-        <!-- TODO: support nested categories,display them nicely -->
-        
-    </div>
-    
-    <!-- Date and Author -->
-    <div class='article-meta'>
-    <ul>
-            <li><i class='fa fa-calendar'></i> 2018-11-24</li>
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
             
-            <li><i class="fa fa-user"></i> </li>
-            <li><i class="fas fa-copyright"></i>
+
+          
+          <div id="content" class="content">
             
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/11/24/2018-11-24/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/logo.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="I'M VALENTI">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">macOS 系统 nginx + rtmp 流媒体传输实践
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
                 
-                
-            
-            
-                <a href=https://creativecommons.org/licenses/by-nc-nd/4.0/>CC BY-NC-ND 4.0</a>
-            
-            </li>
-    </ul>
-    
-<div class="tags">
-	
-		
-			<label class='tag-1'><a href="/tags/hls/">Hls</a></label>
-		
-	
-		
-			<label class='tag-2'><a href="/tags/rtmp/">Rtmp</a></label>
-		
-	
-		
-			<label class='tag-3'><a href="/tags/拉流/">拉流</a></label>
-		
-	
-		
-			<label class='tag-4'><a href="/tags/推流/">推流</a></label>
-		
-	
-	</div>
+              
 
-    </div>
-    <div class='article-cards'>
-        <!-- Author Card -->
-        <!---
-        <div class='Card-article Card-author'>
-            <div class='card-title'>
-                <h3></h3>
-            </div>
-            <div class='card-content'>
-                    <div class="author-meta">
-                            <div class='author-figure'>
-                                <img src="" alt="">
-                            </div>
-                            <div class='author-name'>
-                                
-                            </div>
-                        </div>
-                        <div class="author-ai">
-                            <div class='author-intro'>
-                                <!-- TODO: auto generating author description -->
-                                <!-- 
-                            </div>
-                            <div class="author-articles">
-                                <!-- TODO: auto generating author articles -->
-                                <!-- <ul>
-                                    <li>Article 1</li>
-                                    <li>Article 2</li>
-                                    <li>Article 3</li>
-                                    <li>Article 4</li>
-                                    <li>Article 5</li>
-                                    <li>Article 6</li>
-                                </ul>
-                            </div>
-                        </div>
-            </div>
+              <time title="Created: 2018-11-24 13:18:11 / Modified: 18:50:29" itemprop="dateCreated datePublished" datetime="2018-11-24T13:18:11+08:00">2018-11-24</time>
             
-        </div> -->
 
-        <!-- Visit Card -->
-        <!-- <div class="Card-article Card-visit"> -->
-            <!-- <div class="card-title">
-  <h3>Post Visit</h3>
-</div>
-<div class="card-chart">
-  <div id='chart-post-visit'></div>
-</div> -->
-        <!-- </div> -->
-        
-        <!-- Auto Excerpt Card -->
-        <!-- <div class="Card-article Card-excerpt">
-            <div class="card-title">
-  <h3>Quick Read</h3>
-</div>
-<div class="card-text">
-  <p id='text-post-summary'>流媒体传输是“直播”中至关重要的环节，在网络传输媒体流的时候有着不同的流媒体传输协议。
-做了一些小调查，在整个“直播”产品构建的过程中，应用最广的两个流媒体传输协议就是 RTMP 和 HLS 两个协议，其中 RTMP 在国内直播发展的长河中扮演着极其重要的角色，各个平台与 RTMP 的“结合”已变得很成熟。
-两种不同的流媒体传输协议
-RTMP
-RTMP (Real Time Messaging Protocol) ：实时消息传输协议，属应用层协议，基于传输层 TCP 协议长链接来进行传输，有 N 多变种，最早由 Macromedia 公司开发，而后 Macromedia 被 Adobe...</p>
-</div>
-        </div> -->
-    </div>
-    
-    <!-- Gallery -->
-    <!-- TODO: add a slider to gallery -->
+            
+              
+
+              
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
     
 
-    <!-- Content -->
-    <!-- TODO: support table of content -->
-    <div class="article-toc" id='article-toc'>
     
-        
+    
+    
+    <div class="post-body" itemprop="articleBody">
 
+      
+      
 
-<div class='toc-container'>
-<i class="far fa-times-circle" id='toc-close' onclick='closeTOC(event);' ontouchstart='closeTOC(event);'></i>
-<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">两种不同的流媒体传输协议</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">2.</span> <span class="toc-text">本地流媒体传输实践</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">3.</span> <span class="toc-text">实践远程推流</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">4.</span> <span class="toc-text">FileZilla 添加站点</span></a></li></ol>
-</div>
-<div class="toc-button" onclick='toggleTOC(event);' ontouchstart='toggleTOC(event);'>
-    <img src="/images/icons/blue-shadow/toc.svg" alt="">
-</div>
-
-    </div>
-    <div class='article-content'>
-    <p>流媒体传输是“直播”中至关重要的环节，在网络传输媒体流的时候有着不同的<strong>流媒体传输协议</strong>。</p>
+      
+        <p>流媒体传输是“直播”中至关重要的环节，在网络传输媒体流的时候有着不同的<strong>流媒体传输协议</strong>。</p>
 <p>做了一些小调查，在整个“直播”产品构建的过程中，应用最广的两个流媒体传输协议就是 <strong>RTMP</strong> 和 <strong>HLS</strong> 两个协议，其中 <strong>RTMP</strong> 在国内直播发展的长河中扮演着极其重要的角色，各个平台与 <strong>RTMP</strong> 的“结合”已变得很成熟。</p>
 <h2>两种不同的流媒体传输协议</h2>
 <h3>RTMP</h3>
@@ -519,126 +586,289 @@ rtmp://207.148.66.232/live/demo: Connection refused</p>
 <img src="https://lh3.googleusercontent.com/-a346KYF4T-Q/W_kmflf2FRI/AAAAAAAAAeI/aCD8fe4AoqQGrv9V2o8XBjB0PYN-b12oQCHMYCw/I/15430549672565.jpg" alt=""></p>
 <p>👏done!🎉</p>
 
-    
+      
     </div>
+
+    
+
     
     
-        <div class="article-comment" id='article-comment'>
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/rtmp/" rel="tag"># rtmp</a>
+          
+            <a href="/tags/hls/" rel="tag"># hls</a>
+          
+            <a href="/tags/推流/" rel="tag"># 推流</a>
+          
+            <a href="/tags/拉流/" rel="tag"># 拉流</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
             
+              <a href="/2018/08/29/2018-08-29/" rel="next" title="「RSHARE」 一键分享 Android 版">
+                <i class="fa fa-chevron-left"></i> 「RSHARE」 一键分享 Android 版
+              </a>
+            
+          </div>
 
-<h1>Comment</h1>
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/01/20/2019-01-20/" rel="prev" title="HTTP 的原理和工作机制">
+                HTTP 的原理和工作机制 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
 
   
-    <div id="comment-not-available">
-      Not available
-      <p><strong>For site maintainer: Please provide <code>appId</code> and <code>appKey</code> in your <code>_data/cutie.yml</code> file for <code>valine</code> comment system.</strong></p>
-    </div>
-  
+
 
 
         </div>
         
-</article>
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/logo.jpg"
+                alt="" />
+            
+              <p class="site-author-name" itemprop="name"></p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">6</span>
+                    <span class="site-state-item-name">posts</span>
+                  </a>
+                </div>
+              
+
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">14</span>
+                    <span class="site-state-item-name">tags</span>
+                  
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#undefined"><span class="nav-number">1.</span> <span class="nav-text">两种不同的流媒体传输协议</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-number">1.1.</span> <span class="nav-text">RTMP</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">1.1.1.</span> <span class="nav-text">RTMP 的主要特性</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">1.1.2.</span> <span class="nav-text">RTMP 原理</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-number">1.2.</span> <span class="nav-text">HLS</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">1.2.1.</span> <span class="nav-text">HLS 的主要特性</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">1.2.2.</span> <span class="nav-text">HLS 主要原理</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-number">1.3.</span> <span class="nav-text">RTMP Vs. HLS</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#undefined"><span class="nav-number">2.</span> <span class="nav-text">本地流媒体传输实践</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-number">2.1.</span> <span class="nav-text">准备</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-number">2.2.</span> <span class="nav-text">实践本地推流至 nginx</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">2.2.1.</span> <span class="nav-text">RTMP 拉流</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">2.2.2.</span> <span class="nav-text">HLS 拉流</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#undefined"><span class="nav-number">3.</span> <span class="nav-text">实践远程推流</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-number">3.1.</span> <span class="nav-text">准备</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-number">3.2.</span> <span class="nav-text">实践远程推流与拉流</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#undefined"><span class="nav-number">4.</span> <span class="nav-text">FileZilla 添加站点</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder"></span>
+
+  
+
+  
+</div>
+
+
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> v3.7.1</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://theme-next.org">NexT.Pisces</a> v6.3.0</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+	
+    
+
+    
   </div>
 
   
 
-<footer id='footer'>
-    <div class='footer-copyright'>
-        <div>
-            <p> Copyright by <a href=""> </a> @ 2019</p>
-            <p>Designed by: <i class="fas fa-paint-brush"></i> <a href="https://moober.cn">Moober</a> and <i class="fas fa-graduation-cap"></i> <a href="https://qutang.github.io">Qu Tang</a> &bull; Theme: <a href="https://qutang.github.io/cutie/">Cutie 2.1.3-Taurus</a> &bull; Powered by <a href="http://hexo.io">Hexo.</a></p>
-        </div>
-    </div>
-    
-    <div class='footer-social'>
-        
-    </div>
-</footer>
-
-  <br>
-
-  <div id="footer-nav" class='footer-nav'>
-		
-
-
-
-<nav id="nav">
-	
-	
-	
-	<div class='nav-item' id='nav-item-toc'>
-		
-
-
-<div class='toc-container'>
-<i class="far fa-times-circle" id='toc-close' onclick='closeTOC(event);' ontouchstart='closeTOC(event);'></i>
-<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">两种不同的流媒体传输协议</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">2.</span> <span class="toc-text">本地流媒体传输实践</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">3.</span> <span class="toc-text">实践远程推流</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">4.</span> <span class="toc-text">FileZilla 添加站点</span></a></li></ol>
-</div>
-<div class="toc-button" onclick='toggleTOC(event);' ontouchstart='toggleTOC(event);'>
-    <img src="/images/icons/blue-shadow/toc.svg" alt="">
-</div>
-
-	</div>
-	
-	<div class='nav-item' id='nav-item-archive'>
-		
-				<div class='nav-icon'>
-				
-			<a href="/archives/" title='Archives'>
-			<img src="/images/icons/blue-shadow/archive.svg" alt="">
-			</a>
-		</div>
-	</div>
-	<div class='nav-item' id='nav-item-search'>
-		
-		<div class='nav-icon'>
-		
-			<a href="/search/" title='Search'>
-			<img src="/images/icons/blue-shadow/search.svg" alt="">
-			</a>
-		</div>
-	</div>
-	<div class="nav-item" id='nav-item-more'>
-		<div class="nav-icon">
-				<a href='#' onclick='onClickMenuIcon(event);' ontouchstart='onClickMenuIcon(event);'>
-				<img src="/images/icons/blue-shadow/menu.svg" alt="">
-				</a>
-		</div>
-		<div class="nav-more-menu">
-				<i class="far fa-times-circle" id='nav-more-menu-close' onclick='onClickNavMenuClose(event);' ontouchstart='onClickNavMenuClose(event);'></i>
-		
-		
-	</div>
-	</div>
-</nav>
-
-	</div>
-
-  
-
-
-
-    
-
-
-
-
-
-
-
-    <script src="/js/lightgallery.min.js"></script>
-<script src="/js/lg-zoom.min.js"></script>
-<script type='text/javascript'>
-    $(document).ready(function() {
-        $("#lightgallery").lightGallery(); 
-        $(".article-content img").each(function(){
-            console.log($(this).attr('src'))
-            $(this).attr('data-src', $(this).attr('src')).lightGallery({
-                selector: 'this'
-            })
-        });
-    });
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
 </script>
 
 
@@ -646,45 +876,115 @@ rtmp://207.148.66.232/live/demo: Connection refused</p>
 
 
 
-<script type='text/javascript'>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   
-  // update cookie if this page is opened (directly)
-  loadjs(['/libs/jshashes/hashes.min.js', '/libs/js-cookie/src/js.cookie.js', '/js/post.v2.js'], 'post-version');
-  loadjs.ready('post-version', function(){
-    
-    new Postv2('hashit_f9b6933bd91c288b335090fce3067531c519043738e36d03a5b34c2ac17ed1cb').update('hashit_06f8e5cb740f8d89c631e4fb104f043e08889e5a9f5ed94882c481615db32330', function(){});
-  });
   
-</script>
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.3.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.3.0"></script>
 
 
 
-<!-- <script src="/js/post.js"></script> -->
-
-<script src="/js/headroom.min.js"></script>
-
-<script data-no-instant type='text/javascript'>
-
-initHeadroom();
-
-changeLayoutOnTouchScreen();
-
-// 
-// var post = new Post('', '');
-// post.getCommentCount(window.location.pathname, function(count){
-//     $('#article-comment-count').text(count);
-// });
-// post.addVisitRecord(window.location.pathname, userip);
-// post.getVisitCount(window.location.pathname, function(count){
-//     $('#article-visit-count').text(count);
-// });
-
-// 
-</script>
+  
+  
 
 
-<!-- End Document
-  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <script type="text/javascript" src="/js/src/affix.js?v=6.3.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=6.3.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.3.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.3.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.3.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
 </body>
 </html>

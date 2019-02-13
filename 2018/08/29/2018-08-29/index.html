@@ -1,350 +1,449 @@
 <!DOCTYPE html>
-<html lang="en">
 
 
 
 
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="">
 <head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2"/>
+<meta name="theme-color" content="#222">
 
-  <!-- Basic Page Needs
-  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-  <meta charset="utf-8">
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=6.3.0" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.3.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=6.3.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=6.3.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.3.0" color="#222">
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '6.3.0',
+    sidebar: {"position":"right","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
   
-      <title>「RSHARE」 一键分享 Android 版 - I'M VALENTI</title>
+
+
+
+
+  <meta name="description" content="因为公司的项目里集成了一键分享的这个模块, 而在我设计的时候发现国内的官方文档和提供的 Sample 有混乱和容易混淆的地方, 而且除了普通的网页、图片、文字分享到各大 Social 平台以外, 对于视频、文件和其他内容的分享 Demo 在百度或者 Google 几乎搜不到. 自己也是踩了很多坑才把很多问题解决. 测试设备 Samsung S9 Plus, Android 8.0.0. 支持平台">
+<meta name="keywords" content="share,social,Android,Java,Kotlin">
+<meta property="og:type" content="article">
+<meta property="og:title" content="「RSHARE」 一键分享 Android 版">
+<meta property="og:url" content="http://yoursite.com/2018/08/29/2018-08-29/index.html">
+<meta property="og:site_name" content="I&#39;M VALENTI">
+<meta property="og:description" content="因为公司的项目里集成了一键分享的这个模块, 而在我设计的时候发现国内的官方文档和提供的 Sample 有混乱和容易混淆的地方, 而且除了普通的网页、图片、文字分享到各大 Social 平台以外, 对于视频、文件和其他内容的分享 Demo 在百度或者 Google 几乎搜不到. 自己也是踩了很多坑才把很多问题解决. 测试设备 Samsung S9 Plus, Android 8.0.0. 支持平台">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="https://lh3.googleusercontent.com/-9k6SFlwycnU/W4dQ67__G3I/AAAAAAAAAUg/Qd5u_D4WwjodH_gUDzD5N1T7KR_fWP7qwCHMYCw/I/Android%2B">
+<meta property="og:image" content="https://lh3.googleusercontent.com/-MXlzlURYzn4/W4yX50h8eXI/AAAAAAAAAU4/6NxMqPrEnvsSscJwcEPxPN4sjYB2Z8XDgCHMYCw/I/15359405805597.jpg">
+<meta property="og:image" content="https://lh3.googleusercontent.com/-7DCJppBupJA/W4eaDI_LncI/AAAAAAAAAUs/hpVlStBvt_celCw2za386XN9rVRPD932ACHMYCw/I/Snip20180830_7.png">
+<meta property="og:image" content="https://lh3.googleusercontent.com/-lQNWh_xUCIM/W43gU-RtgNI/AAAAAAAAAVE/avOZBakVVpgtmw8RW4qf2ZDzmtpkC21PwCHMYCw/I/15360246543930.jpg">
+<meta property="og:image" content="https://lh3.googleusercontent.com/-aherZ9UNyxE/W43jH4GEkBI/AAAAAAAAAVQ/QaPWBeRGtHEW6C-IZ7KbubjKqqRSm3UCgCHMYCw/I/15360253735120.jpg">
+<meta property="og:image" content="https://lh3.googleusercontent.com/-D-jkZ9akfE8/W43mzu-YkvI/AAAAAAAAAVc/9qmI6Sc2HK8Uc2TaIZAvPdyLtF2z-jMuwCHMYCw/I/15360263169688.jpg">
+<meta property="og:image" content="https://lh3.googleusercontent.com/-vOtMU3GUtQs/W43poY1ypPI/AAAAAAAAAVo/HN7T-g7TL8IoRid3cHW9JC-XnmOX3oR6ACHMYCw/I/15360270395528.jpg">
+<meta property="og:image" content="https://lh3.googleusercontent.com/-jewSxMbq3kA/W43ra0e7vTI/AAAAAAAAAV0/WZshp4eAaM4RYNSJz1FtGBsbH-TjYNSmQCHMYCw/I/15360274983078.jpg">
+<meta property="og:image" content="https://lh3.googleusercontent.com/-6j1kjXWbnKo/W43ss4tVYpI/AAAAAAAAAWA/OTdMUq3hRZAK2kBIOT9WdMltMKQ_d_ySwCHMYCw/I/15360278242935.jpg">
+<meta property="og:image" content="https://lh3.googleusercontent.com/-zlfWRC10SJI/W44xTp6FUUI/AAAAAAAAAWM/j3UlQcde5LgRDxALeJUlOJqdBj2wVVyLwCHMYCw/I/15360453876894.jpg">
+<meta property="og:image" content="https://lh3.googleusercontent.com/-BFFGh29k4RY/W44y4BgsUMI/AAAAAAAAAWY/7lFoyibp1WUW-np_HEDCKo_GbH1p6SGjwCHMYCw/I/15360457905870.jpg">
+<meta property="og:image" content="https://lh3.googleusercontent.com/-7oN-sXKGMQ8/W440TO936mI/AAAAAAAAAWk/6vI9YPJVUWMcl9DpFXEW1PjP9VElZIvJgCHMYCw/I/15360461549519.jpg">
+<meta property="og:image" content="https://lh3.googleusercontent.com/-CcKR16KLjD4/W441by2jDAI/AAAAAAAAAWw/DFJRiBzve28k3tf6lwfdr5CshnZWiBejwCHMYCw/I/15360464461727.jpg">
+<meta property="og:image" content="https://lh3.googleusercontent.com/-OrqFKygZa6k/W45JKvdpI-I/AAAAAAAAAW8/d4Y4Z3t2LVMwQDs55fpwoOyUPfq23eouQCHMYCw/I/15360514953939.jpg">
+<meta property="og:image" content="https://lh3.googleusercontent.com/-_d5Fmi8rENk/W45JMexbPEI/AAAAAAAAAXA/NkL3Wlo_45wRAotYADgDMaK3-UplPvn2QCHMYCw/I/15360515040489.jpg">
+<meta property="og:image" content="https://lh3.googleusercontent.com/-GSsYGRe_qeg/W45RXUDPbhI/AAAAAAAAAXQ/Gz9oC33gt4YqU4S5WlFy42gZH8fUfh-zQCHMYCw/I/15360535953706.jpg">
+<meta property="og:image" content="https://lh3.googleusercontent.com/-N5QLcImNntc/W45TR4j7hZI/AAAAAAAAAXo/aKyWZLFkzOYBhhzW2kDgbHgFPJUy5Qz2ACHMYCw/I/15360540872534.jpg">
+<meta property="og:image" content="https://lh3.googleusercontent.com/-4RLl_LN0sac/W45TD5-fRRI/AAAAAAAAAXk/zhXMgiy7LOkW4UlZG2Da699UK2BTq6QTwCHMYCw/I/15360540282306.jpg">
+<meta property="og:image" content="https://lh3.googleusercontent.com/-YVT2ayySR6I/W5chW1iHrMI/AAAAAAAAAX4/GMCxl-itNoEk_jJa89nplur8JFkzvedFgCHMYCw/I/15366311285837.jpg">
+<meta property="og:image" content="https://lh3.googleusercontent.com/-6u1wLkwp9gI/W5chbBWK83I/AAAAAAAAAX8/P95diV00laEFaTIzr1aUk8U99sQ5UTreACHMYCw/I/15366311481945.jpg">
+<meta property="og:image" content="https://lh3.googleusercontent.com/-vbuWfq1M1n8/W5coCWrME6I/AAAAAAAAAYM/MFi4hsw7h-kFGdA3qhpjNn9vGp0NMPFVACHMYCw/I/15366328390733.jpg">
+<meta property="og:image" content="https://lh3.googleusercontent.com/-Xqf4psPm0SM/W5cu2VZiQyI/AAAAAAAAAYY/v3kmkYC1C0QYCm83zH9_CyVwVdtVtdYmwCHMYCw/I/15366345820939.jpg">
+<meta property="og:image" content="https://lh3.googleusercontent.com/-YXURoOGNuJc/W5cxUoJ8M9I/AAAAAAAAAYk/_T40tCXIkz0tlRDreQ-sEYG5xJMpmRZywCHMYCw/I/15366352153227.jpg">
+<meta property="og:image" content="https://lh3.googleusercontent.com/-yFCTb2hHMAU/W5cyjMJqnWI/AAAAAAAAAYw/JxFTudmZYYA2IEDRjo7JUSbPB_xT1vP5wCHMYCw/I/15366355297333.jpg">
+<meta property="og:image" content="https://lh3.googleusercontent.com/-abqHI4K0exU/W5czPT4tQXI/AAAAAAAAAY4/_lWw41A4zig5LnA-ocY1SnT6x21V7ptmgCHMYCw/I/15366357079456.jpg">
+<meta property="og:image" content="https://lh3.googleusercontent.com/-c5I4chuawhk/W5dnV0p1ksI/AAAAAAAAAZE/HBu1kom59Rs_q2B3ZMtQqzqPJBnbJRccACHMYCw/I/15366490447032.jpg">
+<meta property="og:image" content="https://lh3.googleusercontent.com/-oA7HlkrGvx0/W5dnu8fKzKI/AAAAAAAAAZU/g6qT1kewvPk-Yzb1LnlH_kad--REvEQDQCHMYCw/I/15366491440513.jpg">
+<meta property="og:image" content="https://lh3.googleusercontent.com/-nXN8PeYeBI8/W5druQz7D7I/AAAAAAAAAZg/tqdkoNdlZ_gYq5pb2VTS6qe7nB8go0slwCHMYCw/I/15366501677018.jpg">
+<meta property="og:image" content="https://lh3.googleusercontent.com/-53x4U8Iht94/W5drxU3QLhI/AAAAAAAAAZk/zebiYGtry1McCJ6P35Es-niqeCMyzfh-ACHMYCw/I/15366501815031.jpg">
+<meta property="og:image" content="https://lh3.googleusercontent.com/-cuff8oox2QA/W5dut_wRKII/AAAAAAAAAZ0/b0KlLvRRbicTVejB97QaI5DSn-5yWABXQCHMYCw/I/15366509337750.jpg">
+<meta property="og:image" content="https://lh3.googleusercontent.com/-MOOQGS65kE4/W5dvOW95NhI/AAAAAAAAAZ8/xdpBtn3Lr187Fm6zjHKoCfl-fsj64uDMwCHMYCw/I/15366510641749.jpg">
+<meta property="og:image" content="https://lh3.googleusercontent.com/-IQc0WbK_d2Q/W5dyAGaQ1AI/AAAAAAAAAaI/M1V76h1-NFg-Kh84iCjFOQ50BI9AYCT7QCHMYCw/I/15366517749056.jpg">
+<meta property="og:image" content="https://lh3.googleusercontent.com/-ps4ZtMCw-R0/W5d-SMQEz0I/AAAAAAAAAaY/BgkApt-Nzgo3LBvYIBACO0uYO2EgR-thQCHMYCw/I/15366549202862.jpg">
+<meta property="og:image" content="https://lh3.googleusercontent.com/-WIxiBag-ZsE/W5d-I4YUj9I/AAAAAAAAAaU/-4XSuRZpELsRUzbNFssC7AgHAUkD9hgNgCHMYCw/I/15366548801345.jpg">
+<meta property="og:image" content="https://lh3.googleusercontent.com/-b2WSm80d_Us/W5eC13XcH1I/AAAAAAAAAak/3CsSs5ULiQ8Ng_-6zU3vyVrmCyzbEw2VgCHMYCw/I/15366560853962.jpg">
+<meta property="og:image" content="https://lh3.googleusercontent.com/-1yxGGEo9QuI/W5eHx0NVl3I/AAAAAAAAAaw/og3n-vItwB8ruMgT6rfqD5OA46CS3QjoQCHMYCw/I/15366573475615.jpg">
+<meta property="og:image" content="https://lh3.googleusercontent.com/-O0rTTel0iHc/W5eJdrZJVII/AAAAAAAAAbI/JdickRAMap45EJT6Lrmizg1X6z9mJqtOACHMYCw/I/Android%2B">
+<meta property="og:updated_time" content="2018-09-12T01:43:26.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="「RSHARE」 一键分享 Android 版">
+<meta name="twitter:description" content="因为公司的项目里集成了一键分享的这个模块, 而在我设计的时候发现国内的官方文档和提供的 Sample 有混乱和容易混淆的地方, 而且除了普通的网页、图片、文字分享到各大 Social 平台以外, 对于视频、文件和其他内容的分享 Demo 在百度或者 Google 几乎搜不到. 自己也是踩了很多坑才把很多问题解决. 测试设备 Samsung S9 Plus, Android 8.0.0. 支持平台">
+<meta name="twitter:image" content="https://lh3.googleusercontent.com/-9k6SFlwycnU/W4dQ67__G3I/AAAAAAAAAUg/Qd5u_D4WwjodH_gUDzD5N1T7KR_fWP7qwCHMYCw/I/Android%2B">
+
+
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/08/29/2018-08-29/"/>
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>「RSHARE」 一键分享 Android 版 | I'M VALENTI</title>
   
 
-  
-  
-  <meta name="description" content="">
-  <meta name="author" content="">
-
-  <!-- Mobile Specific Metas
-  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-
-  <!-- load loadjs.js -->
-  <script src="/libs/loadjs/dist/loadjs.min.js"></script>
-
-<link rel="stylesheet" href="/libs/animate.css/animate.min.css">
-  <!-- load lightgallery -->
-<link rel="stylesheet" href="/css/lightgallery.css">
-<link rel="stylesheet" href="/libs/noty/lib/noty.css">
-<script
-src="https://code.jquery.com/jquery-3.3.1.min.js"
-integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
-crossorigin="anonymous"></script>
-  
 
 
 
 
 
 
-    <link rel="stylesheet" href="/css/taurus.css">
-    
-        <link rel="stylesheet" href="/css/scheme-taurus/animations.css">
-    
 
 
-<link rel="stylesheet" href="/.css">
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
 
-  <!-- load font awesome 5 -->
-  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
 
-  <script type="text/x-mathjax-config">
-  MathJax.Hub.Config({
-  tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
-  });
-  </script>
-  <!-- load mathjax -->
-  <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax//libs/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
 
-  <!-- load js-cookie -->
-  <script src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
-    <script src="/js/social-share.min.js"></script>
-    <script src="/js/theme.js"></script>
-
-  <!-- include cookie.js -->
-  
-  
-
-  <!-- include comment system code -->
-  
-    <script src="//cdn1.lncld.net/static/js/3.6.4/av-min.js"></script>
-<script src='//unpkg.com/valine/dist/Valine.min.js'></script>
-  
-  <!-- Favicon
-  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-  <link rel="icon" type="image/png" href="/images/favicon.png">
 </head>
-<body style="display: flex; flex-direction: column; min-height: 100vh;">
 
- 
+<body itemscope itemtype="http://schema.org/WebPage" lang="default">
 
-<header id="header" class='header'>
-	<div class="header-title">
-		
-		<div class='header-logo'>
-			<a href='/'>
-				<img src='/images/theme-icon.svg' />
-			</a>
-		</div>
-		<div class='header-text'>
-			<h1>
-				<a href="/">I'M VALENTI</a>
-			</h1>
-			<subtitle>
-				
-			</subtitle>
-		</div>
-		
-	</div>
-	<div id='header-nav'>
-		
+  
+  
+    
+  
 
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
 
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
 
-<nav id="nav">
-	
-	
-	
-	<div class='nav-item' id='nav-item-toc'>
-		
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">I'M VALENTI</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+  </div>
 
-
-<div class='toc-container'>
-<i class="far fa-times-circle" id='toc-close' onclick='closeTOC(event);' ontouchstart='closeTOC(event);'></i>
-<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">测试设备</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">2.</span> <span class="toc-text">支持平台</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">3.</span> <span class="toc-text">分享总体设计</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">4.</span> <span class="toc-text">详细逻辑</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">5.</span> <span class="toc-text">统一分享接口</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">6.</span> <span class="toc-text">源码</span></a></li></ol>
-</div>
-<div class="toc-button" onclick='toggleTOC(event);' ontouchstart='toggleTOC(event);'>
-    <img src="/images/icons/blue-shadow/toc.svg" alt="">
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
 </div>
 
-	</div>
-	
-	<div class='nav-item' id='nav-item-archive'>
-		
-				<div class='nav-icon'>
-				
-			<a href="/archives/" title='Archives'>
-			<img src="/images/icons/blue-shadow/archive.svg" alt="">
-			</a>
-		</div>
-	</div>
-	<div class='nav-item' id='nav-item-search'>
-		
-		<div class='nav-icon'>
-		
-			<a href="/search/" title='Search'>
-			<img src="/images/icons/blue-shadow/search.svg" alt="">
-			</a>
-		</div>
-	</div>
-	<div class="nav-item" id='nav-item-more'>
-		<div class="nav-icon">
-				<a href='#' onclick='onClickMenuIcon(event);' ontouchstart='onClickMenuIcon(event);'>
-				<img src="/images/icons/blue-shadow/menu.svg" alt="">
-				</a>
-		</div>
-		<div class="nav-more-menu">
-				<i class="far fa-times-circle" id='nav-more-menu-close' onclick='onClickNavMenuClose(event);' ontouchstart='onClickNavMenuClose(event);'></i>
-		
-		
-	</div>
-	</div>
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+    <a href="/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-home"></i> <br />Home</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+    <a href="/about/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-user"></i> <br />About</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+    <a href="/tags/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />Tags</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+    <a href="/categories/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-th"></i> <br />Categories</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />Archives</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-commonweal">
+    <a href="/404/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />Commonweal 404</a>
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+
+  
 </nav>
 
-	</div>
-</header>
 
- 
 
   
 
 
 
-
-  <!-- Primary Page Layout
-  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-  <div style="flex: 1;">
-      <style>
-    body {
-        background-color: white;
-    }
-</style>
-
-
-
-
-
-
-
+</div>
+    </header>
 
     
-    
 
 
-
-
-
-
-    
-    
-        
-    
-
-    
-        
-    
-
-
-
-
-
-
-
-
-
-<article class="article" id="/2018/08/29/2018-08-29/" data-name='「RSHARE」 一键分享 Android 版' data-version="">
-
-    <!-- Title -->
-    <div class='article-header'>
-         
-         <h1 class='article-title'>
-            <a href="/2018/08/29/2018-08-29/">
-                「RSHARE」 一键分享 Android 版
-            </a>
-        </h1>
-        <!-- TODO: support nested categories,display them nicely -->
-        
-    </div>
-    
-    <!-- Date and Author -->
-    <div class='article-meta'>
-    <ul>
-            <li><i class='fa fa-calendar'></i> 2018-08-29</li>
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
             
-            <li><i class="fa fa-user"></i> </li>
-            <li><i class="fas fa-copyright"></i>
+
+          
+          <div id="content" class="content">
             
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/08/29/2018-08-29/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/logo.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="I'M VALENTI">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">「RSHARE」 一键分享 Android 版
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
                 
+              
+
+              <time title="Created: 2018-08-29 17:03:59" itemprop="dateCreated datePublished" datetime="2018-08-29T17:03:59+08:00">2018-08-29</time>
+            
+
+            
+              
+
+              
                 
-            
-            
-                <a href=https://creativecommons.org/licenses/by-nc-nd/4.0/>CC BY-NC-ND 4.0</a>
-            
-            </li>
-    </ul>
-    
-<div class="tags">
-	
-		
-			<label class='tag-1'><a href="/tags/Android/">Android</a></label>
-		
-	
-		
-			<label class='tag-2'><a href="/tags/Java/">Java</a></label>
-		
-	
-		
-			<label class='tag-3'><a href="/tags/Kotlin/">Kotlin</a></label>
-		
-	
-		
-			<label class='tag-4'><a href="/tags/share/">Share</a></label>
-		
-	
-		
-			<label class='tag-5'><a href="/tags/social/">Social</a></label>
-		
-	
-	</div>
+                <span class="post-meta-divider">|</span>
+                
 
-    </div>
-    <div class='article-cards'>
-        <!-- Author Card -->
-        <!---
-        <div class='Card-article Card-author'>
-            <div class='card-title'>
-                <h3></h3>
-            </div>
-            <div class='card-content'>
-                    <div class="author-meta">
-                            <div class='author-figure'>
-                                <img src="" alt="">
-                            </div>
-                            <div class='author-name'>
-                                
-                            </div>
-                        </div>
-                        <div class="author-ai">
-                            <div class='author-intro'>
-                                <!-- TODO: auto generating author description -->
-                                <!-- 
-                            </div>
-                            <div class="author-articles">
-                                <!-- TODO: auto generating author articles -->
-                                <!-- <ul>
-                                    <li>Article 1</li>
-                                    <li>Article 2</li>
-                                    <li>Article 3</li>
-                                    <li>Article 4</li>
-                                    <li>Article 5</li>
-                                    <li>Article 6</li>
-                                </ul>
-                            </div>
-                        </div>
-            </div>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Edited on</span>
+                
+                <time title="Modified: 2018-09-12 09:43:26" itemprop="dateModified" datetime="2018-09-12T09:43:26+08:00">2018-09-12</time>
+              
             
-        </div> -->
+          </span>
 
-        <!-- Visit Card -->
-        <!-- <div class="Card-article Card-visit"> -->
-            <!-- <div class="card-title">
-  <h3>Post Visit</h3>
-</div>
-<div class="card-chart">
-  <div id='chart-post-visit'></div>
-</div> -->
-        <!-- </div> -->
-        
-        <!-- Auto Excerpt Card -->
-        <!-- <div class="Card-article Card-excerpt">
-            <div class="card-title">
-  <h3>Quick Read</h3>
-</div>
-<div class="card-text">
-  <p id='text-post-summary'>因为公司的项目里集成了一键分享的这个模块, 而在我设计的时候发现国内的官方文档和提供的 Sample 有混乱和容易混淆的地方, 而且除了普通的网页、图片、文字分享到各大 Social 平台以外, 对于视频、文件和其他内容的分享 Demo 在百度或者 Google 几乎搜不到. 自己也是踩了很多坑才把很多问题解决.
-测试设备
-Samsung S9 Plus, Android 8.0.0.
-支持平台
-RSHARE 这个 Demo 中支持: 微信、QQ、新浪微博、Facebook、GooglePlus(Google...</p>
-</div>
-        </div> -->
-    </div>
-    
-    <!-- Gallery -->
-    <!-- TODO: add a slider to gallery -->
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
     
 
-    <!-- Content -->
-    <!-- TODO: support table of content -->
-    <div class="article-toc" id='article-toc'>
     
-        
+    
+    
+    <div class="post-body" itemprop="articleBody">
 
+      
+      
 
-<div class='toc-container'>
-<i class="far fa-times-circle" id='toc-close' onclick='closeTOC(event);' ontouchstart='closeTOC(event);'></i>
-<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">测试设备</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">2.</span> <span class="toc-text">支持平台</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">3.</span> <span class="toc-text">分享总体设计</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">4.</span> <span class="toc-text">详细逻辑</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">5.</span> <span class="toc-text">统一分享接口</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">6.</span> <span class="toc-text">源码</span></a></li></ol>
-</div>
-<div class="toc-button" onclick='toggleTOC(event);' ontouchstart='toggleTOC(event);'>
-    <img src="/images/icons/blue-shadow/toc.svg" alt="">
-</div>
-
-    </div>
-    <div class='article-content'>
-    <p>因为公司的项目里集成了一键分享的这个模块, 而在我设计的时候发现国内的官方文档和提供的 Sample 有混乱和容易混淆的地方, 而且除了普通的网页、图片、文字分享到各大 Social 平台以外, 对于视频、文件和其他内容的分享 Demo 在百度或者 Google 几乎搜不到. 自己也是踩了很多坑才把很多问题解决.</p>
+      
+        <p>因为公司的项目里集成了一键分享的这个模块, 而在我设计的时候发现国内的官方文档和提供的 Sample 有混乱和容易混淆的地方, 而且除了普通的网页、图片、文字分享到各大 Social 平台以外, 对于视频、文件和其他内容的分享 Demo 在百度或者 Google 几乎搜不到. 自己也是踩了很多坑才把很多问题解决.</p>
 <h2>测试设备</h2>
 <p>Samsung S9 Plus, Android 8.0.0.</p>
 <h2>支持平台</h2>
@@ -1001,126 +1100,291 @@ Tumblr 的分享流程是: <strong>登录 -&gt; 分享</strong>, 但是登录的
 <h2>源码</h2>
 <p><a href="https://github.com/rexzx/rshare_java" target="_blank" rel="noopener">Java 版本源码</a>、 <a href="https://github.com/rexzx/rshare_kotlin" target="_blank" rel="noopener">Kotlin 版本源码</a>, 还在学习中, 请多指教.</p>
 
-    
+      
     </div>
+
+    
+
     
     
-        <div class="article-comment" id='article-comment'>
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/share/" rel="tag"># share</a>
+          
+            <a href="/tags/social/" rel="tag"># social</a>
+          
+            <a href="/tags/Android/" rel="tag"># Android</a>
+          
+            <a href="/tags/Java/" rel="tag"># Java</a>
+          
+            <a href="/tags/Kotlin/" rel="tag"># Kotlin</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
             
+              <a href="/2018/08/28/2018-08-28/" rel="next" title="「RSHARE」 一键分享 iOS 版">
+                <i class="fa fa-chevron-left"></i> 「RSHARE」 一键分享 iOS 版
+              </a>
+            
+          </div>
 
-<h1>Comment</h1>
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/11/24/2018-11-24/" rel="prev" title="macOS 系统 nginx + rtmp 流媒体传输实践">
+                macOS 系统 nginx + rtmp 流媒体传输实践 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
 
   
-    <div id="comment-not-available">
-      Not available
-      <p><strong>For site maintainer: Please provide <code>appId</code> and <code>appKey</code> in your <code>_data/cutie.yml</code> file for <code>valine</code> comment system.</strong></p>
-    </div>
-  
+
 
 
         </div>
         
-</article>
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/logo.jpg"
+                alt="" />
+            
+              <p class="site-author-name" itemprop="name"></p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">6</span>
+                    <span class="site-state-item-name">posts</span>
+                  </a>
+                </div>
+              
+
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">14</span>
+                    <span class="site-state-item-name">tags</span>
+                  
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#undefined"><span class="nav-number">1.</span> <span class="nav-text">测试设备</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#undefined"><span class="nav-number">2.</span> <span class="nav-text">支持平台</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-number">2.1.</span> <span class="nav-text">平台差异</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#undefined"><span class="nav-number">3.</span> <span class="nav-text">分享总体设计</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#undefined"><span class="nav-number">4.</span> <span class="nav-text">详细逻辑</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-number">4.1.</span> <span class="nav-text">基类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-number">4.2.</span> <span class="nav-text">配置文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-number">4.3.</span> <span class="nav-text">图片的处理</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">4.3.1.</span> <span class="nav-text">文件共享</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-number">4.4.</span> <span class="nav-text">QQ</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">4.4.1.</span> <span class="nav-text">准备</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">4.4.2.</span> <span class="nav-text">集成</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">4.4.3.</span> <span class="nav-text">接口及内部实现</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-number">4.5.</span> <span class="nav-text">微信</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">4.5.1.</span> <span class="nav-text">准备</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">4.5.2.</span> <span class="nav-text">集成</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">4.5.3.</span> <span class="nav-text">接口及内部实现</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-number">4.6.</span> <span class="nav-text">新浪</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">4.6.1.</span> <span class="nav-text">准备</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">4.6.2.</span> <span class="nav-text">集成</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">4.6.3.</span> <span class="nav-text">接口及内部实现</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-number">4.7.</span> <span class="nav-text">Facebook</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">4.7.1.</span> <span class="nav-text">准备</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">4.7.2.</span> <span class="nav-text">集成</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">4.7.3.</span> <span class="nav-text">接口调用及内部实现</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-number">4.8.</span> <span class="nav-text">Twitter</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">4.8.1.</span> <span class="nav-text">准备</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">4.8.2.</span> <span class="nav-text">集成</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">4.8.3.</span> <span class="nav-text">接口调用及内部实现</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-number">4.9.</span> <span class="nav-text">Instagram</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">4.9.1.</span> <span class="nav-text">准备</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">4.9.2.</span> <span class="nav-text">接口调用及内部实现</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-number">4.10.</span> <span class="nav-text">Tumblr</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">4.10.1.</span> <span class="nav-text">准备</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">4.10.2.</span> <span class="nav-text">集成</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">4.10.3.</span> <span class="nav-text">接口调用及内部实现</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-number">4.11.</span> <span class="nav-text">Pinterest</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">4.11.1.</span> <span class="nav-text">集成</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-number">4.12.</span> <span class="nav-text">Line</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">4.12.1.</span> <span class="nav-text">集成</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-number">4.13.</span> <span class="nav-text">WhatsApp</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">4.13.1.</span> <span class="nav-text">准备</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-number">4.14.</span> <span class="nav-text">GooglePlus</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">4.14.1.</span> <span class="nav-text">准备</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">4.14.2.</span> <span class="nav-text">集成</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">4.14.3.</span> <span class="nav-text">接口调用及内部实现</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#undefined"><span class="nav-number">5.</span> <span class="nav-text">统一分享接口</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-number">5.1.</span> <span class="nav-text">缺陷</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-number">5.2.</span> <span class="nav-text">类图</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-number">5.3.</span> <span class="nav-text">详细设计</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-number">5.4.</span> <span class="nav-text">接口</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#undefined"><span class="nav-number">6.</span> <span class="nav-text">源码</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder"></span>
+
+  
+
+  
+</div>
+
+
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> v3.7.1</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://theme-next.org">NexT.Pisces</a> v6.3.0</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+	
+    
+
+    
   </div>
 
   
 
-<footer id='footer'>
-    <div class='footer-copyright'>
-        <div>
-            <p> Copyright by <a href=""> </a> @ 2019</p>
-            <p>Designed by: <i class="fas fa-paint-brush"></i> <a href="https://moober.cn">Moober</a> and <i class="fas fa-graduation-cap"></i> <a href="https://qutang.github.io">Qu Tang</a> &bull; Theme: <a href="https://qutang.github.io/cutie/">Cutie 2.1.3-Taurus</a> &bull; Powered by <a href="http://hexo.io">Hexo.</a></p>
-        </div>
-    </div>
-    
-    <div class='footer-social'>
-        
-    </div>
-</footer>
-
-  <br>
-
-  <div id="footer-nav" class='footer-nav'>
-		
-
-
-
-<nav id="nav">
-	
-	
-	
-	<div class='nav-item' id='nav-item-toc'>
-		
-
-
-<div class='toc-container'>
-<i class="far fa-times-circle" id='toc-close' onclick='closeTOC(event);' ontouchstart='closeTOC(event);'></i>
-<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">测试设备</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">2.</span> <span class="toc-text">支持平台</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">3.</span> <span class="toc-text">分享总体设计</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">4.</span> <span class="toc-text">详细逻辑</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">5.</span> <span class="toc-text">统一分享接口</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">6.</span> <span class="toc-text">源码</span></a></li></ol>
-</div>
-<div class="toc-button" onclick='toggleTOC(event);' ontouchstart='toggleTOC(event);'>
-    <img src="/images/icons/blue-shadow/toc.svg" alt="">
-</div>
-
-	</div>
-	
-	<div class='nav-item' id='nav-item-archive'>
-		
-				<div class='nav-icon'>
-				
-			<a href="/archives/" title='Archives'>
-			<img src="/images/icons/blue-shadow/archive.svg" alt="">
-			</a>
-		</div>
-	</div>
-	<div class='nav-item' id='nav-item-search'>
-		
-		<div class='nav-icon'>
-		
-			<a href="/search/" title='Search'>
-			<img src="/images/icons/blue-shadow/search.svg" alt="">
-			</a>
-		</div>
-	</div>
-	<div class="nav-item" id='nav-item-more'>
-		<div class="nav-icon">
-				<a href='#' onclick='onClickMenuIcon(event);' ontouchstart='onClickMenuIcon(event);'>
-				<img src="/images/icons/blue-shadow/menu.svg" alt="">
-				</a>
-		</div>
-		<div class="nav-more-menu">
-				<i class="far fa-times-circle" id='nav-more-menu-close' onclick='onClickNavMenuClose(event);' ontouchstart='onClickNavMenuClose(event);'></i>
-		
-		
-	</div>
-	</div>
-</nav>
-
-	</div>
-
-  
-
-
-
-    
-
-
-
-
-
-
-
-    <script src="/js/lightgallery.min.js"></script>
-<script src="/js/lg-zoom.min.js"></script>
-<script type='text/javascript'>
-    $(document).ready(function() {
-        $("#lightgallery").lightGallery(); 
-        $(".article-content img").each(function(){
-            console.log($(this).attr('src'))
-            $(this).attr('data-src', $(this).attr('src')).lightGallery({
-                selector: 'this'
-            })
-        });
-    });
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
 </script>
 
 
@@ -1128,45 +1392,115 @@ Tumblr 的分享流程是: <strong>登录 -&gt; 分享</strong>, 但是登录的
 
 
 
-<script type='text/javascript'>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   
-  // update cookie if this page is opened (directly)
-  loadjs(['/libs/jshashes/hashes.min.js', '/libs/js-cookie/src/js.cookie.js', '/js/post.v2.js'], 'post-version');
-  loadjs.ready('post-version', function(){
-    
-    new Postv2('hashit_c3ccb9729caeec83c2c8492dab85e768a609d30b645a9a1b58cdcbae8deafcfa').update('hashit_144ed417ac0d4578178e43ec500ab76662df7b182680f9c4fcd1c784d6ba474c', function(){});
-  });
   
-</script>
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.3.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.3.0"></script>
 
 
 
-<!-- <script src="/js/post.js"></script> -->
-
-<script src="/js/headroom.min.js"></script>
-
-<script data-no-instant type='text/javascript'>
-
-initHeadroom();
-
-changeLayoutOnTouchScreen();
-
-// 
-// var post = new Post('', '');
-// post.getCommentCount(window.location.pathname, function(count){
-//     $('#article-comment-count').text(count);
-// });
-// post.addVisitRecord(window.location.pathname, userip);
-// post.getVisitCount(window.location.pathname, function(count){
-//     $('#article-visit-count').text(count);
-// });
-
-// 
-</script>
+  
+  
 
 
-<!-- End Document
-  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <script type="text/javascript" src="/js/src/affix.js?v=6.3.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=6.3.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.3.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.3.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.3.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
 </body>
 </html>
