@@ -1,145 +1,344 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
+
+
+
 <head>
+
+  <!-- Basic Page Needs
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
   <meta charset="utf-8">
   
-  <title>HTTP 的原理和工作机制 | I&#39;M VALENTI</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+      <title>HTTP 的原理和工作机制 - I'M VALENTI</title>
   
-  <meta name="keywords" content="HTTP" />
-  
+
   
   
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <!-- Mobile Specific Metas
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- load loadjs.js -->
+  <script src="/libs/loadjs/dist/loadjs.min.js"></script>
+
+<link rel="stylesheet" href="/libs/animate.css/animate.min.css">
+  <!-- load lightgallery -->
+<link rel="stylesheet" href="/css/lightgallery.css">
+<link rel="stylesheet" href="/libs/noty/lib/noty.css">
+<script
+src="https://code.jquery.com/jquery-3.3.1.min.js"
+integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+crossorigin="anonymous"></script>
   
-  <meta name="description" content="HTTP 是什么？Hyper Text Transfer Protocol 超文本传输协议，是一种 Client 和 Server 之间请求和应答的标准，目的是更高效的进行网络传输。 HTTP 工作方式用户最直观的感受就是浏览器地址栏键人地址-&amp;gt;回车-&amp;gt;看到浏览器呈现的网页，这个过程简单的流程就是：浏览器发送请求到服务器，服务器响应请求，浏览器通过渲染引擎渲染网页结果，渲染引擎也就是浏">
-<meta name="keywords" content="HTTP">
-<meta property="og:type" content="article">
-<meta property="og:title" content="HTTP 的原理和工作机制">
-<meta property="og:url" content="http://yoursite.com/2019/01/20/2019-01-20/index.html">
-<meta property="og:site_name" content="I&#39;M VALENTI">
-<meta property="og:description" content="HTTP 是什么？Hyper Text Transfer Protocol 超文本传输协议，是一种 Client 和 Server 之间请求和应答的标准，目的是更高效的进行网络传输。 HTTP 工作方式用户最直观的感受就是浏览器地址栏键人地址-&amp;gt;回车-&amp;gt;看到浏览器呈现的网页，这个过程简单的流程就是：浏览器发送请求到服务器，服务器响应请求，浏览器通过渲染引擎渲染网页结果，渲染引擎也就是浏">
-<meta property="og:locale" content="default">
-<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/453168-f77d2d4e7129ec30.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
-<meta property="og:updated_time" content="2019-01-24T07:02:30.053Z">
-<meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="HTTP 的原理和工作机制">
-<meta name="twitter:description" content="HTTP 是什么？Hyper Text Transfer Protocol 超文本传输协议，是一种 Client 和 Server 之间请求和应答的标准，目的是更高效的进行网络传输。 HTTP 工作方式用户最直观的感受就是浏览器地址栏键人地址-&amp;gt;回车-&amp;gt;看到浏览器呈现的网页，这个过程简单的流程就是：浏览器发送请求到服务器，服务器响应请求，浏览器通过渲染引擎渲染网页结果，渲染引擎也就是浏">
-<meta name="twitter:image" content="https://upload-images.jianshu.io/upload_images/453168-f77d2d4e7129ec30.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
-  
-    <link rel="alternate" href="/atom.xml" title="I&#39;M VALENTI" type="application/atom+xml">
-  
-  <link rel="icon" href="/css/images/favicon.ico">
-  
-    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
-  
-  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
-  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
-  <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
-  <style type="text/css">
-    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
-    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
-    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
-    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+
+
+
+
+
+
+    <link rel="stylesheet" href="/css/taurus.css">
     
-  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Yanone+Kaffeesatz%3A200%2C300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
-
-  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Oswald%3A300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
-  <link rel="stylesheet" href="/css/style.css">
-
-  <script src="/js/jquery-3.1.1.min.js"></script>
-
-  <!-- Bootstrap core CSS -->
-  <link rel="stylesheet" href="/css/bootstrap.css" >
-  <link rel="stylesheet" href="/css/fashion.css" >
-  <link rel="stylesheet" href="/css/glyphs.css" >
-
-</head>
+        <link rel="stylesheet" href="/css/scheme-taurus/animations.css">
+    
 
 
+<link rel="stylesheet" href="/.css">
 
-  <body data-spy="scroll" data-target="#toc" data-offset="50">
+  <!-- load font awesome 5 -->
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
 
+  <script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+  tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+  });
+  </script>
+  <!-- load mathjax -->
+  <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax//libs/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML"></script>
 
+  <!-- load js-cookie -->
+  <script src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
+    <script src="/js/social-share.min.js"></script>
+    <script src="/js/theme.js"></script>
+
+  <!-- include cookie.js -->
+  
   
 
+  <!-- include comment system code -->
+  
+    <script src="//cdn1.lncld.net/static/js/3.6.4/av-min.js"></script>
+<script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+  
+  <!-- Favicon
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <link rel="icon" type="image/png" href="/images/favicon.png">
+</head>
+<body style="display: flex; flex-direction: column; min-height: 100vh;">
 
-<header id="allheader" class="site-header" role="banner" 
-   >
-  <div class="clearfix container">
-      <div class="site-branding">
+ 
 
-          <h1 class="site-title">
-            
-              <a href="/" title="I&#39;M VALENTI" rel="home"> I&#39;M VALENTI </a>
-            
-          </h1>
-          
-          
-            
-          <nav id="main-navigation" class="main-navigation" role="navigation">
-            <a class="nav-open">Menu</a>
-            <a class="nav-close">Close</a>
+<header id="header" class='header'>
+	<div class="header-title">
+		
+		<div class='header-logo'>
+			<a href='/'>
+				<img src='/images/theme-icon.svg' />
+			</a>
+		</div>
+		<div class='header-text'>
+			<h1>
+				<a href="/">I'M VALENTI</a>
+			</h1>
+			<subtitle>
+				
+			</subtitle>
+		</div>
+		
+	</div>
+	<div id='header-nav'>
+		
 
-            <div class="clearfix sf-menu">
-              <ul id="main-nav" class="menu sf-js-enabled sf-arrows"  style="touch-action: pan-y;">
-                    
-                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/">Home</a> </li>
-                    
-                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/archives">Archives</a> </li>
-                    
-                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/categories">Categories</a> </li>
-                    
-                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/tags">Tags</a> </li>
-                    
-                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/about">About</a> </li>
-                    
-              </ul>
-            </div>
-          </nav>
 
-      </div>
-  </div>
+
+<nav id="nav">
+	
+	
+	
+	<div class='nav-item' id='nav-item-toc'>
+		
+
+
+<div class='toc-container'>
+<i class="far fa-times-circle" id='toc-close' onclick='closeTOC(event);' ontouchstart='closeTOC(event);'></i>
+<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">HTTP 是什么？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">2.</span> <span class="toc-text">HTTP 工作方式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">3.</span> <span class="toc-text">Request Method</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">4.</span> <span class="toc-text">Status Code</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">5.</span> <span class="toc-text">Header</span></a></li></ol>
+</div>
+<div class="toc-button" onclick='toggleTOC(event);' ontouchstart='toggleTOC(event);'>
+    <img src="/images/icons/blue-shadow/toc.svg" alt="">
+</div>
+
+	</div>
+	
+	<div class='nav-item' id='nav-item-archive'>
+		
+				<div class='nav-icon'>
+				
+			<a href="/archives/" title='Archives'>
+			<img src="/images/icons/blue-shadow/archive.svg" alt="">
+			</a>
+		</div>
+	</div>
+	<div class='nav-item' id='nav-item-search'>
+		
+		<div class='nav-icon'>
+		
+			<a href="/search/" title='Search'>
+			<img src="/images/icons/blue-shadow/search.svg" alt="">
+			</a>
+		</div>
+	</div>
+	<div class="nav-item" id='nav-item-more'>
+		<div class="nav-icon">
+				<a href='#' onclick='onClickMenuIcon(event);' ontouchstart='onClickMenuIcon(event);'>
+				<img src="/images/icons/blue-shadow/menu.svg" alt="">
+				</a>
+		</div>
+		<div class="nav-more-menu">
+				<i class="far fa-times-circle" id='nav-more-menu-close' onclick='onClickNavMenuClose(event);' ontouchstart='onClickNavMenuClose(event);'></i>
+		
+		
+	</div>
+	</div>
+</nav>
+
+	</div>
 </header>
 
+ 
 
-  <div id="container">
-    <div id="wrap">
+  
+
+
+
+
+  <!-- Primary Page Layout
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <div style="flex: 1;">
+      <style>
+    body {
+        background-color: white;
+    }
+</style>
+
+
+
+
+
+
+
+
+    
+    
+
+
+
+
+
+
+    
+    
+        
+    
+
+    
+        
+    
+
+
+
+
+
+
+
+
+
+<article class="article" id="/2019/01/20/2019-01-20/" data-name='HTTP 的原理和工作机制' data-version="">
+
+    <!-- Title -->
+    <div class='article-header'>
+         
+         <h1 class='article-title'>
+            <a href="/2019/01/20/2019-01-20/">
+                HTTP 的原理和工作机制
+            </a>
+        </h1>
+        <!-- TODO: support nested categories,display them nicely -->
+        
+    </div>
+    
+    <!-- Date and Author -->
+    <div class='article-meta'>
+    <ul>
+            <li><i class='fa fa-calendar'></i> 2019-01-20</li>
             
-      <div id="content" class="outer">
-        
-          <section id="main" style="float:none;"><article id="post-2019-01-20" style="width: 66%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
+            <li><i class="fa fa-user"></i> </li>
+            <li><i class="fas fa-copyright"></i>
+            
+                
+                
+            
+            
+                <a href=https://creativecommons.org/licenses/by-nc-nd/4.0/>CC BY-NC-ND 4.0</a>
+            
+            </li>
+    </ul>
     
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" class="article-title" itemprop="name">
-      HTTP 的原理和工作机制
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="/2019/01/20/2019-01-20/" class="article-date">
-	  <time datetime="2019-01-19T18:31:52.000Z" itemprop="datePublished">January 20, 2019</time>
-	</a>
-
-       
-      
-	<span id="busuanzi_container_page_pv">
-	  本文总阅读量<span id="busuanzi_value_page_pv"></span>次
-	</span>
+<div class="tags">
+	
+		
+			<label class='tag-1'><a href="/tags/HTTP/">Http</a></label>
+		
+	
+	</div>
 
     </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="HTTP-是什么？"><a href="#HTTP-是什么？" class="headerlink" title="HTTP 是什么？"></a>HTTP 是什么？</h2><p><strong>Hyper Text Transfer Protocol</strong> 超文本传输协议，是一种 Client 和 Server 之间请求和应答的标准，目的是更高效的进行网络传输。</p>
-<h2 id="HTTP-工作方式"><a href="#HTTP-工作方式" class="headerlink" title="HTTP 工作方式"></a>HTTP 工作方式</h2><p>用户最直观的感受就是浏览器地址栏键人地址-&gt;回车-&gt;看到浏览器呈现的网页，这个过程简单的流程就是：<br>浏览器发送请求到服务器，服务器响应请求，浏览器通过渲染引擎渲染网页结果，渲染引擎也就是浏览器的内核。</p>
+    <div class='article-cards'>
+        <!-- Author Card -->
+        <!---
+        <div class='Card-article Card-author'>
+            <div class='card-title'>
+                <h3></h3>
+            </div>
+            <div class='card-content'>
+                    <div class="author-meta">
+                            <div class='author-figure'>
+                                <img src="" alt="">
+                            </div>
+                            <div class='author-name'>
+                                
+                            </div>
+                        </div>
+                        <div class="author-ai">
+                            <div class='author-intro'>
+                                <!-- TODO: auto generating author description -->
+                                <!-- 
+                            </div>
+                            <div class="author-articles">
+                                <!-- TODO: auto generating author articles -->
+                                <!-- <ul>
+                                    <li>Article 1</li>
+                                    <li>Article 2</li>
+                                    <li>Article 3</li>
+                                    <li>Article 4</li>
+                                    <li>Article 5</li>
+                                    <li>Article 6</li>
+                                </ul>
+                            </div>
+                        </div>
+            </div>
+            
+        </div> -->
+
+        <!-- Visit Card -->
+        <!-- <div class="Card-article Card-visit"> -->
+            <!-- <div class="card-title">
+  <h3>Post Visit</h3>
+</div>
+<div class="card-chart">
+  <div id='chart-post-visit'></div>
+</div> -->
+        <!-- </div> -->
+        
+        <!-- Auto Excerpt Card -->
+        <!-- <div class="Card-article Card-excerpt">
+            <div class="card-title">
+  <h3>Quick Read</h3>
+</div>
+<div class="card-text">
+  <p id='text-post-summary'>HTTP 是什么？
+Hyper Text Transfer Protocol 超文本传输协议，是一种 Client 和 Server 之间请求和应答的标准，目的是更高效的进行网络传输。
+HTTP 工作方式
+用户最直观的感受就是浏览器地址栏键人地址-&gt;回车-&gt;看到浏览器呈现的网页，这个过程简单的流程就是：
+浏览器发送请求到服务器，服务器响应请求，浏览器通过渲染引擎渲染网页结果，渲染引擎也就是浏览器的内核。
+
+示例地址：https://twitter.com/shaddeen_/followers
+
+shaddeen，是小众音乐播放器 Loud 和 SmartPlayer...</p>
+</div>
+        </div> -->
+    </div>
+    
+    <!-- Gallery -->
+    <!-- TODO: add a slider to gallery -->
+    
+
+    <!-- Content -->
+    <!-- TODO: support table of content -->
+    <div class="article-toc" id='article-toc'>
+    
+        
+
+
+<div class='toc-container'>
+<i class="far fa-times-circle" id='toc-close' onclick='closeTOC(event);' ontouchstart='closeTOC(event);'></i>
+<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">HTTP 是什么？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">2.</span> <span class="toc-text">HTTP 工作方式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">3.</span> <span class="toc-text">Request Method</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">4.</span> <span class="toc-text">Status Code</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">5.</span> <span class="toc-text">Header</span></a></li></ol>
+</div>
+<div class="toc-button" onclick='toggleTOC(event);' ontouchstart='toggleTOC(event);'>
+    <img src="/images/icons/blue-shadow/toc.svg" alt="">
+</div>
+
+    </div>
+    <div class='article-content'>
+    <h2>HTTP 是什么？</h2>
+<p><strong>Hyper Text Transfer Protocol</strong> 超文本传输协议，是一种 Client 和 Server 之间请求和应答的标准，目的是更高效的进行网络传输。</p>
+<h2>HTTP 工作方式</h2>
+<p>用户最直观的感受就是浏览器地址栏键人地址-&gt;回车-&gt;看到浏览器呈现的网页，这个过程简单的流程就是：
+浏览器发送请求到服务器，服务器响应请求，浏览器通过渲染引擎渲染网页结果，渲染引擎也就是浏览器的内核。</p>
 <p><img src="https://upload-images.jianshu.io/upload_images/453168-f77d2d4e7129ec30.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
-<p>示例地址：<a href="https://twitter.com/shaddeen_/followers" target="_blank" rel="noopener">https://twitter.com/shaddeen_/followers</a></p>
+<p>示例地址：https://twitter.com/shaddeen_/followers</p>
 <blockquote>
 <p><a href="https://twitter.com/shaddeen_/followers" target="_blank" rel="noopener">shaddeen</a>，是小众音乐播放器 Loud 和 SmartPlayer 的作者。</p>
 </blockquote>
@@ -149,23 +348,27 @@
 <li>响应</li>
 <li>渲染</li>
 </ol>
-<p>在请求的过程中，浏览器地址栏的 <strong>URL 转化成 HTTP 报文</strong>进行发送，一个 URL 大致分为三个部分：<br><strong>https/http: 协议类型</strong>、<strong>twitter.com 服务器地址</strong>和<strong>shaddeen_/followers 路径(path)</strong>。</p>
+<p>在请求的过程中，浏览器地址栏的 <strong>URL 转化成 HTTP 报文</strong>进行发送，一个 URL 大致分为三个部分：
+<strong>https/http: 协议类型</strong>、<strong>twitter.com 服务器地址</strong>和<strong>shaddeen_/followers 路径(path)</strong>。</p>
 <p>请求发送的形式就变成：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">GET /shaddeen_/followers HTTP/1.1</span><br><span class="line">Host: twitter.com</span><br></pre></td></tr></table></figure>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">GET /shaddeen_/followers HTTP/1.1</span><br><span class="line">Host: twitter.com</span><br></pre></td></tr></table></figure></p>
 <p>在这个过程中，两个极其重要的角色也就出现了：Request 和 Response。</p>
-<h3 id="Request-报文格式"><a href="#Request-报文格式" class="headerlink" title="Request 报文格式"></a>Request 报文格式</h3><p>简易的 Request 报文格式如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">GET /shaddeen_/followers HTTP/1.1</span><br><span class="line">Host: twitter.com</span><br></pre></td></tr></table></figure>
+<h3>Request 报文格式</h3>
+<p>简易的 Request 报文格式如下：</p>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">GET /shaddeen_/followers HTTP/1.1</span><br><span class="line">Host: twitter.com</span><br></pre></td></tr></table></figure></p>
 <p><strong>GET /shaddeen_/followers HTTP/1.1</strong>为一个<strong>请求行</strong>，分三个部分：</p>
 <ul>
 <li><strong>GET</strong> 为 请求 method；</li>
 <li><strong>/shaddeen_/followers</strong> 为 path，负责定位；</li>
 <li><strong>HTTP/1.1</strong> 为 HTTP Version，现在绝大多数的浏览器的网页显示 HTTP 版本都是 1.1。</li>
 </ul>
-<p><strong>Host: twitter.com</strong> 为请求 Headers，可为多行<strong>（包括更多的内容如 Content-Type: text/plain Content-Length: 240）</strong>。<br>另，请求可以加入 <strong>Body</strong>，可以加入实际的内容，该内容是服务器需要处理的。Body 和请求行中的 path 都是和服务器对接并需要服务器处理的，但是各自角色的定位并不一样。</p>
-<h3 id="Response-报文格式"><a href="#Response-报文格式" class="headerlink" title="Response 报文格式"></a>Response 报文格式</h3><p>Response 的报文同样也有 Headers 和 Body，相比 Request 无请求行，多了一个状态行，例：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">状态行⬇️</span><br><span class="line">HTTP/1.1 200 OK</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Headers⬇️</span><br><span class="line">content-type: application/json; charset=utf-8</span><br><span class="line">cache-control: public, max-age=60, s-maxage=60</span><br><span class="line">vary: Accept, Accept-Encoding</span><br><span class="line">etag: W/&quot;02fjsdarwr080823f&quot;</span><br><span class="line">content-encoding: gzip</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">Body⬇️</span><br><span class="line">[</span><br><span class="line">    name: &quot;shaddeen_&quot;,</span><br><span class="line">    id: &quot;2342242&quot;,</span><br><span class="line">    follow_list: [</span><br><span class="line">        ...</span><br><span class="line">    ]</span><br><span class="line">    ...</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+<p><strong>Host: twitter.com</strong> 为请求 Headers，可为多行**（包括更多的内容如 Content-Type: text/plain Content-Length: 240）**。
+另，请求可以加入 <strong>Body</strong>，可以加入实际的内容，该内容是服务器需要处理的。Body 和请求行中的 path 都是和服务器对接并需要服务器处理的，但是各自角色的定位并不一样。</p>
+<h3>Response 报文格式</h3>
+<p>Response 的报文同样也有 Headers 和 Body，相比 Request 无请求行，多了一个状态行，例：</p>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">状态行⬇️</span><br><span class="line">HTTP/1.1 200 OK</span><br></pre></td></tr></table></figure></p>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Headers⬇️</span><br><span class="line">content-type: application/json; charset=utf-8</span><br><span class="line">cache-control: public, max-age=60, s-maxage=60</span><br><span class="line">vary: Accept, Accept-Encoding</span><br><span class="line">etag: W/&quot;02fjsdarwr080823f&quot;</span><br><span class="line">content-encoding: gzip</span><br></pre></td></tr></table></figure></p>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">Body⬇️</span><br><span class="line">[</span><br><span class="line">    name: &quot;shaddeen_&quot;,</span><br><span class="line">    id: &quot;2342242&quot;,</span><br><span class="line">    follow_list: [</span><br><span class="line">        ...</span><br><span class="line">    ]</span><br><span class="line">    ...</span><br><span class="line">]</span><br></pre></td></tr></table></figure></p>
 <p><strong>HTTP/1.1 200 OK</strong> 亦分为三个部分：</p>
 <ul>
 <li><strong>HTTP/1.1</strong> HTTP 版本；</li>
@@ -173,33 +376,38 @@
 <li><strong>OK</strong> status message 状态信息。</li>
 </ul>
 <p>这三部分的组合可以简单地描述一次请求。</p>
-<h2 id="Request-Method"><a href="#Request-Method" class="headerlink" title="Request Method"></a>Request Method</h2><ul>
+<h2>Request Method</h2>
+<ul>
 <li>GET <strong>获取资源，无 body</strong>，简单的来说就是从网上取东西；</li>
 <li>POST <strong>增加或修改资源，有 body</strong>，要把修改的内容放进 body 里给服务器进行处理；</li>
-<li>PUT <strong>修改资源， 有 body</strong>，它和 GET 有个共同的特点就是<strong>幂等（一个幂等操作的特点是其任意多次执行所产生的影响均与一次执行的影响相同，在这里指多次操作对于服务器没有影响）</strong>的；</li>
+<li>PUT <strong>修改资源， 有 body</strong>，它和 GET 有个共同的特点就是**幂等（一个幂等操作的特点是其任意多次执行所产生的影响均与一次执行的影响相同，在这里指多次操作对于服务器没有影响）**的；</li>
 <li>DELETE <strong>删除资源，无 body</strong>，同样具有幂等性；</li>
 <li>HEAD <strong>几乎和 GET 是一样的，区别在于服务器返回内容的时候不会返回 body</strong>，当做下载功能的时候通常需要预先知道该文件有多大或更多的信息，此时 HEAD 通过请求会得到这些信息，然后再进行一步处理。</li>
 </ul>
-<h2 id="Status-Code"><a href="#Status-Code" class="headerlink" title="Status Code"></a>Status Code</h2><p><strong>作用：对结果作出类型化描述（如「成功」、「未找到」）。</strong></p>
+<h2>Status Code</h2>
+<p><strong>作用：对结果作出类型化描述（如「成功」、「未找到」）。</strong></p>
 <p>通常规范化的状态码有 5 类，分类是为了方便调试：</p>
 <ul>
 <li>1xx: 临时性消息，通常为 100 和 101。100，表示初始的请求已经接受，客户端可以接着进行下面的请求，如上传一个大文件，在试探性请求服务器的过程中，会把一些描述信息放进 Header 中与服务器沟通试探服务器是否接受，如服务器返回 100 则客户端可以进行下面的操作。101 表示服务器回应客户端「支持 HTTP/2.0」，此时客户端下一次的请求就可以切换为为 HTTP/2.0，当不支持 HTTP/2.0 的时候会返回 200，那么客户端下一次请求则使用 HTTP/1.1 ；</li>
 <li>2xx: 成功；</li>
-<li>3xx: 重定向，如地址栏键入 <a href="http://www.google.com" target="_blank" rel="noopener">http://www.google.com</a> ，浏览器会重定向到 <a href="https://www.google.com" target="_blank" rel="noopener">https://www.google.com</a> ，该过程是一个自动的二次请求过程，就是通过返回的 301 (Moved Permanently 永久性迁移， 302 为临时迁移，304 表示内容没有改变，F5 重新刷新该网页）状态码来告诉客户端重新请求；</li>
+<li>3xx: 重定向，如地址栏键入 http://www.google.com ，浏览器会重定向到 https://www.google.com ，该过程是一个自动的二次请求过程，就是通过返回的 301 (Moved Permanently 永久性迁移， 302 为临时迁移，304 表示内容没有改变，F5 重新刷新该网页）状态码来告诉客户端重新请求；</li>
 <li>4xx: 客户端（浏览器、手机软件）错误，如参数错误，服务器无法识别该请求，是可以修正的；</li>
 <li>5xx: 服务器错误，如资源不足、资源找不到。</li>
 </ul>
-<h2 id="Header"><a href="#Header" class="headerlink" title="Header"></a>Header</h2><p>作用：Header 描述了 HTTP 消息的<strong>元信息 (Meta Data)</strong>，通俗地说就是<strong>描述数据的数据</strong>，如：该消息有多长？是什么格式？数据有没有压缩？返回的数据是什么字符集等等。</p>
-<h3 id="Host"><a href="#Host" class="headerlink" title="Host"></a>Host</h3><p>在前面的例子中，有一个 Host 的字段，它表示服务器主机地址，但是它不是用来寻址的，<strong>寻址的过程在发送请求之前就已经做好了</strong>。</p>
+<h2>Header</h2>
+<p>作用：Header 描述了 HTTP 消息的<strong>元信息 (Meta Data)</strong>，通俗地说就是<strong>描述数据的数据</strong>，如：该消息有多长？是什么格式？数据有没有压缩？返回的数据是什么字符集等等。</p>
+<h3>Host</h3>
+<p>在前面的例子中，有一个 Host 的字段，它表示服务器主机地址，但是它不是用来寻址的，<strong>寻址的过程在发送请求之前就已经做好了</strong>。</p>
 <blockquote>
-<p>在发送请求前，浏览器会带着域名「询问」 <strong>DNS（Domain Name System 域名系统）</strong> 目标 <strong>IP 地址</strong>，然后 DNS 返回一个或多个 IP 地址，然后通过 IP 地址去寻址，然后发送报文给目标服务器。 </p>
+<p>在发送请求前，浏览器会带着域名「询问」 <strong>DNS（Domain Name System 域名系统）</strong> 目标 <strong>IP 地址</strong>，然后 DNS 返回一个或多个 IP 地址，然后通过 IP 地址去寻址，然后发送报文给目标服务器。</p>
 </blockquote>
 <p><strong>那么为什么在请求 Header 中为什么还要带上 Host ？</strong></p>
 <p>是因为一个服务器主机下可能有多个虚拟主机或多个子服务器（多个网站）存在，也就是同样一个 IP 地址下面会有多个服务器存在，由于它们对外的 IP 都是一样的，浏览器根据这个 IP 去请求服务器，服务器会无法识别该次请求访问具体哪个主机，最终得不到正确的响应，所以需要发送 Host 附加到 Header 到服务器。</p>
 <blockquote>
 <p>服务器地址一般的形式是：域名 + TCP 端口。</p>
 </blockquote>
-<h3 id="Content-Type-Content-Length"><a href="#Content-Type-Content-Length" class="headerlink" title="Content-Type/Content-Length"></a>Content-Type/Content-Length</h3><p>描述 Body 的类型和长度。</p>
+<h3>Content-Type/Content-Length</h3>
+<p>描述 Body 的类型和长度。</p>
 <ul>
 <li>Content-Length：内容的长度（字节）</li>
 </ul>
@@ -208,46 +416,66 @@
 <ul>
 <li>Content-Type：内容的类型</li>
 </ul>
-<p><strong>text/html</strong>: html 文本，用于浏览器页面响应。<br><strong>application/x-www-form-urlencoded</strong>: 普通表单，encode URL 格式，只作用于文本。</p>
+<p><strong>text/html</strong>: html 文本，用于浏览器页面响应。
+<strong>application/x-www-form-urlencoded</strong>: 普通表单，encode URL 格式，只作用于文本。</p>
 <blockquote>
 <p>表单，可以简单的理解为：一个要提交的表，是浏览器和服务器沟通的一个格式。通过表单，服务器会解析本次请求的 Body 内容，找对应参数。</p>
 </blockquote>
-<p><strong>multipart/form-data</strong>: 多部分形式，一般用于包含二进制内容的多项内容。后面会跟 <strong>boundary=—-WebKitFormBoundaryxxxxxx</strong>，它的作用是用来分界 Body 和 Header 以及 Body 的各个属性。如修改人物信息的时候，通常会附带普通的「名字信息」和「头像图片」，那么请求格式如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">POST /users HTTP/1.1</span><br><span class="line">Host: twitter.com</span><br><span class="line">Content-Type: multipart/form-data boundary=----WebKitFormBoundary247HFSSj7fgwj01</span><br><span class="line">Content-Length:2300</span><br><span class="line">------WebKitFormBoundary247HFSSj7fgwj01 // 分界 🏃</span><br><span class="line">Content-Disposition:form-data; name=&quot;user_name&quot;// user_name 属性</span><br><span class="line">valentizx</span><br><span class="line">------WebKitFormBoundary247HFSSj7fgwj01 // 分界 🏃</span><br><span class="line">Content-Dispostion: form-data; name=&quot;avatar&quot;;filename=&quot;valentizx.jpg&quot; // avatar 属性</span><br><span class="line">Content-Type: image/jpeg</span><br><span class="line">SFH72jfoa6GSKHGS....</span><br><span class="line"></span><br><span class="line">------WebKitFormBoundary247HFSSj7fgwj0-- // 分界 🕴🏻</span><br><span class="line"></span><br><span class="line">分界前面有 6 个 「-」，前两个「-」表示一个新的属性的开始，最后一个分界后面有两个「-」表示结束。</span><br></pre></td></tr></table></figure>
-<p><strong>application/json</strong>: json 形式，多用于 Web Api 的响应或 PUT/POST 请求<br><strong>image/jpeg、application/zip …</strong>: 但文件，用于 Web Api 响应或 POST/PUT 请求。</p>
-<h4 id="Chunked-Transfer-Encoding-分块传输"><a href="#Chunked-Transfer-Encoding-分块传输" class="headerlink" title="Chunked Transfer Encoding 分块传输"></a>Chunked Transfer Encoding 分块传输</h4><p>当一次请求的响应数据内容较大时，为不影响用户体验，服务器通常会返回一个 chunk 单位的数据给客户端，但是服务器不会告诉 Header 每一个 chunk 具体多长，也就是 Body 长度无法确定，此时 Content-Type 无法使用。于是，新的 Body 格式出现：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;length1&gt;</span><br><span class="line">&lt;data1&gt;</span><br><span class="line">&lt;length2&gt;</span><br><span class="line">&lt;data2&gt;</span><br><span class="line">0</span><br><span class="line"> // ⬅️此处有换行位⚠️</span><br></pre></td></tr></table></figure>
+<p><strong>multipart/form-data</strong>: 多部分形式，一般用于包含二进制内容的多项内容。后面会跟 <strong>boundary=----WebKitFormBoundaryxxxxxx</strong>，它的作用是用来分界 Body 和 Header 以及 Body 的各个属性。如修改人物信息的时候，通常会附带普通的「名字信息」和「头像图片」，那么请求格式如下：</p>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">POST /users HTTP/1.1</span><br><span class="line">Host: twitter.com</span><br><span class="line">Content-Type: multipart/form-data boundary=----WebKitFormBoundary247HFSSj7fgwj01</span><br><span class="line">Content-Length:2300</span><br><span class="line">------WebKitFormBoundary247HFSSj7fgwj01 // 分界 🏃</span><br><span class="line">Content-Disposition:form-data; name=&quot;user_name&quot;// user_name 属性</span><br><span class="line">valentizx</span><br><span class="line">------WebKitFormBoundary247HFSSj7fgwj01 // 分界 🏃</span><br><span class="line">Content-Dispostion: form-data; name=&quot;avatar&quot;;filename=&quot;valentizx.jpg&quot; // avatar 属性</span><br><span class="line">Content-Type: image/jpeg</span><br><span class="line">SFH72jfoa6GSKHGS....</span><br><span class="line"></span><br><span class="line">------WebKitFormBoundary247HFSSj7fgwj0-- // 分界 🕴🏻</span><br><span class="line"></span><br><span class="line">分界前面有 6 个 「-」，前两个「-」表示一个新的属性的开始，最后一个分界后面有两个「-」表示结束。</span><br></pre></td></tr></table></figure></p>
+<p><strong>application/json</strong>: json 形式，多用于 Web Api 的响应或 PUT/POST 请求
+<strong>image/jpeg、application/zip ...</strong>: 但文件，用于 Web Api 响应或 POST/PUT 请求。</p>
+<h4>Chunked Transfer Encoding 分块传输</h4>
+<p>当一次请求的响应数据内容较大时，为不影响用户体验，服务器通常会返回一个 chunk 单位的数据给客户端，但是服务器不会告诉 Header 每一个 chunk 具体多长，也就是 Body 长度无法确定，此时 Content-Type 无法使用。于是，新的 Body 格式出现：</p>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;length1&gt;</span><br><span class="line">&lt;data1&gt;</span><br><span class="line">&lt;length2&gt;</span><br><span class="line">&lt;data2&gt;</span><br><span class="line">0</span><br><span class="line"> // ⬅️此处有换行位⚠️</span><br></pre></td></tr></table></figure></p>
 <p>明确每一小段（chunk）的长度放到 Header 中，先传输 data1，当 data2 准备就绪的时候传输 data2，<strong>直到传输 0 + 换行 表示内容结束。</strong></p>
-<h3 id="Location"><a href="#Location" class="headerlink" title="Location"></a>Location</h3><p>重定向的目标 URL，一次请求返回 301 的时候，浏览器会进行重定向到 Location 字段后的地址再进行一次请求。</p>
-<h3 id="User-Agent"><a href="#User-Agent" class="headerlink" title="User-Agent"></a>User-Agent</h3><p>用户代理，就是指客户端（Client），网页会根据不同的设备进行适配，标识凭借就是 User-Agent。</p>
-<h3 id="Range-Accept-Range"><a href="#Range-Accept-Range" class="headerlink" title="Range/Accept-Range"></a>Range/Accept-Range</h3><p>指定 Body 的内容范围，当目标服务器支持分段取内容的时候，该字段发挥作用，其最主要的两个应用点就是：<strong>断点续传</strong>和<strong>分段下载</strong>。</p>
-<h3 id="Cookie-Set-Cookie"><a href="#Cookie-Set-Cookie" class="headerlink" title="Cookie/Set-Cookie"></a>Cookie/Set-Cookie</h3><p>发送 Cookie，设置 Cookie</p>
-<h3 id="Authorization"><a href="#Authorization" class="headerlink" title="Authorization"></a>Authorization</h3><p>授权信息</p>
-<h3 id="部分其他-Header"><a href="#部分其他-Header" class="headerlink" title="部分其他 Header"></a>部分其他 Header</h3><p><strong>Accept</strong>: 客户端能接受的数据类型。如 text/html<br><strong>Accept-Charset</strong>: 客户端度接受的字符集。如 utf-8<br><strong>Accept-Encoding</strong>: 客户端接受的压缩编码类型。如 gzip<br><strong>Content-Encoding</strong>: 压缩类型。如 gzip</p>
-<h3 id="Cache"><a href="#Cache" class="headerlink" title="Cache"></a>Cache</h3><h4 id="Cache-和-Buffer"><a href="#Cache-和-Buffer" class="headerlink" title="Cache 和 Buffer"></a>Cache 和 Buffer</h4><ul>
+<h3>Location</h3>
+<p>重定向的目标 URL，一次请求返回 301 的时候，浏览器会进行重定向到 Location 字段后的地址再进行一次请求。</p>
+<h3>User-Agent</h3>
+<p>用户代理，就是指客户端（Client），网页会根据不同的设备进行适配，标识凭借就是 User-Agent。</p>
+<h3>Range/Accept-Range</h3>
+<p>指定 Body 的内容范围，当目标服务器支持分段取内容的时候，该字段发挥作用，其最主要的两个应用点就是：<strong>断点续传</strong>和<strong>分段下载</strong>。</p>
+<h3>Cookie/Set-Cookie</h3>
+<p>发送 Cookie，设置 Cookie</p>
+<h3>Authorization</h3>
+<p>授权信息</p>
+<h3>部分其他 Header</h3>
+<p><strong>Accept</strong>: 客户端能接受的数据类型。如 text/html
+<strong>Accept-Charset</strong>: 客户端度接受的字符集。如 utf-8
+<strong>Accept-Encoding</strong>: 客户端接受的压缩编码类型。如 gzip
+<strong>Content-Encoding</strong>: 压缩类型。如 gzip</p>
+<h3>Cache</h3>
+<h4>Cache 和 Buffer</h4>
+<ul>
 <li>Cache：缓存，表示一块内容可能多次使用，所以这部分内容<strong>暂时</strong>放在缓存区域中，当不用的时候会被回收掉，<strong>面向速度</strong>；</li>
 <li>Buffer： 缓冲，工作过程中，上游生产快下游不能及时消费，或者下游暂时无消费，时间段过后会「猛」消费，则需要缓冲机制，提前生产一点存起来供下游使用，<strong>面向工作流</strong>；</li>
 </ul>
-<h4 id="Cache-Control"><a href="#Cache-Control" class="headerlink" title="Cache-Control"></a>Cache-Control</h4><p><strong>no-cache</strong>、<strong>no-store</strong>、<strong>max-age</strong>:</p>
+<h4>Cache-Control</h4>
+<p><strong>no-cache</strong>、<strong>no-store</strong>、<strong>max-age</strong>:</p>
 <ul>
 <li><strong>no-cache</strong>: 服务器告诉 Client 端，该内容可以缓存，但是再次请求的时候服务器需要知道缓存的内容是否失效；</li>
 <li><strong>no-store</strong>: 不许缓存；</li>
 <li><strong>max-age</strong>: 在失效日期内，Client 端随意访问；</li>
 </ul>
-<h4 id="Last-Modified"><a href="#Last-Modified" class="headerlink" title="Last-Modified"></a>Last-Modified</h4><p><strong>If-Modified-Since</strong>: 缓存界面最后的修改时间，请求过程中，服务器会对比缓存的最后修改时间和真实文件的最后修改时间，如果一致，说明文件没有改动过，返回 304，否则返回 200 和新的内容。</p>
-<h4 id="Etag"><a href="#Etag" class="headerlink" title="Etag"></a>Etag</h4><p><strong>If-None-Match</strong>: 相当于 Hash，或者说相当于一个指纹，Client 端也可凭借该字段与服务器「沟通」，对比这个标签，如果不是最新的，则请求最新的，返回 200 显示新内容，如果一致，则 返回 304。</p>
-<h4 id="Cache-Control-1"><a href="#Cache-Control-1" class="headerlink" title="Cache-Control"></a>Cache-Control</h4><p><strong>private</strong> 和 <strong>public</strong>，一次请求的实际过程可能极其复杂，通过各个节点，各个网关，private 和 public 就是告诉路上经过的这些中间节点是否需要帮助缓存信息。</p>
+<h4>Last-Modified</h4>
+<p><strong>If-Modified-Since</strong>: 缓存界面最后的修改时间，请求过程中，服务器会对比缓存的最后修改时间和真实文件的最后修改时间，如果一致，说明文件没有改动过，返回 304，否则返回 200 和新的内容。</p>
+<h4>Etag</h4>
+<p><strong>If-None-Match</strong>: 相当于 Hash，或者说相当于一个指纹，Client 端也可凭借该字段与服务器「沟通」，对比这个标签，如果不是最新的，则请求最新的，返回 200 显示新内容，如果一致，则 返回 304。</p>
+<h4>Cache-Control</h4>
+<p><strong>private</strong> 和 <strong>public</strong>，一次请求的实际过程可能极其复杂，通过各个节点，各个网关，private 和 public 就是告诉路上经过的这些中间节点是否需要帮助缓存信息。</p>
 <blockquote>
 <p>⚠️ private 并不表示内容的私密性，私密性是通过加密机制来实现的，它表示「个性化定制信息」。</p>
 </blockquote>
-<h3 id="REST"><a href="#REST" class="headerlink" title="REST"></a>REST</h3><p>REST：对 HTTP 进行一种限制，属于一种<strong>架构风格。</strong></p>
+<h3>REST</h3>
+<p>REST：对 HTTP 进行一种限制，属于一种<strong>架构风格。</strong></p>
 <ul>
 <li>Server-Client architecture</li>
 <li>Statelessness</li>
 <li>Cacheability</li>
 <li>Layered system</li>
 <li>Code on demand</li>
-<li>Uniform interface<ul>
+<li>Uniform interface
+<ul>
 <li>Resource identification in requests</li>
 <li>Resource manipulation through representations</li>
 <li>Self-descriptive messages</li>
@@ -255,199 +483,175 @@
 </ul>
 </li>
 </ul>
-<h4 id="RESTful-HTTP"><a href="#RESTful-HTTP" class="headerlink" title="RESTful HTTP"></a>RESTful HTTP</h4><p>规范 HTTP 的使用方式，正确的使用 HTTP。</p>
+<h4>RESTful HTTP</h4>
+<p>规范 HTTP 的使用方式，正确的使用 HTTP。</p>
 
-      
-    </div>
-    <footer class="entry-meta entry-footer">
-      
-      
-  <span class="ico-tags"></span>
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/HTTP/">HTTP</a></li></ul>
-
-      
-        
-	<div id="comment">
-		<!-- 来必力City版安装代码 -->
-		<div id="lv-container" data-id="city" data-uid="MTAyMC8yOTQ4MS82MDQ5">
-		<script type="text/javascript">
-		   (function(d, s) {
-		       var j, e = d.getElementsByTagName(s)[0];
-
-		       if (typeof LivereTower === 'function') { return; }
-
-		       j = d.createElement(s);
-		       j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
-		       j.async = true;
-
-		       e.parentNode.insertBefore(j, e);
-		   })(document, 'script');
-		</script>
-		<noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
-		</div>
-		<!-- City版安装代码已完成 -->
-	</div>
-
-
-
-      
-    </footer>
-    <hr class="entry-footer-hr">
-  </div>
-  
     
-<nav id="article-nav">
-  
-    <a href="/2019/01/24/2019-01-24/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Newer</strong>
-      <div class="article-nav-title">
-        
-          HTTP 原理和工作机制（二）
-        
-      </div>
-    </a>
-  
-  
-    <a href="/2018/11/24/2018-11-24/" id="article-nav-older" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">macOS 系统 nginx + rtmp 流媒体传输实践</div>
-    </a>
-  
-</nav>
+    </div>
+    
+    
+        <div class="article-comment" id='article-comment'>
+            
+
+<h1>Comment</h1>
 
   
+    <div id="comment-not-available">
+      Not available
+      <p><strong>For site maintainer: Please provide <code>appId</code> and <code>appKey</code> in your <code>_data/cutie.yml</code> file for <code>valine</code> comment system.</strong></p>
+    </div>
+  
+
+
+        </div>
+        
 </article>
-
-<!-- Table of Contents -->
-
-  <aside id="sidebar">
-    <div id="toc" class="toc-article">
-    <strong class="toc-title">Contents</strong>
-    
-      <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#HTTP-是什么？"><span class="nav-number">1.</span> <span class="nav-text">HTTP 是什么？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#HTTP-工作方式"><span class="nav-number">2.</span> <span class="nav-text">HTTP 工作方式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Request-报文格式"><span class="nav-number">2.1.</span> <span class="nav-text">Request 报文格式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Response-报文格式"><span class="nav-number">2.2.</span> <span class="nav-text">Response 报文格式</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Request-Method"><span class="nav-number">3.</span> <span class="nav-text">Request Method</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Status-Code"><span class="nav-number">4.</span> <span class="nav-text">Status Code</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Header"><span class="nav-number">5.</span> <span class="nav-text">Header</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Host"><span class="nav-number">5.1.</span> <span class="nav-text">Host</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Content-Type-Content-Length"><span class="nav-number">5.2.</span> <span class="nav-text">Content-Type/Content-Length</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Chunked-Transfer-Encoding-分块传输"><span class="nav-number">5.2.1.</span> <span class="nav-text">Chunked Transfer Encoding 分块传输</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Location"><span class="nav-number">5.3.</span> <span class="nav-text">Location</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#User-Agent"><span class="nav-number">5.4.</span> <span class="nav-text">User-Agent</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Range-Accept-Range"><span class="nav-number">5.5.</span> <span class="nav-text">Range/Accept-Range</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Cookie-Set-Cookie"><span class="nav-number">5.6.</span> <span class="nav-text">Cookie/Set-Cookie</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Authorization"><span class="nav-number">5.7.</span> <span class="nav-text">Authorization</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#部分其他-Header"><span class="nav-number">5.8.</span> <span class="nav-text">部分其他 Header</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Cache"><span class="nav-number">5.9.</span> <span class="nav-text">Cache</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Cache-和-Buffer"><span class="nav-number">5.9.1.</span> <span class="nav-text">Cache 和 Buffer</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Cache-Control"><span class="nav-number">5.9.2.</span> <span class="nav-text">Cache-Control</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Last-Modified"><span class="nav-number">5.9.3.</span> <span class="nav-text">Last-Modified</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Etag"><span class="nav-number">5.9.4.</span> <span class="nav-text">Etag</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Cache-Control-1"><span class="nav-number">5.9.5.</span> <span class="nav-text">Cache-Control</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#REST"><span class="nav-number">5.10.</span> <span class="nav-text">REST</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#RESTful-HTTP"><span class="nav-number">5.10.1.</span> <span class="nav-text">RESTful HTTP</span></a></li></ol></li></ol></li></ol>
-    
-    </div>
-  </aside>
-</section>
-        
-      </div>
-
-    </div>
-    <!-- <nav id="mobile-nav">
-  
-    <a href="/" class="mobile-nav-link">Home</a>
-  
-    <a href="/archives" class="mobile-nav-link">Archives</a>
-  
-    <a href="/categories" class="mobile-nav-link">Categories</a>
-  
-    <a href="/tags" class="mobile-nav-link">Tags</a>
-  
-    <a href="/about" class="mobile-nav-link">About</a>
-  
-</nav> -->
-    <footer id="footer" class="site-footer">
-  
-
-  <div class="clearfix container">
-      <div class="site-info">
-	      &copy; 2019 I&#39;M VALENTI All Rights Reserved.
-        
-            <span id="busuanzi_container_site_uv">
-              本站访客数<span id="busuanzi_value_site_uv"></span>人次  
-              本站总访问量<span id="busuanzi_value_site_pv"></span>次
-            </span>
-          
-      </div>
-      <div class="site-credit">
-        Theme by <a href="https://github.com/iTimeTraveler/hexo-theme-hipaper" target="_blank">hipaper</a>
-      </div>
   </div>
+
+  
+
+<footer id='footer'>
+    <div class='footer-copyright'>
+        <div>
+            <p> Copyright by <a href=""> </a> @ 2019</p>
+            <p>Designed by: <i class="fas fa-paint-brush"></i> <a href="https://moober.cn">Moober</a> and <i class="fas fa-graduation-cap"></i> <a href="https://qutang.github.io">Qu Tang</a> &bull; Theme: <a href="https://qutang.github.io/cutie/">Cutie 2.1.3-Taurus</a> &bull; Powered by <a href="http://hexo.io">Hexo.</a></p>
+        </div>
+    </div>
+    
+    <div class='footer-social'>
+        
+    </div>
 </footer>
 
+  <br>
 
-<!-- min height -->
-
-<script>
-    var wrapdiv = document.getElementById("wrap");
-    var contentdiv = document.getElementById("content");
-
-    wrapdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
-    contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+  <div id="footer-nav" class='footer-nav'>
+		
 
 
-    <!-- headerblur min height -->
-    
-    
-</script>
-    
-<div style="display: none;">
-  <script src="https://s11.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+
+<nav id="nav">
+	
+	
+	
+	<div class='nav-item' id='nav-item-toc'>
+		
+
+
+<div class='toc-container'>
+<i class="far fa-times-circle" id='toc-close' onclick='closeTOC(event);' ontouchstart='closeTOC(event);'></i>
+<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">HTTP 是什么？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">2.</span> <span class="toc-text">HTTP 工作方式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">3.</span> <span class="toc-text">Request Method</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">4.</span> <span class="toc-text">Status Code</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">5.</span> <span class="toc-text">Header</span></a></li></ol>
+</div>
+<div class="toc-button" onclick='toggleTOC(event);' ontouchstart='toggleTOC(event);'>
+    <img src="/images/icons/blue-shadow/toc.svg" alt="">
 </div>
 
-<!-- mathjax config similar to math.stackexchange -->
+	</div>
+	
+	<div class='nav-item' id='nav-item-archive'>
+		
+				<div class='nav-icon'>
+				
+			<a href="/archives/" title='Archives'>
+			<img src="/images/icons/blue-shadow/archive.svg" alt="">
+			</a>
+		</div>
+	</div>
+	<div class='nav-item' id='nav-item-search'>
+		
+		<div class='nav-icon'>
+		
+			<a href="/search/" title='Search'>
+			<img src="/images/icons/blue-shadow/search.svg" alt="">
+			</a>
+		</div>
+	</div>
+	<div class="nav-item" id='nav-item-more'>
+		<div class="nav-icon">
+				<a href='#' onclick='onClickMenuIcon(event);' ontouchstart='onClickMenuIcon(event);'>
+				<img src="/images/icons/blue-shadow/menu.svg" alt="">
+				</a>
+		</div>
+		<div class="nav-more-menu">
+				<i class="far fa-times-circle" id='nav-more-menu-close' onclick='onClickNavMenuClose(event);' ontouchstart='onClickNavMenuClose(event);'></i>
+		
+		
+	</div>
+	</div>
+</nav>
 
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Config({
-    tex2jax: {
-      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
-      processEscapes: true
-    }
+	</div>
+
+  
+
+
+
+    
+
+
+
+
+
+
+
+    <script src="/js/lightgallery.min.js"></script>
+<script src="/js/lg-zoom.min.js"></script>
+<script type='text/javascript'>
+    $(document).ready(function() {
+        $("#lightgallery").lightGallery(); 
+        $(".article-content img").each(function(){
+            console.log($(this).attr('src'))
+            $(this).attr('data-src', $(this).attr('src')).lightGallery({
+                selector: 'this'
+            })
+        });
+    });
+</script>
+
+
+
+
+
+
+<script type='text/javascript'>
+
+  
+  // update cookie if this page is opened (directly)
+  loadjs(['/libs/jshashes/hashes.min.js', '/libs/js-cookie/src/js.cookie.js', '/js/post.v2.js'], 'post-version');
+  loadjs.ready('post-version', function(){
+    
+    new Postv2('hashit_0ebe27920e9f6251378d3add8ba633e64006a1fd4ce96979103482e4db94a1a7').update('hashit_dde1601295ccd65a8f6b4a7266929820cf1da937c176abebcfa75ec877146e91', function(){});
   });
-</script>
-
-<script type="text/x-mathjax-config">
-    MathJax.Hub.Config({
-      tex2jax: {
-        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-      }
-    });
-</script>
-
-<script type="text/x-mathjax-config">
-    MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax(), i;
-        for(i=0; i < all.length; i += 1) {
-            all[i].SourceElement().parentNode.className += ' has-jax';
-        }
-    });
-</script>
-
-<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+  
 </script>
 
 
-  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
-  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+<!-- <script src="/js/post.js"></script> -->
+
+<script src="/js/headroom.min.js"></script>
+
+<script data-no-instant type='text/javascript'>
+
+initHeadroom();
+
+changeLayoutOnTouchScreen();
+
+// 
+// var post = new Post('', '');
+// post.getCommentCount(window.location.pathname, function(count){
+//     $('#article-comment-count').text(count);
+// });
+// post.addVisitRecord(window.location.pathname, userip);
+// post.getVisitCount(window.location.pathname, function(count){
+//     $('#article-visit-count').text(count);
+// });
+
+// 
+</script>
 
 
-<script src="/js/script.js"></script>
-<script src="/js/bootstrap.js"></script>
-<script src="/js/main.js"></script>
-
-
-
-
-
-
-
-  <div style="display: none;">
-    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
-  </div>
-
-
-
-	<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
-	</script>
-
-
-
-
-
-
-  </div>
-
-  <a id="rocket" href="#top" class=""></a>
-  <script type="text/javascript" src="/js/totop.js" async=""></script>
+<!-- End Document
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
 </body>
 </html>
